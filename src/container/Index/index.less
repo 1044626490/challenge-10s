@@ -1,0 +1,381 @@
+body{
+  background-image: url("../../layouts/image/bg.jpg");
+}
+.index-container{
+  font-size: 1px;
+  .head-wrap{
+    position: relative;
+    margin-top: 2.2vh;
+    img{
+      float: left;
+      border-radius: 50%;
+      width: 13.3vw;
+      height: 13.3vw;
+      border:1px solid #fff;
+      margin: 0 4vw;
+    }
+    .my-info{
+      color:#fff;
+      height: 13.3vw;
+      span{
+        font-size: 4vw;
+        display: inline-block;
+        height: 50%;
+        vertical-align: center;
+      }
+    }
+    .my-money-item{
+      position: absolute;
+      right: 4vw;
+      top:1vw;
+      display: block;
+      width: 26.7vw;
+      height: 6.7vw;
+      color: #fff;
+      padding-left: 7.3vw;
+      background-color: rgb(37,30,74);
+      border:1px solid rgb(104,70,159);
+      border-radius: 1vw;
+      span{
+        margin-top: -0.5vw;
+        font-size: 2vw;
+        display: inline-block;
+        height: 6.5vw;
+        line-height: 6.5vw;
+      }
+      span:before,span:after{
+        content: "";
+        display: inline-block;
+        width: 3.7vw;
+        height: 3.3vw;
+        background-size: 100%;
+        background-repeat: no-repeat;
+        background-position: center;
+        position: absolute;
+        top:25%;
+      }
+      span:before{
+        background-image: url("../../layouts/image/homePage_icon.png");
+        left: 1vw;
+      }
+      span:after{
+        background-image: url("../../layouts/image/more_gold.png");
+        right: 1vw;
+      }
+    }
+    .my-money-item:after{
+      content: "";
+      display: block;
+      width: 10.1vw;
+      height: 10.1vw;
+      position: absolute;
+      bottom: -11vw;
+      right: 0;
+      background-image: url("../../layouts/image/trophy.png");
+      background-size: 100%;
+      background-repeat: no-repeat;
+      background-position: center;
+    }
+  }
+  .index-container-wrap{
+    width: 100vw;
+    padding: 2.5vw;
+    margin-top: 2vh;
+    height: 40vh;
+    .index-content-item{
+      position: relative;
+      float: left;
+      margin: 2.5vw 2.5vw 2vw 2vw;
+      padding-top: 1vw;
+      width: 42.67vw;
+      height: 17vh;
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: 100%;
+      span{
+        position:relative;;
+        padding-left: 20%;
+        font-size: 3vw;
+        color: #fff;
+      }
+      span:before{
+        content: "";
+        display: inline-block;
+        position: absolute;
+        left: 10%;
+        top:30%;
+        width: 3vw;
+        height: 3vw;
+        background-image: url("../../layouts/image/people.png");
+        background-repeat: no-repeat;
+        background-size: 100%;
+        background-position: center;
+      }
+      p{
+        height: 23%;
+        font-size: 4vw;
+        color: #fff;
+        position: absolute;
+        bottom:3.75%;
+        width: 100%;
+        text-align: center;
+        margin: 0;
+      }
+    }
+    .index-content-item:nth-child(1){
+      background-image: url("../../layouts/image/home_1.png");
+    }
+    .index-content-item:nth-child(2){
+      background-image: url("../../layouts/image/home_2.png");
+    }
+    .index-content-item:nth-child(3){
+      background-image: url("../../layouts/image/home_3.png");
+    }
+    .index-content-item:nth-child(4){
+      background-image: url("../../layouts/image/home_4.png");
+    }
+  }
+  .game-rule{
+    margin-top: 5vh;
+    .game-rule-header{
+      width: 60vw;
+      height: 8vh;
+      margin-left: 50%;
+      transform: translateX(-50%);
+      background-image: url("../../layouts/image/rule_of_game.png");
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: 100%;
+    }
+    .game-rule-item{
+      list-style: none;
+      color: #fff;
+      margin-top: 3vh;
+      li{
+        font-size: 2vh;
+        width: 80vw;
+        line-height: 3vh;
+      }
+    }
+  }
+  .ant-modal{
+    width: 300px!important;
+    height: 280px!important;
+  }
+}
+.into-home-modal{
+  width: 330px!important;
+  height: 300px!important;
+  margin: 0;
+  position: fixed;
+  top:50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+  padding: 5px;
+  border: 1px solid #000;
+  border-radius: 5px;
+  background: -webkit-linear-gradient(top,rgb(97,86,155) 0,rgb(135,122,196) 50%,rgb(113,102,173) 100%);
+  background: -moz-linear-gradient(top,rgb(97,86,155) 0,rgb(135,122,196) 50%,rgb(113,102,173) 100%);
+  background: -o-linear-gradient(top,rgb(97,86,155) 0,rgb(135,122,196) 50%,rgb(113,102,173) 100%);
+  background: linear-gradient(to bottom,rgb(97,86,155) 0,rgb(135,122,196) 50%,rgb(113,102,173) 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=rgb(97,86,155), middleColorstr=rgb(135,122,196),endColorstr=rgb(113,102,173),GradientType=0);
+  .ant-modal{
+    border-radius: 5px;
+    //border: 1px solid #000;
+    margin: 0;
+    width: 330px!important;
+    height: 300px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    .ant-modal-content{
+
+      .ant-modal-body{
+        padding: 0!important;
+        .into-home{
+          .login-register{
+            .ant-tabs{
+              background-color: #3c3768;
+              width: 97.75%;
+              position: absolute;
+              left: 1.25%;
+              padding: 15px;
+              .ant-tabs-nav-scroll{
+                .ant-tabs-nav{
+                  padding: 0 5%;
+                  border-bottom: 1px solid #5a577f!important;
+                  margin-bottom: 1px;
+                  .ant-tabs-tab{
+                    padding: 3px 12px;
+                    margin: 0;
+                  }
+                  .ant-tabs-tab-active{
+                    color: rgb(237,181,249);
+                    border-right: 1px solid #5a577f;
+                    border-left: 1px solid #5a577f;
+                    border-top: 1px solid #5a577f;
+                    border-top-left-radius: 10px;
+                    border-top-right-radius: 10px;
+                  }
+                }
+                background-color: #3c3768;
+                color: rgb(237,181,249);
+              }
+              .ant-tabs-ink-bar{
+                display: none!important;
+              }
+              .ant-form-item-control-wrapper{
+                .before-icon{
+                  position: absolute;
+                  font-size: 1.2em;
+                  color: #d6c0e2;
+                  top:10%;
+                  left: 2%;
+                  z-index: 99;
+                }
+                .ant-input{
+                  color: #d6c0e2;
+                  padding-left: 10%;
+                  width: 80%;
+                  background-color: #3c3768;
+                  border-width: 0;
+                  border-bottom: 1px solid #5a577f;
+                }
+                .ant-input:focus{
+                  border-width: 0!important;
+                  border-bottom: 1px solid #5a577f!important;
+                }
+                .get-kaptchald{
+                  margin-left: 4vw;
+                  border-radius: 10px;
+                  height: 3.6vh;
+                  padding: 0;
+                  font-size: 1vw;
+                  width: 23vw;
+                  box-shadow: 0 0 5px 1px rgb(247,207,40);
+                  background: -webkit-linear-gradient(top,rgb(247,207,40) 0,rgb(108,113,6) 100%);
+                  background: -moz-linear-gradient(top,rgb(247,207,40) 0,rgb(108,113,6) 100%);
+                  background: -o-linear-gradient(top,rgb(247,207,40) 0,rgb(108,113,6) 100%);
+                  background: linear-gradient(to bottom,rgb(247,207,40) 0,rgb(108,113,6) 100%);
+                  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=rgb(247,207,40),endColorstr=rgb(108,113,6),GradientType=0);
+                }
+                .check-button{
+                  border-radius: 5px;
+                  margin-left: 50%;
+                  transform: translateX(-50%);
+                  width: 25vw;
+                  height: 3.7vh;
+                  box-shadow: 0 0 5px 1px rgb(127,237,63);
+                  background: -webkit-linear-gradient(top,rgb(127,237,63) 0,rgb(20,109,2) 100%);
+                  background: -moz-linear-gradient(top,rgb(127,237,63) 0,rgb(20,109,2) 100%);
+                  background: -o-linear-gradient(top,rgb(127,237,63) 0,rgb(20,109,2) 100%);
+                  background: linear-gradient(to bottom,rgb(127,237,63) 0,rgb(20,109,2) 100%);
+                  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=rgb(127,237,63),endColorstr=rgb(20,109,2),GradientType=0);
+                }
+                .kaptchald{
+                  width: 40%;
+                }
+              }
+            }
+          }
+          .into-home-header{
+            p{
+              margin: 0;
+              text-align: center;
+              font-size: 26px;
+              font-weight: 600;
+              -webkit-text-fill-color: rgb(237,181,249);
+              //-webkit-text-stroke: 1px rgb(80,14,119);
+              span{
+                display: inline-block;
+                width: 25px;
+                height: 25px;
+                position: absolute;
+                right: 20px;
+                top: 15px;
+                background-image: url("../../layouts/image/close.png");
+                background-repeat: no-repeat;
+                background-size: 100%;
+                background-position: center;
+              }
+            }
+            -moz-border-radius-topleft:5px;
+            -moz-border-radius-topright:5px;
+            width:100%;
+            height: 67px;
+            background-image: url("../../layouts/image/modal-img.png");
+            background-position: center;
+            background-size: 100%;
+            background-repeat: no-repeat;
+          }
+          .modal-content{
+            width: 97.75%;
+            position: absolute;
+            left: 1.25%;
+            background-color: rgb(60,55,104);
+            padding: 15px;
+            .into-home-password{
+              color: rgb(237,181,251);
+              font-size: 14px;
+              height: 24px;
+              span{
+                height: 24px;
+                line-height: 24px;
+                vertical-align: middle;
+              }
+              .input-item{
+                display: inline-block;
+                border-radius: 5px;
+                text-align: center;
+                width: 24px;
+                height: 24px;
+                margin: 0 3px;
+                border:1px solid #ccc;
+                background-color: rgb(29,28,52);
+              }
+            }
+            .button-group{
+              margin-top: 15px;
+              button{
+                border-width: 0;
+                box-shadow: 0 0 5px 1px rgb(39,242,216);
+                margin: 5px;
+                font-size: 20px;
+                -webkit-text-fill-color: white;
+                //-webkit-text-stroke: 1px rgb(0,79,77);
+                width: 85px;
+                height: 30px;
+                background: -webkit-linear-gradient(top,rgb(39,242,216) 0,rgb(3,104,109) 100%);
+                background: -moz-linear-gradient(top,rgb(39,242,216) 0,rgb(3,104,109) 100%);
+                background: -o-linear-gradient(top,rgb(39,242,216) 0,rgb(3,104,109) 100%);
+                background: linear-gradient(to bottom,rgb(39,242,216) 0,rgb(3,104,109) 100%);
+                filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=rgb(39,242,216),endColorstr=rgb(3,104,109),GradientType=0);
+              }
+              button:nth-child(10){
+                //-webkit-text-stroke: 1px rgb(91,88,6);
+                box-shadow: 0 0 5px 1px rgb(247,207,40);
+                background: -webkit-linear-gradient(top,rgb(247,207,40) 0,rgb(108,113,6) 100%);
+                background: -moz-linear-gradient(top,rgb(247,207,40) 0,rgb(108,113,6) 100%);
+                background: -o-linear-gradient(top,rgb(247,207,40) 0,rgb(108,113,6) 100%);
+                background: linear-gradient(to bottom,rgb(247,207,40) 0,rgb(108,113,6) 100%);
+                filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=rgb(247,207,40),endColorstr=rgb(108,113,6),GradientType=0);
+              }
+              button:nth-child(12){
+                //-webkit-text-stroke: 1px rgb(22,82,5);
+                box-shadow: 0 0 5px 1px rgb(127,237,63);
+                background: -webkit-linear-gradient(top,rgb(127,237,63) 0,rgb(20,109,2) 100%);
+                background: -moz-linear-gradient(top,rgb(127,237,63) 0,rgb(20,109,2) 100%);
+                background: -o-linear-gradient(top,rgb(127,237,63) 0,rgb(20,109,2) 100%);
+                background: linear-gradient(to bottom,rgb(127,237,63) 0,rgb(20,109,2) 100%);
+                filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=rgb(127,237,63),endColorstr=rgb(20,109,2),GradientType=0);
+              }
+            }
+          }
+        }
+      }
+      .ant-modal-footer{
+        display: none;
+      }
+    }
+  }
+}

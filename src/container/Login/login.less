@@ -1,0 +1,159 @@
+.components-form-demo-normal-login{
+  height: 100%;
+  width: 100%;
+  .components-form-demo-normal-login-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    .login-form {
+      max-width: 300px;
+    }
+    .login-form-forgot {
+      float: right;
+    }
+    .login-form-button {
+      width: 100%;
+    }
+  }
+}
+
+
+
+@import "../../layouts/css/common";
+//蒙层
+.login {
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 99;
+
+  .pop-up {
+    background: rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(146, 144, 255, 0.5);
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    margin: auto;
+    z-index: 99999;
+    border-radius: 10px;
+  }
+}
+//卡牌父级
+.popWrapper{
+  //设置观察点距离视图 的距离
+  -webkit-perspective: 800px;
+  -moz-perspective: 800px;
+  height: 431px;
+  width: 417px;
+  background: #fff;
+
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  margin: auto;
+  z-index: 99999;
+  border-radius: 10px;
+  transform-style: preserve-3d;
+  transition: transform 1s;
+  transform-origin: right center;
+}
+//正面
+.popWrapper .log ,.popWrapper .update{
+  position: absolute;
+  height: 431px;
+  width: 417px;
+  z-index: 99999;
+  text-align: center;
+  color: #fff;
+  transform: rotateY( 0);
+  backface-visibility:hidden;
+  -webkit-backface-visibility: hidden;
+  -moz-backface-visibility: hidden;
+
+  >h1{
+    //margin-top: 25px;
+    color:#1da57a;
+    font-size: 22px;
+    font-family: "花火流光";
+  }
+  .login-form {
+    max-width: 300px;
+    margin:0px auto;
+    input{
+      //background: #484988;
+      //border:1px solid #484988;
+      height: 40px;
+    }
+  }
+  .login-form-forgot {
+    margin: 0;
+    float: right;
+  }
+  .login-form-button {
+    width: 100%;
+    height: 42px;
+    font-size:16px;
+    //background: linear-gradient(to right,#53f1f1, #31b1df);
+  }
+}
+//反面
+.popWrapper .forget{
+  position: absolute;
+  height: 431px;
+  width: 417px;
+  text-align: center;
+  color: #fff;
+  transform: rotateY( 180deg );
+  backface-visibility:hidden;
+  -webkit-backface-visibility: hidden;
+  -moz-backface-visibility: hidden;
+  >h1{
+    //margin-top: 25px;
+    color:#1da57a;
+    font-size: 22px;
+    font-family: "花火流光";
+  }
+  .ant-row ant-form-item{
+    margin-top: -16px;
+  }
+  .login-form {
+    max-width: 300px;
+    margin:0px auto;
+    input{
+      height: 40px;
+    }
+  }
+  .login-form-forgot {
+    float: right;
+  }
+  .login-form-button {
+    width: 100%;
+    height: 42px;
+    font-size:16px;
+    //background: linear-gradient(to right,#53f1f1, #31b1df);
+  }
+}
+.forget,.log,.update{
+  >span{
+    position: absolute;
+    //top:36px;
+    right: 28px;
+    z-index: 1000;
+    cursor: pointer;
+  }
+}
+//点击之后添加的类名
+.turn{
+  transform: translateX( -100% ) rotateY( -180deg );
+}
+.ant-form-explain{
+  text-align: left;
+  color:#fff
+}
