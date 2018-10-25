@@ -5,8 +5,8 @@ import Loadable from "react-loadable";
 import { connect } from "react-redux";
 import "./Dashboard.less";
 import Websocket from 'react-websocket';
-// import {message} from "antd";
-// import {fetchPostsGetUser} from '~/action/getUserInfo';
+import {message} from "antd";
+import {fetchPostsGetUser} from '~/action/getUserInfo';
 
 const routes = [
     {
@@ -51,13 +51,13 @@ class Dashboard extends React.Component {
         };
     }
 
-    // componentDidMount(){
-    //     this.props.dispatch(fetchPostsGetUser()).then((res) => {
-    //         console.log(res)
-    //     }).catch((err) => {
-    //         message.error(err.msg);
-    //     })
-    // }
+    componentDidMount(){
+        this.props.dispatch(fetchPostsGetUser()).then((res) => {
+            console.log(res)
+        }).catch((err) => {
+            message.error(err.msg);
+        })
+    }
 
     handleData(data) {
         console.log(data)
@@ -76,7 +76,7 @@ class Dashboard extends React.Component {
         }
         ws.onmessage = (e)=>{
             let data = JSON.parse(e.data);
-
+            let userData = data.data?JSON.parse(data.data):null
             let type = data.type || "";
             switch (type) {
                 case "ping":
@@ -95,7 +95,7 @@ class Dashboard extends React.Component {
                 default:
                     break;
             }
-            console.log(e)
+            console.log(data,userData)
         }
     }
 

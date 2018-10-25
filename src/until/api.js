@@ -14,6 +14,7 @@ export default {
     getUserMedal: (params) =>post(C.GET_USER_MEDAL, params),
     getUserInfo: (params) =>post(C.GET_USER_INFO, params),
     editUsername: (params) =>post(C.EDIT_USERNAME, params),
+    coupon: (params) =>post(C.COUPON, params),
 
     // logout: (params) => post(C.LOGOUT, params),
     // register: (params) => post(C.REGISTER, params),

@@ -1,0 +1,337 @@
+.into-home{
+  width: 100vw;
+  height: 100vh;
+  background-image: url("../../layouts/image/homebg.png");
+  background-size: 100%;
+  .head-wrap{
+    position: relative;
+    margin-top: 2.2vh;
+    img{
+      float: left;
+      border-radius: 50%;
+      width: 13.3vw;
+      height: 13.3vw;
+      border:1px solid #fff;
+      margin: 0 4vw;
+    }
+    .my-info{
+      color:#fff;
+      height: 13.3vw;
+      span{
+        font-size: 4vw;
+        display: inline-block;
+        height: 50%;
+        vertical-align: center;
+      }
+    }
+    .my-money-item{
+      position: absolute;
+      right: 4vw;
+      top:1vw;
+      display: block;
+      width: 26.7vw;
+      height: 6.7vw;
+      color: #fff;
+      padding-left: 7.3vw;
+      background-color: rgb(37,30,74);
+      border:1px solid rgb(104,70,159);
+      border-radius: 1vw;
+      span:not(.my-trophy){
+        font-size: 2vw;
+        display: inline-block;
+        height: 6.5vw;
+        line-height: 6.5vw;
+      }
+      span:before,span:after{
+        content: "";
+        display: inline-block;
+        width: 3.7vw;
+        height: 4vw;
+        background-size: 100%;
+        background-repeat: no-repeat;
+        background-position: center;
+        position: absolute;
+        top:50%;
+        transform: translateY(-50%);
+      }
+      span:before{
+        background-image: url("../../layouts/image/homePage_icon.png");
+        left: 1vw;
+      }
+      span:after{
+        background-image: url("../../layouts/image/more_gold.png");
+        right: 1vw;
+      }
+    }
+    .my-trophy{
+      display: block;
+      width: 10.1vw;
+      height: 10.1vw;
+      position: absolute;
+      bottom: -11vw;
+      right: 0;
+      background-image: url("../../layouts/image/trophy.png");
+      background-size: 100% 100%;
+      background-repeat: no-repeat;
+      background-position: center;
+    }
+  }
+  .go-home-button{
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%,-50%);
+    button{
+      border-width: 0;
+      border-radius: 3vw;
+      height: 16.85vh;
+      width: 42.67vw;
+      background-size: 100% 100%;
+    }
+    .into-home-button{
+      margin: 5vh 0;
+      text-align: center;
+      position: relative;
+      p{
+        height: 4.3vh;
+        line-height: 4.3vh;
+        margin: 0;
+        font-size: 4vw;
+        position: absolute;
+        bottom: 1vh;
+        font-weight: 500;
+        letter-spacing: 2px;
+        color: white;
+        left: 50%;
+        transform: translateX(-50%);
+      }
+    }
+    .into-home-button:first-child{
+      button{
+        background-image: url("../../layouts/image/home_1.png");
+      }
+    }
+    button:last-child{
+      background-image: url("../../layouts/image/random.png");
+    }
+  }
+}
+.into-home-modal{
+  width: 73.6vw!important;
+  margin: 0;
+  position: fixed;
+  top:50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+  padding: 5px;
+  border-radius: 2vw;
+  -moz-box-shadow:2vw -2vw -2vw #fff inset;               /* For Firefox3.6+ */
+  -webkit-box-shadow:2vw -2vw -2vw #fff inset;            /* For Chrome5+, Safari5+ */
+  box-shadow:2vw -2vw -2vw #fff inset;                    /* For Latest Opera */
+  .ant-modal{
+    border-radius: 5px;
+    margin: 0;
+    width: 73.5vw!important;
+    position: absolute;
+    top: 0;
+    left: 0;
+    .ant-modal-content{
+      width: 100%!important;
+      background-color: transparent;
+      .ant-modal-body{
+        width: 100%!important;
+        background-color: transparent;
+        padding: 0!important;
+        .into-home{
+          width: 100%;
+          height: 100%;
+          .login-register{
+            .ant-tabs{
+              margin-top: -1px;
+              background-color: #3c3768;
+              width: 100%;
+              background-image: url("../../layouts/image/border-img.png");
+              background-size: 100%;
+              position: absolute;
+              padding: 15px;
+              margin-left: -0.2px;
+              .ant-tabs-nav-scroll{
+                .ant-tabs-nav{
+                  padding: 0 5%;
+                  border-bottom: 1px solid #5a577f!important;
+                  margin-bottom: 1px;
+                  .ant-tabs-tab{
+                    padding: 3px 12px;
+                    margin: 0;
+                  }
+                  .ant-tabs-tab-active{
+                    color: rgb(237,181,249);
+                    border-right: 1px solid #5a577f;
+                    border-left: 1px solid #5a577f;
+                    border-top: 1px solid #5a577f;
+                    border-top-left-radius: 10px;
+                    border-top-right-radius: 10px;
+                  }
+                }
+                background-color: #3c3768;
+                color: rgb(237,181,249);
+              }
+              .ant-tabs-ink-bar{
+                display: none!important;
+              }
+              .ant-form-item-control-wrapper{
+                .before-icon{
+                  position: absolute;
+                  font-size: 1.2em;
+                  color: #d6c0e2;
+                  top:10%;
+                  left: 2%;
+                  z-index: 99;
+                }
+                .ant-input{
+                  color: #d6c0e2;
+                  padding-left: 10%;
+                  width: 80%;
+                  background-color: #3c3768;
+                  border-width: 0;
+                  border-bottom: 1px solid #5a577f;
+                }
+                .ant-input:focus{
+                  border-width: 0!important;
+                  border-bottom: 1px solid #5a577f!important;
+                }
+              }
+            }
+          }
+          .into-home-header{
+            p{
+              margin: 0;
+              text-align: center;
+              font-size: 6vw;
+              font-weight: 600;
+              -webkit-text-fill-color: rgb(237,181,249);
+              span{
+                display: inline-block;
+                width: 25px;
+                height: 25px;
+                position: absolute;
+                right: 20px;
+                top: 15px;
+                background-image: url("../../layouts/image/close.png");
+                background-repeat: no-repeat;
+                background-size: 100%;
+                background-position: center;
+              }
+            }
+            -moz-border-radius-topleft:5px;
+            -moz-border-radius-topright:5px;
+            width:100%;
+            height: 17.1vw;
+            background-image: url("../../layouts/image/modal-img.png");
+            background-position: center;
+            background-size: 100% 100%;
+            background-repeat: no-repeat;
+          }
+          .modal-content{
+            border-bottom-right-radius: 2vw;
+            border-bottom-left-radius: 2vw;
+            margin-top: -1px;
+            position: absolute;
+            background-image: url("../../layouts/image/border-img.png");
+            background-repeat: repeat;
+            background-size: 100% 100%;
+            padding: 15px;
+            .into-home-password{
+              margin-left: 50%;
+              transform: translateX(-50%);
+              text-align: center;
+              width: 100%;
+              color: rgb(237,181,251);
+              font-size: 14px;
+              height: 4vw;
+              span{
+                font-size: 3vw;
+                height: 4vw;
+                line-height: 24px;
+                vertical-align: middle;
+              }
+              .input-item{
+                display: inline-block;
+                border-radius: 5px;
+                text-align: center;
+                width: 6vw;
+                height: 6vw;
+                -moz-box-shadow:-1px -1px -1px #fff inset;               /* For Firefox3.6+ */
+                -webkit-box-shadow:-1px -1px -1px #fff inset;            /* For Chrome5+, Safari5+ */
+                box-shadow:-1px -1px -1px #999 inset;                    /* For Latest Opera */
+                margin: 0 3px;
+                background-image: url("../../layouts/image/input-img.png");
+                background-position: center;
+                background-size: 100%;
+                background-repeat: no-repeat;
+              }
+            }
+            .input-commad{
+              color: #6dc049!important;
+            }
+            .button-group{
+              text-align: center;
+              width: 100%;
+              margin-left: 50%;
+              transform: translateX(-50%);
+              margin-top: 4vw;
+              button{
+                border-width: 0;
+                //box-shadow: 0 0 5px 1px rgb(39,242,216);
+                margin: 5px;
+                font-size: 5vw;
+                -webkit-text-fill-color: white;
+                -webkit-text-stroke-width: 1px;
+                -webkit-text-stroke-color: #004142;
+                position: relative;
+                width: 19vw;
+                height: 8vw;
+                border-radius: 5px;
+                background-image: url("../../layouts/image/modal-btn-2.png");
+                background-repeat: no-repeat;
+                background-size: 100%;
+                img{
+                  position: absolute;
+                  top: 20%;
+                  left: 20%;
+                  width: 60%;
+                  height: 60%;
+                }
+              }
+              button:nth-child(13){
+                background-image: url("../../layouts/image/modal-btn-1.png");
+              }
+              button:nth-child(15){
+                background-image: url("../../layouts/image/modal-btn-3.png");
+              }
+            }
+          }
+
+        }
+      }
+      .ant-modal-footer{
+        display: none;
+      }
+    }
+  }
+}
+.modal-content:after{
+  border-bottom-right-radius: 2vw;
+  border-bottom-left-radius: 2vw;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  content: "";
+  display: block;
+  width: 100%;
+  height: 2vw;
+  background-image: url("../../layouts/image/bor_bottow.png");
+  background-size: 100%;
+  background-repeat: no-repeat;
+  background-position: center;
+}

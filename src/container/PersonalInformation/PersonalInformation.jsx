@@ -1,5 +1,5 @@
 import React from 'react';
-import {Input, Icon, Modal, Avatar, Progress, Badge, message} from "antd";
+import {Input, Icon, Modal, Avatar, Progress, Badge, message, Button} from "antd";
 import connect from "react-redux/es/connect/connect";
 import BottomMenu from "../../components/bottomMenu/bottonMenu"
 import HeaderNav from "../../components/headerNav/headerNav";
@@ -80,7 +80,7 @@ class PersonalInformation extends React.Component {
                                     </span>
                                     }
                                     </p>
-                                    <p><span className="class-rank">等级：</span><Progress successPercent={30} />&nbsp;&nbsp;&nbsp;lv{info.level||1}</p>
+                                    <div className="my-level"><span className="class-rank">等级：</span><Progress successPercent={30} />&nbsp;&nbsp;&nbsp;lv{info.level||1}</div>
                                 </div>
                             </div>
                             <div className="bottom-header">
@@ -94,10 +94,10 @@ class PersonalInformation extends React.Component {
                                         <span>银币</span>
                                     </li>
                                     <li>
-                                        <p>
+                                        <div>
                                             <Badge count={9} overflowCount={9}>98
                                             </Badge>
-                                        </p>
+                                        </div>
                                         <span>好友</span>
                                     </li>
                                 </ul>
@@ -137,7 +137,6 @@ class PersonalInformation extends React.Component {
                                 <p className="name-class"><span>昵称：</span>{
                                     this.state.isResetName? <span>
                                         <Input placeholder="修改昵称" onChange={(e)=>{this.setState({myName:e.target.value})}}/>
-                                            {/*<input type="text" onChange={(e)=>{this.setState({myName:e})}}/>*/}
                                             <Icon type="check" theme="outlined"  onTouchStart={()=>{this.resetName()}}/>
                                     <Icon type="close" theme="outlined"  onTouchStart={()=>{this.setState({isResetName:false})}}/>
                                     </span>:
@@ -148,11 +147,14 @@ class PersonalInformation extends React.Component {
                                 }
                                 </p>
                                 <p>
-                                    ID:{info?info.uid:0}
+                                    签名：{info?info.uid:0}
                                 </p>
-                                <div className="my-account">
-                                    <span>我的账号：</span><span></span>
-                                </div>
+                                <p>
+                                    胜负：{info?info.uid:0}
+                                </p>
+                            </div>
+                            <div className="my-account">
+                                <span>我的账号：</span><span></span>
                             </div>
                         </div>
                         <div className="my-class-medal">

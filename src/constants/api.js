@@ -10,6 +10,7 @@ export const GET_LEADER_BOARD = '/leaderboard';//查看排行榜
 export const GET_USER_MEDAL = '/user_medal';//个人勋章列表
 export const GET_USER_INFO = '/user_info';//个人勋章列表
 export const EDIT_USERNAME = '/edit_username';//个人勋章列表
+export const COUPON = '/coupon';//活动页优惠券
 
 
 

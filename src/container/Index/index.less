@@ -1,79 +1,87 @@
-.index-container{
-  font-size: 1px;
-  .head-wrap{
-    position: relative;
-    margin-top: 2.2vh;
-    img{
-      float: left;
-      border-radius: 50%;
-      width: 13.3vw;
-      height: 13.3vw;
-      border:1px solid #fff;
-      margin: 0 4vw;
+.head-wrap{
+  position: relative;
+  margin-top: 2.2vh;
+  img{
+    float: left;
+    border-radius: 50%;
+    width: 13.3vw;
+    height: 13.3vw;
+    border:1px solid #fff;
+    margin: 0 4vw;
+  }
+  .my-info{
+    color:#fff;
+    height: 13.3vw;
+    span{
+      font-size: 4vw;
+      display: inline-block;
+      height: 50%;
+      vertical-align: center;
     }
-    .my-info{
-      color:#fff;
-      height: 13.3vw;
-      span{
-        font-size: 4vw;
-        display: inline-block;
-        height: 50%;
-        vertical-align: center;
-      }
-    }
-    .my-money-item{
-      position: absolute;
-      right: 4vw;
-      top:1vw;
-      display: block;
-      width: 26.7vw;
-      height: 6.7vw;
-      color: #fff;
-      padding-left: 7.3vw;
-      background-color: rgb(37,30,74);
-      border:1px solid rgb(104,70,159);
-      border-radius: 1vw;
-      span{
-        margin-top: -0.5vw;
-        font-size: 2vw;
-        display: inline-block;
-        height: 6.5vw;
-        line-height: 6.5vw;
-      }
-      span:before,span:after{
-        content: "";
-        display: inline-block;
-        width: 3.7vw;
-        height: 3.3vw;
-        background-size: 100%;
-        background-repeat: no-repeat;
-        background-position: center;
-        position: absolute;
-        top:25%;
-      }
-      span:before{
-        background-image: url("../../layouts/image/homePage_icon.png");
-        left: 1vw;
-      }
-      span:after{
-        background-image: url("../../layouts/image/more_gold.png");
-        right: 1vw;
-      }
-    }
-    .my-money-item:after{
+  }
+  .my-sliver-item,.my-money-item{
+    position: absolute;
+    top:1vw;
+    display: block;
+    width: 20vw;
+    height: 5vw;
+    color: #fff;
+    padding-left: 5vw;
+    background-color: rgb(37,30,74);
+    border:1px solid rgb(104,70,159);
+    border-radius: 3vw;
+    span:not(.my-trophy):before,span:not(.my-trophy):after{
       content: "";
-      display: block;
-      width: 10.1vw;
-      height: 10.1vw;
-      position: absolute;
-      bottom: -11vw;
-      right: 0;
-      background-image: url("../../layouts/image/trophy.png");
+      display: inline-block;
+      width: 4.3vw;
+      height: 4.6vw;
       background-size: 100%;
       background-repeat: no-repeat;
       background-position: center;
+      position: absolute;
+      top:50%;
+      transform: translateY(-50%);
+    }
+    span:not(.my-trophy){
+      font-size: 2vw;
+      display: inline-block;
+      height: 5vw;
+      line-height: 5vw;
+    }
+    span:not(.my-trophy):after{
+      background-image: url("../../layouts/image/more_gold.png");
+      right: -0.5vw;
     }
   }
+  .my-money-item{
+    right: 4vw;
+    span:not(.my-trophy):before{
+      background-image: url("../../layouts/image/homePage_icon.png");
+      left: -0.5vw;
+    }
+  }
+  .my-sliver-item{
+    right: 28vw;
+    span:not(.my-trophy):before{
+      background-image: url("../../layouts/image/silver.png");
+      left: -0.5vw;
+    }
+  }
+  .my-trophy{
+    display: block;
+    width: 10.1vw;
+    height: 10.1vw;
+    position: absolute;
+    bottom: -11vw;
+    right: 0;
+    background-image: url("../../layouts/image/trophy.png");
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    background-position: center;
+  }
+}
+.index-container{
+  font-size: 1px;
   .index-container-wrap{
     width: 100vw;
     padding: 2.5vw;
@@ -161,42 +169,42 @@
   }
 }
 .into-home-modal{
-  width: 330px!important;
-  height: 300px!important;
+  width: 73.6vw!important;
   margin: 0;
   position: fixed;
   top:50%;
   left: 50%;
   transform: translate(-50%,-50%);
   padding: 5px;
-  border: 1px solid #000;
-  border-radius: 5px;
-  background: -webkit-linear-gradient(top,rgb(97,86,155) 0,rgb(135,122,196) 50%,rgb(113,102,173) 100%);
-  background: -moz-linear-gradient(top,rgb(97,86,155) 0,rgb(135,122,196) 50%,rgb(113,102,173) 100%);
-  background: -o-linear-gradient(top,rgb(97,86,155) 0,rgb(135,122,196) 50%,rgb(113,102,173) 100%);
-  background: linear-gradient(to bottom,rgb(97,86,155) 0,rgb(135,122,196) 50%,rgb(113,102,173) 100%);
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=rgb(97,86,155), middleColorstr=rgb(135,122,196),endColorstr=rgb(113,102,173),GradientType=0);
+  border-radius: 2vw;
+  -moz-box-shadow:2vw -2vw -2vw #fff inset;               /* For Firefox3.6+ */
+  -webkit-box-shadow:2vw -2vw -2vw #fff inset;            /* For Chrome5+, Safari5+ */
+  box-shadow:2vw -2vw -2vw #fff inset;                    /* For Latest Opera */
   .ant-modal{
     border-radius: 5px;
-    //border: 1px solid #000;
     margin: 0;
-    width: 330px!important;
-    height: 300px;
+    width: 73.5vw!important;
     position: absolute;
     top: 0;
     left: 0;
     .ant-modal-content{
-
+      width: 100%!important;
+      background-color: transparent;
       .ant-modal-body{
+        width: 100%!important;
+        background-color: transparent;
         padding: 0!important;
         .into-home{
           .login-register{
             .ant-tabs{
+              margin-top: -1px;
               background-color: #3c3768;
-              width: 97.75%;
+              width: 100%;
+              background-image: url("../../layouts/image/border-img.png");
+              background-size: 100%;
               position: absolute;
-              left: 1.25%;
               padding: 15px;
+              margin-left: -0.2px;
               .ant-tabs-nav-scroll{
                 .ant-tabs-nav{
                   padding: 0 5%;
@@ -243,12 +251,13 @@
                   border-bottom: 1px solid #5a577f!important;
                 }
                 .get-kaptchald{
+                  font-size: 2vw;
                   margin-left: 4vw;
                   border-radius: 10px;
                   height: 3.6vh;
                   padding: 0;
-                  font-size: 1vw;
                   width: 23vw;
+                  border-width: 0;
                   box-shadow: 0 0 5px 1px rgb(247,207,40);
                   background: -webkit-linear-gradient(top,rgb(247,207,40) 0,rgb(108,113,6) 100%);
                   background: -moz-linear-gradient(top,rgb(247,207,40) 0,rgb(108,113,6) 100%);
@@ -257,6 +266,8 @@
                   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=rgb(247,207,40),endColorstr=rgb(108,113,6),GradientType=0);
                 }
                 .check-button{
+                  font-size: 2vw;
+                  border-width: 0;
                   border-radius: 5px;
                   margin-left: 50%;
                   transform: translateX(-50%);
@@ -279,7 +290,7 @@
             p{
               margin: 0;
               text-align: center;
-              font-size: 26px;
+              font-size: 6vw;
               font-weight: 600;
               -webkit-text-fill-color: rgb(237,181,249);
               //-webkit-text-stroke: 1px rgb(80,14,119);
@@ -299,24 +310,35 @@
             -moz-border-radius-topleft:5px;
             -moz-border-radius-topright:5px;
             width:100%;
-            height: 67px;
+            height: 17.1vw;
             background-image: url("../../layouts/image/modal-img.png");
             background-position: center;
-            background-size: 100%;
+            background-size: 100% 100%;
             background-repeat: no-repeat;
           }
           .modal-content{
-            width: 97.75%;
+            border-bottom-right-radius: 2vw;
+            border-bottom-left-radius: 2vw;
+            margin-top: -1px;
+            //width: 97.8%;
             position: absolute;
-            left: 1.25%;
-            background-color: rgb(60,55,104);
+            //left: 1.25%;
+            //background-color: rgb(60,55,104);
+            background-image: url("../../layouts/image/border-img.png");
+            background-repeat: repeat;
+            background-size: 100% 100%;
             padding: 15px;
             .into-home-password{
+              margin-left: 50%;
+              transform: translateX(-50%);
+              text-align: center;
+              width: 100%;
               color: rgb(237,181,251);
               font-size: 14px;
-              height: 24px;
+              height: 4vw;
               span{
-                height: 24px;
+                font-size: 3vw;
+                height: 4vw;
                 line-height: 24px;
                 vertical-align: middle;
               }
@@ -324,50 +346,63 @@
                 display: inline-block;
                 border-radius: 5px;
                 text-align: center;
-                width: 24px;
-                height: 24px;
+                width: 6vw;
+                height: 6vw;
+                //width: 24px;
+                //height: 24px;
+                -moz-box-shadow:-1px -1px -1px #fff inset;               /* For Firefox3.6+ */
+                -webkit-box-shadow:-1px -1px -1px #fff inset;            /* For Chrome5+, Safari5+ */
+                box-shadow:-1px -1px -1px #999 inset;                    /* For Latest Opera */
                 margin: 0 3px;
-                border:1px solid #ccc;
-                background-color: rgb(29,28,52);
+                //border:1px solid #ccc;
+                background-image: url("../../layouts/image/input-img.png");
+                background-position: center;
+                background-size: 100%;
+                background-repeat: no-repeat;
+                //background-color: rgb(29,28,52);
               }
             }
+            .input-commad{
+              color: #6dc049!important;
+            }
             .button-group{
-              margin-top: 15px;
+              text-align: center;
+              width: 100%;
+              margin-left: 50%;
+              transform: translateX(-50%);
+              margin-top: 4vw;
               button{
                 border-width: 0;
-                box-shadow: 0 0 5px 1px rgb(39,242,216);
+                //box-shadow: 0 0 5px 1px rgb(39,242,216);
                 margin: 5px;
-                font-size: 20px;
+                font-size: 5vw;
                 -webkit-text-fill-color: white;
-                //-webkit-text-stroke: 1px rgb(0,79,77);
-                width: 85px;
-                height: 30px;
-                background: -webkit-linear-gradient(top,rgb(39,242,216) 0,rgb(3,104,109) 100%);
-                background: -moz-linear-gradient(top,rgb(39,242,216) 0,rgb(3,104,109) 100%);
-                background: -o-linear-gradient(top,rgb(39,242,216) 0,rgb(3,104,109) 100%);
-                background: linear-gradient(to bottom,rgb(39,242,216) 0,rgb(3,104,109) 100%);
-                filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=rgb(39,242,216),endColorstr=rgb(3,104,109),GradientType=0);
+                -webkit-text-stroke-width: 1px;
+                -webkit-text-stroke-color: #004142;
+                position: relative;
+                width: 19vw;
+                height: 8vw;
+                border-radius: 5px;
+                background-image: url("../../layouts/image/modal-btn-2.png");
+                background-repeat: no-repeat;
+                background-size: 100%;
+                img{
+                  position: absolute;
+                  top: 20%;
+                  left: 20%;
+                  width: 60%;
+                  height: 60%;
+                }
               }
-              button:nth-child(10){
-                //-webkit-text-stroke: 1px rgb(91,88,6);
-                box-shadow: 0 0 5px 1px rgb(247,207,40);
-                background: -webkit-linear-gradient(top,rgb(247,207,40) 0,rgb(108,113,6) 100%);
-                background: -moz-linear-gradient(top,rgb(247,207,40) 0,rgb(108,113,6) 100%);
-                background: -o-linear-gradient(top,rgb(247,207,40) 0,rgb(108,113,6) 100%);
-                background: linear-gradient(to bottom,rgb(247,207,40) 0,rgb(108,113,6) 100%);
-                filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=rgb(247,207,40),endColorstr=rgb(108,113,6),GradientType=0);
+              button:nth-child(13){
+                background-image: url("../../layouts/image/modal-btn-1.png");
               }
-              button:nth-child(12){
-                //-webkit-text-stroke: 1px rgb(22,82,5);
-                box-shadow: 0 0 5px 1px rgb(127,237,63);
-                background: -webkit-linear-gradient(top,rgb(127,237,63) 0,rgb(20,109,2) 100%);
-                background: -moz-linear-gradient(top,rgb(127,237,63) 0,rgb(20,109,2) 100%);
-                background: -o-linear-gradient(top,rgb(127,237,63) 0,rgb(20,109,2) 100%);
-                background: linear-gradient(to bottom,rgb(127,237,63) 0,rgb(20,109,2) 100%);
-                filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=rgb(127,237,63),endColorstr=rgb(20,109,2),GradientType=0);
+              button:nth-child(15){
+                background-image: url("../../layouts/image/modal-btn-3.png");
               }
             }
           }
+
         }
       }
       .ant-modal-footer{
@@ -375,4 +410,19 @@
       }
     }
   }
+}
+.modal-content:after{
+  border-bottom-right-radius: 2vw;
+  border-bottom-left-radius: 2vw;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  content: "";
+  display: block;
+  width: 100%;
+  height: 2vw;
+  background-image: url("../../layouts/image/bor_bottow.png");
+  background-size: 100%;
+  background-repeat: no-repeat;
+  background-position: center;
 }

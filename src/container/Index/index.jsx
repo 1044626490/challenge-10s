@@ -88,14 +88,15 @@ class Index extends React.Component {
                     before:<Icon className="before-icon" type="safety-certificate" theme="outlined" />
                 }
             ],
-            userInfo:this.props.loginReducer.data,
-            isLogin:this.props.loginReducer.msg
+            userInfo:this.props.userInfo.data,
+            isLogin:this.props.userInfo.msg,
+            isHomeNeedPwd:false
             // inputIndex:0,
         };
     }
 
     componentDidMount(){
-
+        this.getUserInfo()
     }
 
     getUserInfo = () => {
@@ -124,10 +125,11 @@ class Index extends React.Component {
         })
     };
 
-    inputNumber = (e) => {
+    inputNumber = (button, indexs) => {
         let arr = this.state.intoHomePwd;
         let index = arr.indexOf("");
-        index !== -1?arr[index] = e.target.value:null;
+        console.log(button[indexs],arr);
+        index !== -1?arr[index] = button[indexs]:null;
         this.setState({
             intoHomePwd:arr
         })
@@ -196,9 +198,6 @@ class Index extends React.Component {
         name === "loginForm"?this.props.dispatch(fetchPostsIfNeeded(params)).then((res) => {
             if(res.code ==="0000"){
                 message.success(res.msg);
-                // this.setState({
-                //     userInfo:res.data,
-                // });
                 sessionStorage.setItem("key",'2')
                 this.getUserInfo()
             }
@@ -224,21 +223,26 @@ class Index extends React.Component {
     }
 
     render(){
+        console.log(this.state.userInfo,this.props);
+        const button = ["S","M","H","1","2","3","4","5","6","7","8","9","重输","0","确认"];
         const { userInfo } = this.state;
-        console.log(this.props);
         const item = ["初级房间","中级房间","高级房间","输入房号"];
         return(
             <div className="index-container">
                 <HeaderNav name="挑战10秒"/>
                 <div className="head-wrap">
-                    <img src={userInfo.avatar||require("../../layouts/image/head.png")} alt=""/>
+                    <img src={userInfo?userInfo.avatar:require("../../layouts/image/head.png")} alt=""/>
                     <div className="my-info">
-                        <span>{userInfo.username}</span>
+                        <span>{userInfo?userInfo.username:""}</span>
                         <br/>
-                        <span>ID:{userInfo.uid}</span>
+                        <span>ID:{userInfo?userInfo.uid:0}</span>
+                    </div>
+                    <div className="my-sliver-item">
+                        <span>{userInfo?userInfo.silver:0}</span>
                     </div>
                     <div className="my-money-item">
-                        <span>{userInfo.gold}</span>
+                        <span>{userInfo?userInfo.gold:0}</span>
+                        <span className="my-trophy">{null}</span>
                     </div>
                 </div>
                 <div className="index-container-wrap">
@@ -295,7 +299,7 @@ class Index extends React.Component {
                                                                     help={item.isOk === "error"?item.message:null}
                                                                     key={index}
                                                                 >
-                                                                        {item.before}<Input className={item.key === "code"?"kaptchald":null}
+                                                                        {item.before}<Input type={item.key === "password"||item.key === "newpassword"?"password":"text"} className={item.key === "code"?"kaptchald":null}
                                                                                             onChange={(e)=>this.changeInput(e,item,index,"register")}
                                                                                             placeholder={item.placeholder}
                                                                                             id={item.isOk}/>
@@ -325,7 +329,10 @@ class Index extends React.Component {
                                                                     help={item.isOk === "error"?item.message:null}
                                                                     key={index}
                                                                 >
-                                                                    {item.before}<Input onChange={(e)=>this.changeInput(e,item,index,"login")} placeholder={item.placeholder} id={item.isOk}/>
+                                                                    {item.before}<Input type={item.key === "password"?"password":"text"}
+                                                                                        onChange={(e)=>this.changeInput(e,item,index,"login")}
+                                                                                        placeholder={item.placeholder}
+                                                                                        id={item.isOk}/>
                                                                 </FormItem>
                                                             })
                                                         }
@@ -338,30 +345,37 @@ class Index extends React.Component {
                                         </Tabs>
                                     </div>
                                     :<div className="modal-content">
-                                    <div className="into-home-password">
-                                        <span>请输入房间号</span>
+                                    <div className={this.state.isHomeNeedPwd?"into-home-password input-commad":"into-home-password"}>
+                                        <span>{this.state.isHomeNeedPwd?"请输入口令":"请输入房间号"}</span>
                                         {
                                             this.state.intoHomePwd.map((item, index)=>{
-                                                return <span key={index} className="input-item" onTouchStart={index !== 3?()=>this.goFirstHome(index):()=>this.inputPwd(index)}>{item}</span>
+                                                return <span key={index} className="input-item" onTouchStart={()=>this.inputPwd(index)}>{item}</span>
                                             })
                                         }
                                     </div>
                                     <div className="button-group">
-                                        <button value="1" onTouchStart={(e)=>this.inputNumber(e)}>S</button>
-                                        <button value="1" onTouchStart={(e)=>this.inputNumber(e)}>M</button>
-                                        <button value="1" onTouchStart={(e)=>this.inputNumber(e)}>D</button>
-                                        <button value="1" onTouchStart={(e)=>this.inputNumber(e)}>1</button>
-                                        <button value="2" onTouchStart={(e)=>this.inputNumber(e)}>2</button>
-                                        <button value="3" onTouchStart={(e)=>this.inputNumber(e)}>3</button>
-                                        <button value="4" onTouchStart={(e)=>this.inputNumber(e)}>4</button>
-                                        <button value="5" onTouchStart={(e)=>this.inputNumber(e)}>5</button>
-                                        <button value="6" onTouchStart={(e)=>this.inputNumber(e)}>6</button>
-                                        <button value="7" onTouchStart={(e)=>this.inputNumber(e)}>7</button>
-                                        <button value="8" onTouchStart={(e)=>this.inputNumber(e)}>8</button>
-                                        <button value="9" onTouchStart={(e)=>this.inputNumber(e)}>9</button>
-                                        <button onTouchStart={()=>this.resetInput()}>重输</button>
-                                        <button value="0" onTouchStart={(e)=>this.inputNumber(e)}>0</button>
-                                        <button disabled={this.state.intoHomePwd.indexOf("") !== -1} onTouchStart={()=>this.intoHome()}>确认</button>
+                                        {
+                                            button.map((item, index) => {
+                                                if(item === "重输"){
+                                                    return <button key={index} onTouchStart={()=>this.resetInput()}><img src={require("../../layouts/image/reset.png")} alt=""/></button>
+                                                }else if (item === "确认"){
+                                                    return <button key={index} disabled={this.state.intoHomePwd.indexOf("") !== -1} onTouchStart={()=>this.intoHome()}>
+                                                        <img src={require("../../layouts/image/check.png")} alt=""/>
+                                                    </button>
+                                                }
+                                                if(!this.state.isHomeNeedPwd){
+                                                    return <button key={index} onTouchStart={()=>this.inputNumber(button, index)}>
+                                                        <img src={require("../../layouts/image/"+item+".png")} alt=""/>
+                                                    </button>
+                                                }else {
+                                                    if(index > 2){
+                                                        return <button key={index} onTouchStart={()=>this.inputNumber(button, index)}>
+                                                            <img src={require("../../layouts/image/"+item+".png")} alt=""/>
+                                                        </button>
+                                                    }
+                                                }
+                                            })
+                                        }
                                     </div>
                                 </div>
                             }

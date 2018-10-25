@@ -17,7 +17,7 @@ class HeaderNav extends React.Component {
     render() {
         return (
             <div className="top-name">
-                <span onTouchStart={(e)=>this.goBackHistory(e)}><Icon type="left" theme="outlined" /><a>返回</a></span>
+                <span onClick={(e)=>this.goBackHistory(e)}><Icon type="left" theme="outlined" /><a>返回</a></span>
                 <p>
                     {this.props.name}
                 </p>
