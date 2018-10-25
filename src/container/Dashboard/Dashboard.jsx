@@ -3,7 +3,8 @@ import { Route } from "react-router-dom";
 import MyLoadingComponent from "~/components/common/loadComponents";
 import Loadable from "react-loadable";
 import { connect } from "react-redux";
-import "./Dashboard.less"
+import "./Dashboard.less";
+import Websocket from 'react-websocket';
 // import {message} from "antd";
 // import {fetchPostsGetUser} from '~/action/getUserInfo';
 
@@ -44,7 +45,10 @@ const routes = [
 class Dashboard extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {};
+        this.state = {
+            count: 90,
+            isLogin:false,
+        };
     }
 
     // componentDidMount(){
@@ -55,7 +59,48 @@ class Dashboard extends React.Component {
     //     })
     // }
 
+    handleData(data) {
+        console.log(data)
+        // if(data.){
+        //
+        // }
+        // let result = JSON.parse(data);
+        // this.setState({count: this.state.count + result.movement});
+    }
+
+    getWebSocket(){
+        let ws = new WebSocket("ws://www.10sgame.com:8282");
+        ws.onopen = ()=>{
+            let data = '{"type":"join_room","uid":1,"room_id":123456,"level_room":1}'
+            ws.send(data)
+        }
+        ws.onmessage = (e)=>{
+            let data = JSON.parse(e.data);
+
+            let type = data.type || "";
+            switch (type) {
+                case "ping":
+
+                    break;
+
+                case 'active':
+                    let user_data = JSON.parse(data.data);
+
+                    break;
+
+                case 'leave':
+                    let user_datas = JSON.parse(data.data);
+
+                    break;
+                default:
+                    break;
+            }
+            console.log(e)
+        }
+    }
+
     render() {
+        // this.getWebSocket();
         const { match } = this.props;
         const RouteWithSubRoutes = route => (
             <Route
@@ -68,9 +113,13 @@ class Dashboard extends React.Component {
             <div className="container">
                 <div>
                     {routes.map((route, i) => (
-                        <RouteWithSubRoutes key={i} {...route} />
+                        <RouteWithSubRoutes isLogin={123} key={i} {...route} />
                     ))}
                 </div>
+                {/*<Websocket url='ws://www.10sgame.com:8282'*/}
+                           {/*required={{"type":"join_room","uid":1,"room_id":123456,"level_room":1}}*/}
+                           {/*OnOpen ={{"type":"join_room","uid":1,"room_id":123456,"level_room":1}}*/}
+                           {/*onMessage={this.handleData.bind(this)}/>*/}
             </div>
         );
     }

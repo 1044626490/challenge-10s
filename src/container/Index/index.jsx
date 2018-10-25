@@ -347,6 +347,9 @@ class Index extends React.Component {
                                         }
                                     </div>
                                     <div className="button-group">
+                                        <button value="1" onTouchStart={(e)=>this.inputNumber(e)}>S</button>
+                                        <button value="1" onTouchStart={(e)=>this.inputNumber(e)}>M</button>
+                                        <button value="1" onTouchStart={(e)=>this.inputNumber(e)}>D</button>
                                         <button value="1" onTouchStart={(e)=>this.inputNumber(e)}>1</button>
                                         <button value="2" onTouchStart={(e)=>this.inputNumber(e)}>2</button>
                                         <button value="3" onTouchStart={(e)=>this.inputNumber(e)}>3</button>
