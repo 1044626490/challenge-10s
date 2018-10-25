@@ -5,6 +5,7 @@
  * */
 import {combineReducers} from 'redux'
 import loginReducer from './loginReducer';
+import userInfo from './userInfo';
 import spin from './spin'
 import login_pop from "./login_pop"
 import meun_title from "./meun_title"

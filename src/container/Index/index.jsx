@@ -2,7 +2,7 @@ import React from 'react';
 import {Form, Icon, Modal, Tabs, Input, Button, message} from "antd";
 import "./index.less"
 import connect from "react-redux/es/connect/connect";
-import * as Message from '~/components/common/message'
+// import * as Message from '~/components/common/message'
 import BottomMenu from "../../components/bottomMenu/bottonMenu";
 import HeaderNav from "../../components/headerNav/headerNav";
 import Api from '~/until/api';
@@ -88,21 +88,32 @@ class Index extends React.Component {
                     before:<Icon className="before-icon" type="safety-certificate" theme="outlined" />
                 }
             ],
-            userInfo:this.props.loginReducer.data||{}
+            userInfo:this.props.loginReducer.data,
+            isLogin:this.props.loginReducer.msg
             // inputIndex:0,
         };
     }
 
     componentDidMount(){
+
     }
 
+    getUserInfo = () => {
+        Api.getUserInfo().then((res)=>{
+            this.setState({
+                userInfo:res.data,
+                isLogin:true
+            })
+        }).catch((res)=>{
+
+        })
+    };
 
     inputPwd = (index) => {
         let arr = this.state.intoHomePwd;
         arr[index] = "";
         this.setState({
             intoHomePwd:arr,
-            // inputIndex:index+1
         })
     };
 
@@ -139,16 +150,14 @@ class Index extends React.Component {
     changeInput = (e, item, index, name1) => {
         let value =e.target.value;
         let arr = name1 === "login"?this.state.loginForm:this.state.Register;
+        let name2 = name1 === "login"?"loginForm":"Register";
         let name = item.key;
         let form = this.state[name1];
-        console.log(item);
         if(item.re){
             if(item.re.test(value)){
                 arr[index].isOk = "success";
-                console.log(arr);
                 form[name] = value;
             }else {
-                console.log(arr);
                 arr[index].isOk = "error";
             }
         }else {
@@ -160,16 +169,14 @@ class Index extends React.Component {
             }
         }
         if(item.key === "newpassword"){
-            console.log(value !== this.state.register.password,value,this.state.register.password)
             if(value !== this.state.register.password){
                 arr[index].isOk = "error";
             }else {
                 arr[index].isOk = "success";
-                console.log(arr)
             }
         }
         this.setState({
-            Register:arr,
+            [name2]:arr,
             [name1]:form
         })
     };
@@ -181,33 +188,44 @@ class Index extends React.Component {
                 count ++
             }
         });
-        console.log(this.props,this.state.login);
         if(count > 0){
-            Message.error("信息填写错误");
+            message.error("信息填写错误");
             return false
         }
         let params = name === "loginForm"?this.state.login:this.state.register;
         name === "loginForm"?this.props.dispatch(fetchPostsIfNeeded(params)).then((res) => {
             if(res.code ==="0000"){
-                Message.success(res.msg);
-                console.log(res.data);
-                this.setState({
-                    userInfo:res.data,
-                });
+                message.success(res.msg);
+                // this.setState({
+                //     userInfo:res.data,
+                // });
                 sessionStorage.setItem("key",'2')
+                this.getUserInfo()
             }
         }).catch((err) => {
-            Message.error(err.message);
+            message.error(err.msg);
         }):Api.register(params).then((res)=>{
-            Message.success(res.msg)
+            message.success(res.msg)
         }).catch((err)=>{
-            Message.error(err.msg)
+            message.error(err.msg)
         })
     };
 
+    getKaptchald(){
+        let tel = this.state.register.tel;
+        let re = /^1[34578]\d{9}$/
+        if(re.test(tel)){
+            Api.sendVerifiCode({tel}).then((res)=>{
+                message.success(res.msg);
+            }).catch((res)=>{
+                message.error(res.msg);
+            })
+        }
+    }
+
     render(){
         const { userInfo } = this.state;
-        console.log(this.props.loginReducer,this.state.userInfo);
+        console.log(this.props);
         const item = ["初级房间","中级房间","高级房间","输入房号"];
         return(
             <div className="index-container">
@@ -226,7 +244,9 @@ class Index extends React.Component {
                 <div className="index-container-wrap">
                     {
                         item.map((item, index) => {
-                            return <div key={index} className="index-content-item" onTouchStart={()=>this.openModal(true)}>
+                            return <div key={index} className="index-content-item"
+                                        onTouchStart={item === "输入房号"?()=>this.openModal(true):
+                                            ()=>{window.location.href = "#/Dashboard/NewHome/"+index}}>
                                 <span>people-number</span>
                                 <p>{item}</p>
                             </div>
@@ -244,23 +264,23 @@ class Index extends React.Component {
                     </ul>
                 </div>
                 <BottomMenu />
-                    <Modal entered={true} visible={this.state.isOenModal||!this.props.loginReducer.msg} wrapClassName={"into-home-modal"}
+                    <Modal entered={true} visible={this.state.isOenModal||!this.state.isLogin} wrapClassName={"into-home-modal"}
                            closable={false} destroyOnClose={true}
                     >
                         <div className="into-home">
                             <div className="into-home-header">
                                 <p>{
-                                    !this.props.loginReducer.msg?"用户登录":"加入房间"
+                                    !this.state.isLogin?"用户登录":"加入房间"
                                 }
                                     {
-                                        !this.props.loginReducer.msg?null:
+                                        !this.state.isLogin?null:
                                             <span onTouchStart={()=>this.openModal(false)}>
                                             </span>
                                     }
                                 </p>
                             </div>
                             {
-                                !this.state.isNeedLogin?
+                                !this.state.isLogin?
                                     <div className="login-register">
                                         <Tabs defaultActiveKey="1" animated={false} onChange={null}>
                                             <TabPane tab="新用户注册" key="1">
@@ -281,7 +301,7 @@ class Index extends React.Component {
                                                                                             id={item.isOk}/>
                                                                         {
                                                                             item.key === "code"?
-                                                                            <Button className="get-kaptchald" type="primary">获取验证码</Button>
+                                                                            <Button onClick={()=>this.getKaptchald()} className="get-kaptchald" type="primary">获取验证码</Button>
                                                                             :null
                                                                         }
                                                                 </FormItem>
@@ -350,8 +370,8 @@ class Index extends React.Component {
 }
 
 const mapStateToProps = state => {
-    const {loginReducer} = state;
-    return {loginReducer}
+    const {loginReducer,userInfo} = state;
+    return {loginReducer,userInfo}
 };
 export default connect(mapStateToProps)(Index)
 // export default Index

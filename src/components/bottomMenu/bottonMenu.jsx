@@ -17,7 +17,7 @@ class BottomMenu extends React.Component {
                                 <span>大厅</span>
                             </p>
                         </li>
-                        <li onTouchStart={()=>{window.location.href = "#/Dashboard/index"}}>
+                        <li onTouchStart={()=>{window.location.href = "#/Dashboard/Activity"}}>
                             <p className="active-icon">
                                 <span>活动</span>
                             </p>

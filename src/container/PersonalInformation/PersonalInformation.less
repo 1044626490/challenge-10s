@@ -24,6 +24,13 @@
             font-size: 2vh;
             margin: 0;
             color: white;
+            input{
+              width: 40vw;
+              height: 3vh;
+              margin-right: 10px;
+              //background-color: ;
+              border-radius: 5px;
+            }
             .class-rank{
               float: left;
             }
@@ -169,6 +176,130 @@
         .anticon-right{
           color: #a8a8a8;
         }
+      }
+    }
+  }
+}
+.my-info-modal{
+  height: 54.3vh!important;
+  width: 80vw;
+  border-radius: 5px;
+  background-color: #5846a5!important;
+  margin-top: 50vh;
+  margin-left: 10vw;
+  padding: 0;
+  transform: translateY(-50%);
+  //position: relative;
+  overflow: visible;
+  .ant-modal{
+    position: absolute;
+    left: 1%;
+    top:1%;
+    margin: 0;
+    padding: 0;
+    width: 98%!important;
+    height: 98%!important;
+    .ant-modal-content{
+      padding: 3.4%;
+      background-color: #5846a5;
+      box-shadow: 0 0 5px 1px #be99ef;
+      width: 100%;
+      height: 100%;
+      .ant-modal-body{
+        padding: 0;
+        .header-wrap{
+          padding: 5.3vw ;
+          background-color: #8e7be6;
+          border-radius: 10px;
+          .ant-avatar{
+            width: 30%!important;
+            height: 30%!important;
+            border:1px solid #fff;
+          }
+          .my-info{
+            padding-left: 5%;
+            font-size: 3vw;
+            height: 100%;
+            p{
+              margin-bottom: 1vh;
+              color: white;
+            }
+            input{
+              width: 50%;
+              height: 3vh;
+              margin-right: 10px;
+              //background-color: ;
+              border-radius: 5px;
+            }
+            .my-name{
+              color: #decc35;
+              letter-spacing: 1px;
+            }
+            .my-account{
+              padding: 2px 10px;
+              border-radius: 2vh;
+              background-color: #7663c9;
+              color: white;
+            }
+            width: 70%;
+            float: right;
+            text-align: left;
+          }
+        }
+        .my-class-medal{
+          padding: 5.3vw ;
+          margin-top: 10%;
+          background-color: #8e7be6;
+          border-radius: 10px;
+          .my-progress:first-child>p{
+            margin: 0;
+          }
+          .my-progress{
+            padding-left: 10%;
+            position: relative;
+            img{
+              width: 10%;
+              height: auto;
+              position: absolute;
+              left: -5%;
+            }
+            p{
+              font-size: 4vw;
+              color: white;
+              margin-bottom: 0;
+              margin-top: 15px;
+            }
+            .ant-progress{
+              font-size: 4vw;
+            }
+            .ant-progress-outer{
+              margin: 0;
+              padding: 0;
+            }
+            .ant-progress-text{
+              display: none;
+            }
+          }
+        }
+      }
+    }
+  }
+  .ant-modal-footer{
+    display: none;
+  }
+  color: white;
+  .anticon-close-circle{
+    z-index: 9999;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom:-12vw;
+    font-size: 8vw;
+    color: white;
+    svg{
+      color: white;
+      path{
+        color: white;
       }
     }
   }

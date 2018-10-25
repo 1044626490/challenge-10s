@@ -3,12 +3,22 @@ import { Route } from "react-router-dom";
 import MyLoadingComponent from "~/components/common/loadComponents";
 import Loadable from "react-loadable";
 import { connect } from "react-redux";
+import "./Dashboard.less"
+// import {message} from "antd";
+// import {fetchPostsGetUser} from '~/action/getUserInfo';
 
 const routes = [
     {
         path: "Index",
         component: Loadable({
             loader: () => import("~/container/Index/index"),
+            loading: MyLoadingComponent
+        }),
+        isExact: true
+    },{
+        path: "Activity",
+        component: Loadable({
+            loader: () => import("~/container/Activity/Activity"),
             loading: MyLoadingComponent
         }),
         isExact: true
@@ -20,6 +30,14 @@ const routes = [
             loading: MyLoadingComponent
         }),
         isExact: true
+    },
+    {
+        path: "NewHome/:id",
+        component: Loadable({
+            loader: () => import("~/container/NewHome/NewHome"),
+            loading: MyLoadingComponent
+        }),
+        isExact: true
     }
 ];
 
@@ -28,6 +46,14 @@ class Dashboard extends React.Component {
         super(props);
         this.state = {};
     }
+
+    // componentDidMount(){
+    //     this.props.dispatch(fetchPostsGetUser()).then((res) => {
+    //         console.log(res)
+    //     }).catch((err) => {
+    //         message.error(err.msg);
+    //     })
+    // }
 
     render() {
         const { match } = this.props;

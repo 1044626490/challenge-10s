@@ -10,6 +10,7 @@ const indexDB = {
     startPractice:"startPractice",
     paperResult:"paperResult",
     loginSession:"loginSession",
+    userInfo:"userInfo",
     key:'key',
     changeTitle:'changeTitle',
     abilityActiveIndex:"abilityActiveIndex",
