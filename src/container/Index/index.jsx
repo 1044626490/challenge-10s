@@ -264,6 +264,7 @@ class Index extends React.Component {
                     </div>
                     <div className="my-sliver-item">
                         <span>{userInfo?userInfo.silver:0}</span>
+                        <span className="my-task">{null}</span>
                     </div>
                     <div className="my-money-item">
                         <span>{userInfo?userInfo.gold:0}</span>

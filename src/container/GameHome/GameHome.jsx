@@ -212,7 +212,7 @@ class GameHome extends React.Component{
                                 <div>
                                     <img src={this.state.millisecond < 10?
                                     require("../../layouts/image/timego/0.png"):
-                                    require("../../layouts/image/timego/"+this.state.millisecond[1]+".png")}
+                                    require("../../layouts/image/timego/"+this.state.millisecond[0]+".png")}
                                           alt=""/>
                                 </div>
                                 <div>
