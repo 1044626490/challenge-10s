@@ -11,13 +11,13 @@ class HeaderNav extends React.Component {
 
     goBackHistory(e){
         console.log(e,window.location.hash);
-        window.location.hash === "#/Dashboard/Index"?window.location.href = "#/Dashboard/Index":history.go(-1);
+        window.location.hash === "#/Dashboard/index"?window.location.href = "#/Dashboard/index":history.go(-1);
     }
 
     render() {
         return (
             <div className="top-name">
-                <span onClick={(e)=>this.goBackHistory(e)}><Icon type="left" theme="outlined" /><a>返回</a></span>
+                <span onTouchStart={(e)=>this.goBackHistory(e)}><Icon type="left" theme="outlined" /><a>返回</a></span>
                 <p>
                     {this.props.name}
                 </p>

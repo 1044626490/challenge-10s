@@ -2,7 +2,8 @@ import React from 'react';
 import connect from "react-redux/es/connect/connect";
 import HeaderNav from "../../components/headerNav/headerNav";
 import BottomMenu from "../../components/bottomMenu/bottonMenu";
-import { Button, Modal } from "antd"
+import { Button, Modal, message } from "antd"
+import Api from '~/until/api';
 import "./NewHome.less"
 
 class NewHome extends React.Component {
@@ -21,7 +22,7 @@ class NewHome extends React.Component {
         console.log(this.props.match);
         let id = this.props.match.params.id;
         let header = id === "0"?"初级房间":id === "1"?"中级房间":id === "2"?"高级房间":"";
-        let level = 1+id;
+        let level = 1+id*1;
         this.setState({
             header,
             level
@@ -64,10 +65,24 @@ class NewHome extends React.Component {
         })
     };
 
-    finHome(){
-        let params = {
-            level:this.state.level,
-            homePassword:this.state.intoHomePwd.join("")
+    finHome = () =>{
+        let intoHomePwd = this.state.intoHomePwd;
+        if(intoHomePwd.indexOf("") === -1 || intoHomePwd.indexOf("") === 0){
+            let params = {
+                level:this.state.level,
+                homePassword:this.state.intoHomePwd.join("")
+            };
+            Api.createRoom(params).then((res) => {
+                message.info(res.msg);
+                console.log(res)
+                window.location.href = "#/Dashboard/GameHome/"+res.data.room_id;
+            }).catch((err) => {
+                message.info(err.msg)
+            })
+            console.log(params);
+        }else {
+            message.warning("请输入完整的6位密码")
+            return false
         }
     }
 

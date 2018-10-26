@@ -39,6 +39,14 @@ const routes = [
             loading: MyLoadingComponent
         }),
         isExact: true
+    },
+    {
+        path: "GameHome/:homeId",
+        component: Loadable({
+            loader: () => import("~/container/GameHome/GameHome"),
+            loading: MyLoadingComponent
+        }),
+        isExact: true
     }
 ];
 
@@ -55,7 +63,7 @@ class Dashboard extends React.Component {
         this.props.dispatch(fetchPostsGetUser()).then((res) => {
             console.log(res)
         }).catch((err) => {
-            message.error(err.msg);
+            // message.error(err.msg);
         })
     }
 

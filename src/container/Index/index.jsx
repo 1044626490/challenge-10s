@@ -89,8 +89,9 @@ class Index extends React.Component {
                 }
             ],
             userInfo:this.props.userInfo.data,
-            isLogin:this.props.userInfo.msg,
-            isHomeNeedPwd:false
+            isLogin:!this.props.userInfo.msg,
+            isHomeNeedPwd:false,
+            homeId:""
             // inputIndex:0,
         };
     }
@@ -142,7 +143,30 @@ class Index extends React.Component {
     };
 
     intoHome(){
-
+        if(this.state.isHomeNeedPwd){
+            Api.confirmRoomPass({room_id:this.state.homeId,homePassword: this.state.intoHomePwd.join("")}).then((res)=>{
+                window.location.href = "#/Dashboard/GameHome/"+this.state.homeId
+            }).catch((err)=>{
+                message.info(err.msg)
+            })
+        }
+        Api.joinRoomId({room_id: this.state.intoHomePwd.join("")}).then((res)=>{
+            console.log(res)
+            if(res.code === "0000"){
+                console.log(res)
+                window.location.href = "#/Dashboard/GameHome/"+this.state.intoHomePwd.join("")
+            }
+        }).catch((err)=>{
+            console.log(err)
+            if(err.code === "30002"){
+                message.info(err.msg)
+                this.setState({
+                    homeId:this.state.intoHomePwd.join(""),
+                    intoHomePwd:["","","","","",""],
+                    isHomeNeedPwd:true
+                })
+            }
+        })
     }
 
     goFirstHome(index){
@@ -223,6 +247,7 @@ class Index extends React.Component {
     }
 
     render(){
+        let isLogin = this.props.userInfo.code === "0000"?true:false;
         console.log(this.state.userInfo,this.props);
         const button = ["S","M","H","1","2","3","4","5","6","7","8","9","重输","0","确认"];
         const { userInfo } = this.state;
@@ -268,23 +293,23 @@ class Index extends React.Component {
                     </ul>
                 </div>
                 <BottomMenu />
-                    <Modal entered={true} visible={this.state.isOenModal||!this.state.isLogin} wrapClassName={"into-home-modal"}
+                    <Modal entered={true} visible={this.state.isOenModal||!isLogin} wrapClassName={"into-home-modal"}
                            closable={false} destroyOnClose={true}
                     >
                         <div className="into-home">
                             <div className="into-home-header">
                                 <p>{
-                                    !this.state.isLogin?"用户登录":"加入房间"
+                                    !isLogin?"用户登录":"加入房间"
                                 }
                                     {
-                                        !this.state.isLogin?null:
+                                        !isLogin?null:
                                             <span onTouchStart={()=>this.openModal(false)}>
                                             </span>
                                     }
                                 </p>
                             </div>
                             {
-                                !this.state.isLogin?
+                                !isLogin?
                                     <div className="login-register">
                                         <Tabs defaultActiveKey="1" animated={false} onChange={null}>
                                             <TabPane tab="新用户注册" key="1">

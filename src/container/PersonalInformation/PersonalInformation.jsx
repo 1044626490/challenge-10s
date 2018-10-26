@@ -63,34 +63,33 @@ class PersonalInformation extends React.Component {
             <div className="my-info-container">
                 <HeaderNav name="挑战10秒"/>
                 <div className="my-info-wrap">
-                {
-                    info?<div className="header-pic">
+                    <div className="header-pic">
                             <div className="top-header">
-                                <Avatar size={64} icon="user" src={info.avatar||require("../../layouts/image/head.png")} />
+                                <Avatar size={64} icon="user" src={info?info.avatar:require("../../layouts/image/head.png")} />
                                 <div className="name-class">
                                     <p><span>昵称：</span>{
                                         this.state.isResetName&&!this.state.isOpenModel? <span>
-                                        <Input maxLength={10} defaultValue={info.username||""} placeholder="修改昵称" onChange={(e)=>{this.setState({myName:e.target.value})}}/>
+                                        <Input maxLength={10} defaultValue={info?info.username:""} placeholder="修改昵称" onChange={(e)=>{this.setState({myName:e.target.value})}}/>
                                     <Icon type="check" theme="outlined"  onTouchStart={()=>{this.resetName()}}/>
                                     <Icon type="close" theme="outlined"  onTouchStart={()=>{this.setState({isResetName:false})}}/>
                                     </span>:
                                             <span>
-                                        <span className="my-name">{info.username||""}</span>&nbsp;&nbsp;
+                                        <span className="my-name">{info?info.username:""}</span>&nbsp;&nbsp;
                                                 <Icon type="edit" theme="outlined" onTouchStart={()=>{this.setState({isResetName:true})}}/>
                                     </span>
                                     }
                                     </p>
-                                    <div className="my-level"><span className="class-rank">等级：</span><Progress successPercent={30} />&nbsp;&nbsp;&nbsp;lv{info.level||1}</div>
+                                    <div className="my-level"><span className="class-rank">等级：</span><Progress successPercent={30} />&nbsp;&nbsp;&nbsp;lv{info?info.level:1}</div>
                                 </div>
                             </div>
                             <div className="bottom-header">
                                 <ul className="bottom-header-list">
                                     <li>
-                                        <p>{info.gold}</p>
+                                        <p>{info?info.gold:0}</p>
                                         <span>金币</span>
                                     </li>
                                     <li>
-                                        <p>{info.silver}</p>
+                                        <p>{info?info.silver:0}</p>
                                         <span>银币</span>
                                     </li>
                                     <li>
@@ -102,8 +101,7 @@ class PersonalInformation extends React.Component {
                                     </li>
                                 </ul>
                             </div>
-                        </div>:null
-                }
+                        </div>
                     <div className="my-info-operation">
                         <div className="operation-list">
                             <ul>

@@ -11,6 +11,9 @@ export const GET_USER_MEDAL = '/user_medal';//个人勋章列表
 export const GET_USER_INFO = '/user_info';//个人勋章列表
 export const EDIT_USERNAME = '/edit_username';//个人勋章列表
 export const COUPON = '/coupon';//活动页优惠券
+export const JOIN_ROOM_ID = '/join_room_id';//加入房间
+export const CREATE_ROOM = '/create_room';//加入房间
+export const CONFIRM_ROOM_PASS = '/confirm_room_pass';//加入房间
 
 
 

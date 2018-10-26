@@ -15,6 +15,9 @@ export default {
     getUserInfo: (params) =>post(C.GET_USER_INFO, params),
     editUsername: (params) =>post(C.EDIT_USERNAME, params),
     coupon: (params) =>post(C.COUPON, params),
+    createRoom: (params) =>post(C.CREATE_ROOM, params),
+    joinRoomId: (params) =>post(C.JOIN_ROOM_ID, params),
+    confirmRoomPass: (params) =>post(C.CONFIRM_ROOM_PASS, params),
 
     // logout: (params) => post(C.LOGOUT, params),
     // register: (params) => post(C.REGISTER, params),

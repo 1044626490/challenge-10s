@@ -1,0 +1,309 @@
+.game-home-wrap{
+  width: 100vw;
+  height: 100vh;
+  background-image: url("../../layouts/image/homebg.png");
+  background-size: 100%;
+
+  .game-home-header{
+    padding-top: 4.07vh;
+    text-align: center;
+    img{
+      width: 19.73vw;
+      height: auto;
+    }
+    p{
+      height: 4.63vh;
+      padding: 1.4vh 0;
+      margin-bottom: 3vh;
+      span{
+        height: 3vh;
+        color: white;
+        display: inline-block;
+        font-size: 2vh;
+        .is-homeowner{
+          margin-left: 2vw;
+          margin-top: 0.5vh;
+          height: 2vh;
+          line-height: 2vh;
+          font-size: 1.9vw;
+          display: inline-block;
+          width: 9.33vw;
+          text-align: center;
+          vertical-align: text-top;
+          background-color: #d7b406;
+          border-radius: 0.91vh;
+        }
+      }
+    }
+  }
+  .game-menber{
+    width: 92vw;
+    height: 47.05vh;
+    margin: 0 auto;
+    .game-menber-header{
+      text-align: center;
+      display: block;
+      background-color: transparent;
+      height: 6.18vh;
+      width: 92vw;
+      background-image: url("../../layouts/image/top1.png");
+      background-size: 100% 100%;
+      span{
+        display: block;
+        height: 6vh;
+        line-height: 6vh;
+        color: #f0d0ff;
+        font-size: 4vh;
+      }
+    }
+    .game-menber-content{
+      height: 70vw;
+      width: 92vw;
+      margin-top: -1px;
+      background-size: 100%;
+      background-image: url("../../layouts/image/repeat1.png");
+      padding: 0 9.565%;
+      position: relative;
+      div{
+        text-align: center;
+        button{
+          margin-top: 4vw;
+          width: 26.7vw;
+          height: 8.53vw;
+          background-image: url("../../layouts/image/start_no.png");
+          background-size: 100% 100%;
+          border-width: 0;
+          border-radius: 1.5vw;
+          color: white;
+          letter-spacing: 1px;
+          font-weight: 600;
+          font-size: 4vw;
+        }
+        .start-yes{
+          background-image: url("../../layouts/image/start_tes.png");
+          background-size: 100% 100%;
+        }
+      }
+      ul{
+        margin: 0 auto;
+        padding: 0;
+        list-style: none;
+        li{
+          width: 33.33%;
+          position: relative;
+          img{
+            width: 19.73vw;
+            height: auto;
+          }
+          .is-homeowner{
+            color: white;
+            font-size: 2vw;
+            display: inline-block;
+            position: absolute;
+            bottom: 10%;
+            right: 30%;
+            width: 9.33vw;
+            text-align: center;
+            vertical-align: text-top;
+            background-color: #d7b406;
+            border-radius: 0.91vh;
+          }
+          text-align: center;
+          padding: 5% 0;
+          float: left;
+        }
+      }
+    }
+    .game-menber-content:after{
+      display: block;
+      content: "";
+      width: 92vw;
+      height: 2vh;
+      background-image: url("../../layouts/image/bottom1.png");
+      background-size: 100% 100%;
+      position: absolute;
+      bottom: -2vh;
+      left: 0;
+    }
+  }
+  .ant-avatar{
+    width: 19.73vw;
+    height: auto;
+  }
+  .game-start-menber-content{
+    .time-goeson{
+      position: fixed;
+      top:50%;
+      transform: translateY(-50%);
+      text-align: center;
+      width: 100%;
+      left: 0;
+      vertical-align: bottom;
+      .point{
+        display: inline-block;
+        font-size: 17vw;
+        color: white;
+        vertical-align: bottom;
+      }
+      div{
+        display: inline-block;
+        img{
+          width: 15vw;
+          height: auto;
+        }
+      }
+    }
+    .game-back-time{
+      width: 100vw;
+      height: 100vh;
+      background-color: rgba(0,0,0,0.5);
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 10000;
+      img{
+        position: fixed;
+        top: 35%;
+        left: 35%;
+        width: 30vw;
+        height: 50vw;
+      }
+      .game-back-time1{
+        animation: backtime1 1s
+      }
+      .game-back-time2{
+        animation: backtime2 1s
+      }
+      .game-back-time3{
+        animation: backtime3 1s
+      }
+      @keyframes backtime1{
+        from{
+          transform: scale(1);
+        }
+        to{
+          transform: scale(0);
+        }
+      }
+      @keyframes backtime2{
+        from{
+          transform: scale(1);
+        }
+        to{
+          transform: scale(0);
+        }
+      }
+      @keyframes backtime3{
+        from{
+          transform: scale(1);
+        }
+        to{
+          transform: scale(0);
+        }
+      }
+    }
+    .game-start{
+        li {
+          position: fixed;
+          transition-duration: 1s;
+        }
+        li:first-child{
+          top: 30%;
+          left: 10%;
+        }
+        li:nth-child(2){
+          top: 15%;
+          left: 50%;
+          transform: translateX(-50%);
+        }
+        li:nth-child(3){
+          top: 30%;
+          right: 10%;
+        }
+        li:nth-child(4){
+          left: 10%;
+          bottom: 30%;
+        }
+        li:nth-child(5){
+          bottom: 15%;
+          left: 50%;
+          transform: translateX(-50%);
+        }
+        li:nth-child(6){
+          bottom: 30%;
+          right: 10%;
+        }
+    }
+    ul{
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      li{
+        position: fixed;
+        //left: 50%;
+        //transform: translate(-50%,-50%);
+      }
+      .is-homeowner{
+        color: white;
+        font-size: 2vw;
+        display: inline-block;
+        position: absolute;
+        bottom: 0;
+        right: 25%;
+        width: 9.33vw;
+        text-align: center;
+        vertical-align: text-top;
+        background-color: #d7b406;
+        border-radius: 0.91vh;
+      }
+      li:first-child{
+        top: 50%;
+        left: 20%;
+        z-index: 9999;
+        transform: translateY(-50%);
+      }
+      li:nth-child(2){
+        top: 50%;
+        left: 30%;
+        z-index: 9998;
+        transform: translateY(-50%);
+      }
+      li:nth-child(3){
+        top: 50%;
+        right: 40%;
+        z-index: 9997;
+        transform: translateY(-50%);
+      }
+      li:nth-child(4){
+        bottom: 50%;
+        left: 50%;
+        z-index: 9996;
+        transform: translateY(50%);
+      }
+      li:nth-child(5){
+        bottom: 50%;
+        left: 60%;
+        z-index: 9995;
+        transform: translateY(50%);
+      }
+      li:nth-child(6){
+        bottom: 50%;
+        right: 10%;
+        z-index: 9994;
+        transform: translateY(50%);
+      }
+    }
+  }
+  .ant-drawer-content-wrapper{
+    .ant-drawer-content{
+      .ant-drawer-wrapper-body{
+        .anticon-double-right{
+          transform: rotateY(180deg);
+        }
+        .ant-drawer-header{
+          border-bottom-width: 0!important;
+        }
+      }
+    }
+  }
+}

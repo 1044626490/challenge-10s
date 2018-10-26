@@ -169,7 +169,7 @@
   }
 }
 .into-home-modal{
-  width: 73.6vw!important;
+  width: 80vw!important;
   margin: 0;
   position: fixed;
   top:50%;
@@ -183,7 +183,8 @@
   .ant-modal{
     border-radius: 5px;
     margin: 0;
-    width: 73.5vw!important;
+    width: 80vw!important;
+    width: 80vw!important;
     position: absolute;
     top: 0;
     left: 0;
@@ -205,6 +206,10 @@
               position: absolute;
               padding: 15px;
               margin-left: -0.2px;
+              .ant-tabs-nav-wrap{
+                width: 90%;
+                margin: 0 auto;
+              }
               .ant-tabs-nav-scroll{
                 .ant-tabs-nav{
                   padding: 0 5%;
@@ -229,59 +234,62 @@
               .ant-tabs-ink-bar{
                 display: none!important;
               }
-              .ant-form-item-control-wrapper{
-                .before-icon{
-                  position: absolute;
-                  font-size: 1.2em;
-                  color: #d6c0e2;
-                  top:10%;
-                  left: 2%;
-                  z-index: 99;
-                }
-                .ant-input{
-                  color: #d6c0e2;
-                  padding-left: 10%;
-                  width: 80%;
-                  background-color: #3c3768;
-                  border-width: 0;
-                  border-bottom: 1px solid #5a577f;
-                }
-                .ant-input:focus{
-                  border-width: 0!important;
-                  border-bottom: 1px solid #5a577f!important;
-                }
-                .get-kaptchald{
-                  font-size: 2vw;
-                  margin-left: 4vw;
-                  border-radius: 10px;
-                  height: 3.6vh;
-                  padding: 0;
-                  width: 23vw;
-                  border-width: 0;
-                  box-shadow: 0 0 5px 1px rgb(247,207,40);
-                  background: -webkit-linear-gradient(top,rgb(247,207,40) 0,rgb(108,113,6) 100%);
-                  background: -moz-linear-gradient(top,rgb(247,207,40) 0,rgb(108,113,6) 100%);
-                  background: -o-linear-gradient(top,rgb(247,207,40) 0,rgb(108,113,6) 100%);
-                  background: linear-gradient(to bottom,rgb(247,207,40) 0,rgb(108,113,6) 100%);
-                  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=rgb(247,207,40),endColorstr=rgb(108,113,6),GradientType=0);
-                }
-                .check-button{
-                  font-size: 2vw;
-                  border-width: 0;
-                  border-radius: 5px;
-                  margin-left: 50%;
-                  transform: translateX(-50%);
-                  width: 25vw;
-                  height: 3.7vh;
-                  box-shadow: 0 0 5px 1px rgb(127,237,63);
-                  background: -webkit-linear-gradient(top,rgb(127,237,63) 0,rgb(20,109,2) 100%);
-                  background: -moz-linear-gradient(top,rgb(127,237,63) 0,rgb(20,109,2) 100%);
-                  background: -o-linear-gradient(top,rgb(127,237,63) 0,rgb(20,109,2) 100%);
-                  background: linear-gradient(to bottom,rgb(127,237,63) 0,rgb(20,109,2) 100%);
-                  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=rgb(127,237,63),endColorstr=rgb(20,109,2),GradientType=0);
-                }
-                .kaptchald{
-                  width: 40%;
+              .ant-tabs-content{
+                text-align: center;
+                .ant-form-item-control-wrapper{
+                  .before-icon{
+                    position: absolute;
+                    font-size: 1.2em;
+                    color: #d6c0e2;
+                    top:10%;
+                    left: 2%;
+                    z-index: 99;
+                  }
+                  .ant-input{
+                    color: #d6c0e2;
+                    padding-left: 10%;
+                    width: 90%;
+                    background-color: #3c3768;
+                    border-width: 0;
+                    border-bottom: 1px solid #5a577f;
+                  }
+                  .ant-input:focus{
+                    border-width: 0!important;
+                    border-bottom: 1px solid #5a577f!important;
+                  }
+                  .get-kaptchald{
+                    font-size: 2vw;
+                    margin-left: 4vw;
+                    border-radius: 10px;
+                    height: 3.6vh;
+                    padding: 0;
+                    width: 23vw;
+                    border-width: 0;
+                    box-shadow: 0 0 5px 1px rgb(247,207,40);
+                    background: -webkit-linear-gradient(top,rgb(247,207,40) 0,rgb(108,113,6) 100%);
+                    background: -moz-linear-gradient(top,rgb(247,207,40) 0,rgb(108,113,6) 100%);
+                    background: -o-linear-gradient(top,rgb(247,207,40) 0,rgb(108,113,6) 100%);
+                    background: linear-gradient(to bottom,rgb(247,207,40) 0,rgb(108,113,6) 100%);
+                    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=rgb(247,207,40),endColorstr=rgb(108,113,6),GradientType=0);
+                  }
+                  .check-button{
+                    font-size: 2vw;
+                    border-width: 0;
+                    border-radius: 5px;
+                    margin-left: 50%;
+                    transform: translateX(-50%);
+                    width: 25vw;
+                    height: 3.7vh;
+                    box-shadow: 0 0 5px 1px rgb(127,237,63);
+                    background: -webkit-linear-gradient(top,rgb(127,237,63) 0,rgb(20,109,2) 100%);
+                    background: -moz-linear-gradient(top,rgb(127,237,63) 0,rgb(20,109,2) 100%);
+                    background: -o-linear-gradient(top,rgb(127,237,63) 0,rgb(20,109,2) 100%);
+                    background: linear-gradient(to bottom,rgb(127,237,63) 0,rgb(20,109,2) 100%);
+                    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=rgb(127,237,63),endColorstr=rgb(20,109,2),GradientType=0);
+                  }
+                  .kaptchald{
+                    width: 50%;
+                  }
                 }
               }
             }
@@ -327,7 +335,7 @@
             background-image: url("../../layouts/image/border-img.png");
             background-repeat: repeat;
             background-size: 100% 100%;
-            padding: 15px;
+            padding: 2vw;
             .into-home-password{
               margin-left: 50%;
               transform: translateX(-50%);
@@ -373,14 +381,13 @@
               margin-top: 4vw;
               button{
                 border-width: 0;
-                //box-shadow: 0 0 5px 1px rgb(39,242,216);
                 margin: 5px;
                 font-size: 5vw;
                 -webkit-text-fill-color: white;
                 -webkit-text-stroke-width: 1px;
                 -webkit-text-stroke-color: #004142;
                 position: relative;
-                width: 19vw;
+                width: 20vw;
                 height: 8vw;
                 border-radius: 5px;
                 background-image: url("../../layouts/image/modal-btn-2.png");
@@ -411,6 +418,9 @@
     }
   }
 }
+.ant-tabs-bar{
+  border-bottom-width: 0;
+}
 .modal-content:after{
   border-bottom-right-radius: 2vw;
   border-bottom-left-radius: 2vw;
@@ -425,4 +435,16 @@
   background-size: 100%;
   background-repeat: no-repeat;
   background-position: center;
+}
+.ant-message-notice{
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.ant-message-notice-content{
+  padding: 1vw 2vw;
+  border-radius: 5vw;
+  background-color: rgba(0,0,0,0.5);
+  color: white;
 }
