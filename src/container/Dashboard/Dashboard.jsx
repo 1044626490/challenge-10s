@@ -4,7 +4,7 @@ import MyLoadingComponent from "~/components/common/loadComponents";
 import Loadable from "react-loadable";
 import { connect } from "react-redux";
 import "./Dashboard.less";
-import Websocket from 'react-websocket';
+// import Websocket from 'react-websocket';
 import {message} from "antd";
 import {fetchPostsGetUser} from '~/action/getUserInfo';
 
@@ -22,7 +22,7 @@ const routes = [
             loader: () => import("~/container/Activity/Activity"),
             loading: MyLoadingComponent
         }),
-        isExact: true
+        isExact: false
     },
     {
         path: "PersonalInformation",
@@ -30,7 +30,15 @@ const routes = [
             loader: () => import("~/container/PersonalInformation/PersonalInformation"),
             loading: MyLoadingComponent
         }),
-        isExact: true
+        isExact: false
+    },
+    {
+        path: "Setting",
+        component: Loadable({
+            loader: () => import("~/container/PersonalInformation/component/Setting"),
+            loading: MyLoadingComponent
+        }),
+        isExact: false
     },
     {
         path: "NewHome/:id",
@@ -38,7 +46,7 @@ const routes = [
             loader: () => import("~/container/NewHome/NewHome"),
             loading: MyLoadingComponent
         }),
-        isExact: true
+        isExact: false
     },
     {
         path: "GameHome/:homeId",
@@ -46,7 +54,23 @@ const routes = [
             loader: () => import("~/container/GameHome/GameHome"),
             loading: MyLoadingComponent
         }),
-        isExact: true
+        isExact: false
+    },
+    {
+        path: "MyFriend/:pageId",
+        component: Loadable({
+            loader: () => import("~/container/MyFriend/MyFriend"),
+            loading: MyLoadingComponent
+        }),
+        isExact: false
+    },
+    {
+        path: "PayPage",
+        component: Loadable({
+            loader: () => import("~/container/Index/PayPage/PayPage"),
+            loading: MyLoadingComponent
+        }),
+        isExact: false
     }
 ];
 
@@ -63,9 +87,11 @@ class Dashboard extends React.Component {
         this.props.dispatch(fetchPostsGetUser()).then((res) => {
             console.log(res)
         }).catch((err) => {
+            console.log(err)
             // message.error(err.msg);
         })
     }
+
 
     handleData(data) {
         console.log(data)
@@ -112,6 +138,7 @@ class Dashboard extends React.Component {
         const { match } = this.props;
         const RouteWithSubRoutes = route => (
             <Route
+                exact={route.isExact}
                 path={`${match.url}/${route.path}`}
                 render={props => <route.component {...props} routes={route.routes} />}
             />

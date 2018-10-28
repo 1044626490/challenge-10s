@@ -12,25 +12,26 @@ class PersonalInformation extends React.Component {
         this.state = {
             isResetName: false,
             myName: "",
-            myInfo: null,
-            isOpenModel:false
+            myInfo: this.props.userInfo.data,
+            isOpenModel:false,
+            isResetMyInfo:false
         }
     }
 
-    getUserInfo = () =>{
-        Api.getUserInfo().then((res)=>{
-            console.log(res);
-            this.setState({
-                myInfo:res.data
-            })
-        }).catch((res)=>{
+    // getUserInfo = () =>{
+    //     Api.getUserInfo().then((res)=>{
+    //         console.log(res);
+    //         this.setState({
+    //             myInfo:res.data
+    //         })
+    //     }).catch((res)=>{
+    //
+    //     })
+    // }
 
-        })
-    }
-
-    componentDidMount(){
-        this.getUserInfo()
-    }
+    // componentDidMount(){
+    //     this.getUserInfo()
+    // }
 
     resetName(){
         if(this.state.myName.length >= 10){
@@ -111,7 +112,7 @@ class PersonalInformation extends React.Component {
                                 <li>
                                     <p>我的勋章</p><Icon type="right" theme="outlined" />
                                 </li>
-                                <li>
+                                <li onTouchStart={()=>{window.location.href = "#/Dashboard/MyFriend/3"}}>
                                     <p>邀请好友</p><Icon type="right" theme="outlined" />
                                 </li>
                                 <li>
@@ -119,36 +120,45 @@ class PersonalInformation extends React.Component {
                                 </li>
                             </ul>
                         </div>
-                        <div className="setting-operation">
+                        <div onTouchStart={()=>{window.location.href = "#/Dashboard/Setting"}} className="setting-operation">
                             <p>设置</p><Icon type="right" theme="outlined" />
                         </div>
                     </div>
                 </div>
                 <BottomMenu />
-                <Modal entered={true} visible={this.state.isOpenModel} wrapClassName={"into-home-modal my-info-modal"}
+                <Modal entered={true} visible={this.state.isOpenModel} wrapClassName={"my-info-modal"}
                        closable={false} destroyOnClose={true}
                 >
                     <div>
                         <div className="header-wrap">
                             <Avatar size={64} shape="square" icon="user" src={info?info.avatar:require("../../layouts/image/head.png")} />
                             <div className="my-info">
-                                <p className="name-class"><span>昵称：</span>{
-                                    this.state.isResetName? <span>
-                                        <Input placeholder="修改昵称" onChange={(e)=>{this.setState({myName:e.target.value})}}/>
-                                            <Icon type="check" theme="outlined"  onTouchStart={()=>{this.resetName()}}/>
-                                    <Icon type="close" theme="outlined"  onTouchStart={()=>{this.setState({isResetName:false})}}/>
-                                    </span>:
-                                        <span>
-                                        <span className="my-name">{info?info.username:""}</span>&nbsp;&nbsp;
-                                            <Icon type="edit" theme="outlined" onTouchStart={()=>{this.setState({isResetName:true})}}/>
+                                <p className="name-class"><span>昵称：</span>
+                                    {/*{*/}
+                                    {/*this.state.isResetName? */}
+                                        {/*<span>*/}
+                                            {/*<Input placeholder="修改昵称" onChange={(e)=>{this.setState({myName:e.target.value})}}/>*/}
+                                            {/*<Icon type="check" theme="outlined"  onTouchStart={()=>{this.resetName()}}/>*/}
+                                            {/*<Icon type="close" theme="outlined"  onTouchStart={()=>{this.setState({isResetName:false})}}/>*/}
+                                        {/*</span>:*/}
+                                        {/*<span>*/}
+                                            {/*<span className="my-name">{info?info.username:""}</span>&nbsp;&nbsp;*/}
+                                            {/*<Icon type="edit" theme="outlined" onTouchStart={()=>{this.setState({isResetName:true})}}/>*/}
+                                        {/*</span>*/}
+                                    {/*}*/}
+                                    <span>
+                                    <span className="my-name">{info?info.username:""}</span>&nbsp;&nbsp;
+                                    {/*<Icon type="edit" theme="outlined" onTouchStart={()=>{this.setState({isResetName:true})}}/>*/}
                                     </span>
-                                }
                                 </p>
                                 <p>
                                     签名：{info?info.uid:0}
                                 </p>
                                 <p>
                                     胜负：{info?info.uid:0}
+                                    <Button className="open-reset-modal" onTouchStart={()=>{this.setState({
+                                        isResetMyInfo:true
+                                    })}}>编辑</Button>
                                 </p>
                             </div>
                             <div className="my-account">
@@ -170,9 +180,39 @@ class PersonalInformation extends React.Component {
                     </div>
                     <Icon onTouchStart={()=>this.openModal(false)} type="close-circle" theme="outlined" />
                 </Modal>
+                <Modal entered={true} visible={this.state.isResetMyInfo} wrapClassName={"my-info-modal reset-my-info"}
+                              closable={false} destroyOnClose={true}>
+                    <p className="reset-my-info-container">编辑资料
+                        <Icon type="close" theme="outlined" onTouchStart={()=>{this.setState({
+                            isResetMyInfo:false
+                        })}}/>
+                    </p>
+                    <div className="reset-info-item">
+                        <div>
+                            <Avatar size={64} shape="square" icon="user" src={info?info.avatar:require("../../layouts/image/head.png")} />
+                        </div>
+                        <div>
+                            <Button className="reset-myhead">更换头像</Button>
+                        </div>
+                        <div>
+                            <span>昵称：</span><Input />
+                        </div>
+                        <div>
+                            <span>签名：</span><Input />
+                        </div>
+                        <div className="bind-item">
+                            <span>绑定：</span><span className="binding"></span>
+                        </div>
+                        <Button className="save-reset">保存</Button>
+                    </div>
+                </Modal>
             </div>
         )
     }
 }
 
-export default PersonalInformation
+const mapStateToProps = state => {
+    const {loginReducer,userInfo} = state;
+    return {loginReducer,userInfo}
+};
+export default connect(mapStateToProps)(PersonalInformation)

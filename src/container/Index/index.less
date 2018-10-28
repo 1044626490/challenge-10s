@@ -30,7 +30,7 @@
     background-color: rgb(37,30,74);
     border:1px solid rgb(104,70,159);
     border-radius: 3vw;
-    span:not(.my-trophy):before,span:not(.my-trophy):after{
+    span:not(.my-trophy):before{
       content: "";
       display: inline-block;
       width: 4.3vw;
@@ -48,9 +48,22 @@
       height: 5vw;
       line-height: 5vw;
     }
-    span:not(.my-trophy):after{
+    .my-money-item-pay{
+      content: "";
+      display: inline-block;
+      width: 4.3vw;
+      height: 4.6vw;
+      background-size: 100%;
+      background-repeat: no-repeat;
+      background-position: center;
+      position: absolute;
+      top:50%;
+      transform: translateY(-50%);
       background-image: url("../../layouts/image/more_gold.png");
       right: -0.5vw;
+    }
+    .my-money-item-pay:before{
+      display: none!important;
     }
   }
   .my-money-item{
@@ -78,6 +91,33 @@
     background-size: 100% 100%;
     background-repeat: no-repeat;
     background-position: center;
+  }
+  .my-task{
+    display: block;
+    width: 10.1vw;
+    height: 10.1vw;
+    position: absolute;
+    bottom: -11vw;
+    right: 13vw;
+    background-image: url("../../layouts/image/1 (6).png");
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    background-position: center;
+  }
+  .relief-payment{
+    display: block;
+    width: 10.1vw;
+    height: 10.1vw;
+    position: absolute;
+    bottom: -11vw;
+    right: 26vw;
+    background-image: url("../../layouts/image/1 (5).png");
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    background-position: center;
+  }
+  .my-trophy:after{
+
   }
 }
 .index-container{

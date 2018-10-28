@@ -14,6 +14,7 @@ export const COUPON = '/coupon';//活动页优惠券
 export const JOIN_ROOM_ID = '/join_room_id';//加入房间
 export const CREATE_ROOM = '/create_room';//加入房间
 export const CONFIRM_ROOM_PASS = '/confirm_room_pass';//加入房间
+export const RADOME_JOIN_ROOM = '/join_room';//加入房间
 
 
 

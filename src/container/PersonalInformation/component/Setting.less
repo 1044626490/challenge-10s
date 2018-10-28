@@ -1,0 +1,70 @@
+.setting-wrap{
+  width: 100vw;
+  height: 100vh;
+  background-color: #3d3470;
+  ul{
+    padding: 0;
+    list-style: none;
+    li{
+      >span{
+        font-size: 4vw;
+      }
+      .clear{
+        float: right;
+        margin-right: 7%;
+      }
+      height: 7vh;
+      line-height: 7vh;
+      color: white;
+      padding-left: 4vh;
+      width: 100vw;
+      background-color: #302958;
+      margin-bottom: 1vh;
+      position: relative;
+      .ant-switch{
+        position: absolute;
+        right: 5%;
+        top: 50%;
+        height: 4vh;
+        width: 15vw;
+        transform: translateY(-50%);
+        background-color: #ececec;
+        .ant-switch-inner{
+          float: right;
+          margin-right: 15%;
+          color: #9a9a9a;
+        }
+        //background: -webkit-linear-gradient(top,#c6e4b7 0,#73cf51 100%);
+        //background: -moz-linear-gradient(top,#c6e4b7 0,#73cf51 100%);
+        //background: -o-linear-gradient(top,#c6e4b7 0,#73cf51 100%);
+        //background: linear-gradient(to bottom,#c6e4b7 0,#73cf51 100%);
+        //filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#c6e4b7,endColorstr=#73cf51,GradientType=0);
+        .ant-switch-inner{
+          font-size: 2vh;
+          display: inline-block;
+          height: 4vh;
+          line-height: 4vh;
+          vertical-align: text-top;
+        }
+      }
+      .ant-switch:after{
+        height: 3.5vh;
+        border-radius: 3vw;
+        width: 6vw;
+      }
+      .ant-switch-checked{
+        .ant-switch-inner{
+          float: left;
+          margin-top: -3%;
+          padding-left: 5%;
+          color: #408d12;
+        }
+        background: -webkit-linear-gradient(top,#c6e4b7 0,#73cf51 100%);
+        background: -moz-linear-gradient(top,#c6e4b7 0,#73cf51 100%);
+        background: -o-linear-gradient(top,#c6e4b7 0,#73cf51 100%);
+        background: linear-gradient(to bottom,#c6e4b7 0,#73cf51 100%);
+        filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#c6e4b7,endColorstr=#73cf51,GradientType=0);
+      }
+    }
+  }
+}

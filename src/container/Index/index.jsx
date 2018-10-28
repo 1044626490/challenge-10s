@@ -7,6 +7,7 @@ import BottomMenu from "../../components/bottomMenu/bottonMenu";
 import HeaderNav from "../../components/headerNav/headerNav";
 import Api from '~/until/api';
 import {fetchPostsIfNeeded} from '~/action/login';
+import {fetchPostsGetUser} from '~/action/getUserInfo';
 //
 
 const TabPane = Tabs.TabPane;
@@ -88,23 +89,47 @@ class Index extends React.Component {
                     before:<Icon className="before-icon" type="safety-certificate" theme="outlined" />
                 }
             ],
-            userInfo:this.props.userInfo.data,
-            isLogin:!this.props.userInfo.msg,
+            userInfo:false,
+            isLogin:false,
             isHomeNeedPwd:false,
             homeId:""
             // inputIndex:0,
         };
     }
 
-    componentDidMount(){
-        this.getUserInfo()
+    componentWillMount(){
+        this.getUserInfo();
+        // console.log(this.props.userInfo.msg)
+        // this.setState({
+        //     isLogin:this.props.userInfo.msg,
+        // })
     }
+    //
+    // componentWillMount(){
+    //     // this.getUserInfo()
+    // }
+
+    // componentWillReceiveProps(nextProps){
+    //     this.props = nextProps;
+    //     this.setState({
+    //         isLogin:!this.props.userInfo.msg,
+    //         userInfo:this.props.userInfo.data
+    //     })
+    // }
 
     getUserInfo = () => {
+        console.log(123123)
         this.props.dispatch(fetchPostsGetUser()).then((res) => {
-            console.log(res)
+            console.log(res.data)
+            this.setState({
+                isLogin:!res.msg,
+                userInfo:res.data
+            })
         }).catch((err) => {
-            // message.error(err.msg);
+            console.log(err)
+            this.setState({
+                isLogin:true,
+            })
         })
     };
 
@@ -216,10 +241,11 @@ class Index extends React.Component {
             return false
         }
         let params = name === "loginForm"?this.state.login:this.state.register;
+        console.log(123456456456)
         name === "loginForm"?this.props.dispatch(fetchPostsIfNeeded(params)).then((res) => {
             if(res.code ==="0000"){
                 message.success(res.msg);
-                sessionStorage.setItem("key",'2')
+                sessionStorage.setItem("key",'2');
                 this.getUserInfo()
             }
         }).catch((err) => {
@@ -244,10 +270,9 @@ class Index extends React.Component {
     }
 
     render(){
-        let isLogin = this.props.userInfo.code === "0000"?true:false;
-        console.log(this.state.userInfo,this.props);
+        console.log(this.state.isLogin)
         const button = ["S","M","H","1","2","3","4","5","6","7","8","9","重输","0","确认"];
-        const { userInfo } = this.state;
+        const userInfo = this.props.userInfo.data;
         const item = ["初级房间","中级房间","高级房间","输入房号"];
         return(
             <div className="index-container">
@@ -261,11 +286,14 @@ class Index extends React.Component {
                     </div>
                     <div className="my-sliver-item">
                         <span>{userInfo?userInfo.silver:0}</span>
-                        <span className="my-task">{null}</span>
+                        <span className="my-money-item-pay">{null}</span>
                     </div>
                     <div className="my-money-item">
                         <span>{userInfo?userInfo.gold:0}</span>
+                        <span className="my-money-item-pay" onTouchStart={()=>{window.location.href = "#/Dashboard/PayPage"}}>{null}</span>
                         <span className="my-trophy">{null}</span>
+                        <span className="my-trophy my-task">{null}</span>
+                        <span className="my-trophy relief-payment">{null}</span>
                     </div>
                 </div>
                 <div className="index-container-wrap">
@@ -291,23 +319,23 @@ class Index extends React.Component {
                     </ul>
                 </div>
                 <BottomMenu />
-                    <Modal entered={true} visible={this.state.isOenModal||!isLogin} wrapClassName={"into-home-modal"}
+                    <Modal entered={true} visible={this.state.isOenModal||this.state.isLogin} wrapClassName={"into-home-modal"}
                            closable={false} destroyOnClose={true}
                     >
                         <div className="into-home">
                             <div className="into-home-header">
                                 <p>{
-                                    !isLogin?"用户登录":"加入房间"
+                                    this.state.isLogin?"用户登录":"加入房间"
                                 }
                                     {
-                                        !isLogin?null:
+                                        this.state.isLogin?null:
                                             <span onTouchStart={()=>this.openModal(false)}>
                                             </span>
                                     }
                                 </p>
                             </div>
                             {
-                                !isLogin?
+                                this.state.isLogin?
                                     <div className="login-register">
                                         <Tabs defaultActiveKey="1" animated={false} onChange={null}>
                                             <TabPane tab="新用户注册" key="1">
@@ -414,4 +442,3 @@ const mapStateToProps = state => {
     return {loginReducer,userInfo}
 };
 export default connect(mapStateToProps)(Index)
-// export default Index

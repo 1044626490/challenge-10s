@@ -22,7 +22,9 @@ class GameHome extends React.Component{
             backTime:3,
             tenSeconds:"0",
             millisecond:"0",
-            isStartTime:false
+            isStartTime:false,
+            isOpenPlayer:false,
+            playerInfo:[]
         }
     }
 
@@ -148,6 +150,12 @@ class GameHome extends React.Component{
         },10)
     };
 
+    openPlayerInfo(){
+        this.setState({
+            isOpenPlayer:true
+        })
+    }
+
     render(){
         if(!this.state.isStartTime&&this.state.isStartGame&&this.state.backTime <= 0&&this.state.millisecond === "0"&&this.state.tenSeconds === "0"){
             this.timeGoOn()
@@ -176,7 +184,7 @@ class GameHome extends React.Component{
                                     this.state.userData&&this.state.userData.map((item ,index) => {
                                         if(item.is_homeowner === 1){
                                             return <li key={index} className="home">
-                                                    <Avatar icon="user" src={item.avatar||require("../../layouts/image/sc.png")} alt=""/>
+                                                    <Avatar onTouchStart={()=>this.openPlayerInfo()} icon="user" src={item.avatar||require("../../layouts/image/sc.png")} alt=""/>
                                                     <span className="is-homeowner">房主</span>
                                                 </li>
                                         }
@@ -259,6 +267,13 @@ class GameHome extends React.Component{
                     <p>Some contents...</p>
                     <p>Some contents...</p>
                 </Drawer>
+                <Modal entered={true} visible={this.state.isOpenPlayer}  wrapClassName={"all-modal open-player-info"}
+                        closable={false} destroyOnClose={true}>
+                    <Icon className="close-modal" onTouchStart={()=>{this.setState({isOpenPlayer:false})}} type="close" theme="outlined" />
+                    <div className="player-info">
+
+                    </div>
+                </Modal>
             </div>
         )
     }

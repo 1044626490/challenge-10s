@@ -12,7 +12,7 @@ class NewHome extends React.Component {
         this.state = {
             header:"",
             level:"",
-            userInfo:this.props.loginReducer.data,
+            userInfo:this.props.userInfo.data,
             isCreateHome:false,
             intoHomePwd:["","","","","",""]
         };
@@ -65,6 +65,17 @@ class NewHome extends React.Component {
         })
     };
 
+    radomeHome(){
+        Api.radomeJoinRoom({level:this.state.level}).then((res)=>{
+            console.log(res)
+            message.info("加入房间成功")
+            window.location.href = "#/Dashboard/GameHome/"+res.data.room_id
+        }).catch((err) => {
+            message.info(err.msg)
+        })
+    }
+
+
     finHome = () =>{
         let intoHomePwd = this.state.intoHomePwd;
         if(intoHomePwd.indexOf("") === -1 || intoHomePwd.indexOf("") === 0){
@@ -109,7 +120,7 @@ class NewHome extends React.Component {
                             <Button onTouchStart={()=>this.openModal(true)}><p>创建房间</p></Button>
                         </div>
                         <div className="into-home-button">
-                            <Button><p>随机匹配</p></Button>
+                            <Button onClick={()=>this.radomeHome()}><p>随机匹配</p></Button>
                         </div>
                     </div>
                 </div>
