@@ -101,13 +101,10 @@ class Index extends React.Component {
     }
 
     getUserInfo = () => {
-        Api.getUserInfo().then((res)=>{
-            this.setState({
-                userInfo:res.data,
-                isLogin:true
-            })
-        }).catch((res)=>{
-
+        this.props.dispatch(fetchPostsGetUser()).then((res) => {
+            console.log(res)
+        }).catch((err) => {
+            // message.error(err.msg);
         })
     };
 
