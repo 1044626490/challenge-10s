@@ -1,6 +1,6 @@
 import React from "react"
 import HeaderNav from "../../components/headerNav/headerNav";
-import { Modal, Avatar, Button, Drawer, Icon } from "antd"
+import { Modal, Avatar, Button, Drawer, Icon, Popconfirm } from "antd"
 import connect from "react-redux/es/connect/connect";
 import "./GameHome.less"
 
@@ -24,15 +24,19 @@ class GameHome extends React.Component{
             millisecond:"0",
             isStartTime:false,
             isOpenPlayer:false,
-            playerInfo:[]
+            playerInfo:[],
+            level:"初级",
+            isOpenMask:false
         }
     }
 
     componentDidMount(){
         let homeId = this.props.match.params.homeId;
         this.getWebSocket(homeId);
+        let level = homeId === "1"?"初级":homeId === "2"?"中级":"高级"
         this.setState({
-            homeId
+            homeId,
+            level
         })
     }
 
@@ -104,6 +108,7 @@ class GameHome extends React.Component{
     startGame = () => {
         this.setState({
             isReadyGame:true,
+            isOpenMask:false
         });
         let setI = setTimeout(()=>{
             this.setState({
@@ -166,6 +171,9 @@ class GameHome extends React.Component{
                 {
                     !this.state.isReadyGame?
                 <div>
+                    {
+                        this.state.isOpenMask?<div className="mask"></div>:null
+                    }
                     <div className="game-home-header">
                         <Avatar icon="user" src={this.props.userInfo.data.avatar||require("../../layouts/image/head.png")} alt=""/>
                         <p>
@@ -194,8 +202,15 @@ class GameHome extends React.Component{
                                     })
                                 }
                             </ul>
-                            <div>
-                                <Button onTouchStart={()=>this.startGame()}>开始游戏</Button>
+                            <div className="start-game-pop">
+                                <Popconfirm overlayClassName={"start-game-pop"}
+                                            placement="top" title={"确认开始"}
+                                            onCancel={()=>this.startGame()}
+                                            onConfirm={()=>{this.setState({isOpenMask:false})}}
+                                            okText="取消"
+                                            cancelText="确认">
+                                    <Button onClick={()=>{this.setState({isOpenMask:true})}} disabled={false}>开始游戏</Button>
+                                </Popconfirm>
                             </div>
                         </div>
                         <div className="menber-item">
@@ -227,6 +242,9 @@ class GameHome extends React.Component{
                                     <img src={require("../../layouts/image/timego/"+this.state.millisecond.slice(this.state.millisecond.length-1,this.state.millisecond.length)+".png")}
                                          alt=""/>
                                 </div>
+                                <p className="stop-game">
+                                    {this.state.tenSeconds >= 5?<Button>停止</Button>:null}
+                                </p>
                             </div>
                             {
                                 this.state.isStartGame&&this.state.backTime === 3?this.backTime():null
@@ -260,18 +278,71 @@ class GameHome extends React.Component{
                     closable={false}
                     onClose={this.onClose}
                     visible={false}
+                    className="bottom-pour"
                     placement="bottom"
                 >
-                    <Icon type="double-right" theme="outlined" />
-                    <p>Some contents...</p>
-                    <p>Some contents...</p>
-                    <p>Some contents...</p>
+                    <p className="up">
+                        <span></span>
+                    </p>
+                    <p className="home-name"><span>{this.state.level}房间</span></p>
+                    <p className="into-home-price"><img className="into-home-price-icon" src={require("../../layouts/image/homePage_icon.png")}/><span>入场费：</span><span>100金币</span></p>
+                    <div className="button-operation">
+                        <Button>进入房间</Button>
+                        <Button>前往押注</Button>
+                    </div>
                 </Drawer>
                 <Modal entered={true} visible={this.state.isOpenPlayer}  wrapClassName={"all-modal open-player-info"}
                         closable={false} destroyOnClose={true}>
                     <Icon className="close-modal" onTouchStart={()=>{this.setState({isOpenPlayer:false})}} type="close" theme="outlined" />
                     <div className="player-info">
 
+                    </div>
+                </Modal>
+                <Modal entered={true} visible={false}  wrapClassName={"all-modal game-over win"}
+                       closable={false} destroyOnClose={true}>
+                    {/*<Icon className="close-modal" onTouchStart={()=>{this.setState({isOpenPlayer:false})}} type="close" theme="outlined" />*/}
+                    <div className="player-info">
+                        <div className="game-over-header">
+                            <Avatar icon="user" src={this.props.userInfo.data.avatar||""}/>
+                            <p>
+                                {this.props.userInfo.data.username}
+                            </p>
+                        </div>
+                        <div className="game-info">
+                            <table>
+                                <tbody>
+                                <tr className="win-tr">
+                                    <td><span>No.1：</span></td>
+                                    <td><div>阿狸大大,金币-200,积分+10</div></td>
+                                </tr>
+                                <tr className="win-tr">
+                                    <td><span>No.2：</span></td>
+                                    <td><div>阿狸大大,金币-200,积分+10</div></td>
+                                </tr>
+                                <tr className="win-tr">
+                                    <td><span>No.3：</span></td>
+                                    <td><div>阿狸大大123123123123,金币-200,积分+10</div></td>
+                                </tr>
+                                <tr>
+                                    <td><span>lose：</span></td>
+                                    <td><div>阿狸大大,金币-200,积分+10</div></td>
+                                </tr>
+                                <tr>
+                                    <td><span>lose：</span></td>
+                                    <td><div>阿狸大大,金币-200,积分+10</div></td>
+                                </tr>
+                                <tr>
+                                    <td><span>lose：</span></td>
+                                    <td><div>阿狸大大,金币-200,积分+10</div></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div className="button-operation">
+                            <Button>炫耀一下</Button>
+                            <Button>再来一次</Button>
+                        </div>
+                        <Icon type="close-circle" theme="outlined" />
                     </div>
                 </Modal>
             </div>

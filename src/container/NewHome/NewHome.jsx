@@ -117,10 +117,10 @@ class NewHome extends React.Component {
                     </div>
                     <div className="go-home-button">
                         <div className="into-home-button">
-                            <Button onTouchStart={()=>this.openModal(true)}><p>创建房间</p></Button>
+                            <Button onClick={()=>this.radomeHome()}><p>随机匹配</p></Button>
                         </div>
                         <div className="into-home-button">
-                            <Button onClick={()=>this.radomeHome()}><p>随机匹配</p></Button>
+                            <Button onTouchStart={()=>this.openModal(true)}><p>创建房间</p></Button>
                         </div>
                     </div>
                 </div>

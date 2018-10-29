@@ -19,6 +19,8 @@ export default {
     joinRoomId: (params) =>post(C.JOIN_ROOM_ID, params),
     confirmRoomPass: (params) =>post(C.CONFIRM_ROOM_PASS, params),
     radomeJoinRoom: (params) =>post(C.RADOME_JOIN_ROOM, params),
+    uploadMyHead: (params) =>post(C.UPLOAD_MY_HEAD, params),
+    updateUserinfo: (params) =>post(C.UPDATE_USERINFO, params),
 
     // logout: (params) => post(C.LOGOUT, params),
     // register: (params) => post(C.REGISTER, params),

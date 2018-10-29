@@ -8,6 +8,7 @@ import HeaderNav from "../../components/headerNav/headerNav";
 import Api from '~/until/api';
 import {fetchPostsIfNeeded} from '~/action/login';
 import {fetchPostsGetUser} from '~/action/getUserInfo';
+import MyInfoModal from "../PersonalInformation/component/MyInfoModal";
 //
 
 const TabPane = Tabs.TabPane;
@@ -92,7 +93,9 @@ class Index extends React.Component {
             userInfo:false,
             isLogin:false,
             isHomeNeedPwd:false,
-            homeId:""
+            homeId:"",
+            isResetMyInfo:false,
+            isOpenModel:false
             // inputIndex:0,
         };
     }
@@ -118,7 +121,6 @@ class Index extends React.Component {
     // }
 
     getUserInfo = () => {
-        console.log(123123)
         this.props.dispatch(fetchPostsGetUser()).then((res) => {
             console.log(res.data)
             this.setState({
@@ -269,6 +271,12 @@ class Index extends React.Component {
         }
     }
 
+    openModal = (isOpen) => {
+        this.setState({
+            isOpenModel:isOpen
+        })
+    };
+
     render(){
         console.log(this.state.isLogin)
         const button = ["S","M","H","1","2","3","4","5","6","7","8","9","重输","0","确认"];
@@ -278,21 +286,21 @@ class Index extends React.Component {
             <div className="index-container">
                 <HeaderNav name="挑战10秒"/>
                 <div className="head-wrap">
-                    <img src={userInfo?userInfo.avatar:require("../../layouts/image/head.png")} alt=""/>
+                    <img onTouchStart={()=>this.openModal(true)} src={userInfo?userInfo.avatar:require("../../layouts/image/head.png")} alt=""/>
                     <div className="my-info">
                         <span>{userInfo?userInfo.username:""}</span>
                         <br/>
                         <span>ID:{userInfo?userInfo.uid:0}</span>
                     </div>
-                    <div className="my-sliver-item">
-                        <span>{userInfo?userInfo.silver:0}</span>
-                        <span className="my-money-item-pay">{null}</span>
-                    </div>
+                    {/*<div className="my-sliver-item">*/}
+                        {/*<span>{userInfo?userInfo.silver:0}</span>*/}
+                        {/*<span className="my-money-item-pay">{null}</span>*/}
+                    {/*</div>*/}
                     <div className="my-money-item">
                         <span>{userInfo?userInfo.gold:0}</span>
                         <span className="my-money-item-pay" onTouchStart={()=>{window.location.href = "#/Dashboard/PayPage"}}>{null}</span>
                         <span className="my-trophy">{null}</span>
-                        <span className="my-trophy my-task">{null}</span>
+                        <span onTouchStart={()=>{window.location.href = "#/Dashboard/MyMedal/2"}} className="my-trophy my-task">{null}</span>
                         <span className="my-trophy relief-payment">{null}</span>
                     </div>
                 </div>
@@ -302,7 +310,7 @@ class Index extends React.Component {
                             return <div key={index} className="index-content-item"
                                         onTouchStart={item === "输入房号"?()=>this.openModal(true):
                                             ()=>{window.location.href = "#/Dashboard/NewHome/"+index}}>
-                                <span>people-number</span>
+                                    {item !== "输入房号"?<span>people-number</span>:null}
                                 <p>{item}</p>
                             </div>
                         })
@@ -432,6 +440,17 @@ class Index extends React.Component {
                             }
                         </div>
                     </Modal>
+                {
+                    this.props.userInfo.code === "3000"?<MyInfoModal info={this.props.userInfo.data} isResetMyInfo={this.state.isResetMyInfo} openModal={()=>this.openModal()}
+                                 isOpenModel={this.state.isOpenModel}
+                                 getUserInfo={()=>{
+                                     this.getUserInfo();
+                                     this.setState({
+                                         isResetMyInfo:false
+                                     })
+                                 }}
+                    />:null
+                }
             </div>
         )
     }

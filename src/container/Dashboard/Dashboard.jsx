@@ -71,6 +71,14 @@ const routes = [
             loading: MyLoadingComponent
         }),
         isExact: false
+    },
+    {
+        path: "MyMedal/:id",
+        component: Loadable({
+            loader: () => import("~/container/MyMedal/MyMedal"),
+            loading: MyLoadingComponent
+        }),
+        isExact: false
     }
 ];
 
