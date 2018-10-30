@@ -22,7 +22,13 @@ class MyFriend extends React.Component{
     }
 
     callback(value){
-        console.log(value)
+        // console.log(value)
+    }
+
+    componentDidMount(){
+        // this.getMyFriend(){
+        //
+        // }
     }
 
     render(){
@@ -48,9 +54,9 @@ class MyFriend extends React.Component{
                     <Tabs defaultActiveKey={this.state.defaultActiveKey} onChange={()=>this.callback()}>
                         {
                             tabs.map((item, index) => {
-                                console.log(this.state.defaultActiveKey === item.key)
+                                console.log(item.key)
                                 return <TabPane tab={item.name} key={item.key}>
-                                    <FriendTab key={item.key} index={index}/>
+                                    <FriendTab item={item} key={item.key} index={index}/>
                                         {/*{*/}
                                             {/*this.state.defaultActiveKey === item.key?<Icon type="caret-up" theme="outlined" />:null*/}
                                         {/*}*/}

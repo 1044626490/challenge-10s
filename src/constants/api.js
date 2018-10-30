@@ -17,6 +17,7 @@ export const CONFIRM_ROOM_PASS = '/confirm_room_pass';//加入房间
 export const RADOME_JOIN_ROOM = '/join_room';//加入房间
 export const UPLOAD_MY_HEAD = '/upload';//加入房间
 export const UPDATE_USERINFO = '/update_userinfo';//加入房间
+export const ADD_USER_LIST = '/add_user_list';//添加好友列表
 
 
 

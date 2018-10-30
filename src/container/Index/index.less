@@ -21,12 +21,13 @@
   }
   .my-sliver-item,.my-money-item{
     position: absolute;
+    text-align: right;
     top:1vw;
     display: block;
     width: 20vw;
     height: 5vw;
     color: #fff;
-    padding-left: 5vw;
+    padding-right: 5vw;
     background-color: rgb(37,30,74);
     border:1px solid rgb(104,70,159);
     border-radius: 3vw;
@@ -85,7 +86,7 @@
     width: 10.1vw;
     height: 10.1vw;
     position: absolute;
-    bottom: -11vw;
+    bottom: -13vw;
     right: 0;
     background-image: url("../../layouts/image/trophy.png");
     background-size: 100% 100%;
@@ -97,8 +98,8 @@
     width: 10.1vw;
     height: 10.1vw;
     position: absolute;
-    bottom: -11vw;
-    right: 13vw;
+    bottom: -13vw;
+    right: 11.5vw;
     background-image: url("../../layouts/image/1 (6).png");
     background-size: 100% 100%;
     background-repeat: no-repeat;
@@ -109,9 +110,21 @@
     width: 10.1vw;
     height: 10.1vw;
     position: absolute;
-    bottom: -11vw;
-    right: 26vw;
+    bottom: -13vw;
+    right: 21.5vw;
     background-image: url("../../layouts/image/1 (5).png");
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    background-position: center;
+  }
+  .sign-in{
+    display: block;
+    width: 10.1vw;
+    height: 10.1vw;
+    position: absolute;
+    bottom: -13vw;
+    right: 34vw;
+    background-image: url("../../layouts/image/sign.png");
     background-size: 100% 100%;
     background-repeat: no-repeat;
     background-position: center;
@@ -122,6 +135,74 @@
 }
 .index-container{
   font-size: 1px;
+  .mask{
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: rgba(0,0,0,0.5);
+    z-index: 999;
+  }
+  .random-invite{
+    position: fixed;
+    left: 0;
+    top: 60%;
+    z-index: 9999;
+    width: 12vw;
+    .invite-hide{
+      display: block;
+      width: 5vw;
+      height: 10vw;
+      background-image: url("../../layouts/image/invite-hide.png");
+      background-size: 100% 100%;
+    }
+    .invite-close{
+      margin-left: 2vw;
+      display: block;
+      width: 10vw;
+      height: 10vw;
+      background-image: url("../../layouts/image/invite-close.png");
+      background-size: 100% 100%;
+    }
+    .ant-badge-dot{
+      position: absolute;
+      top: 0.75vw;
+      left: 2vw;
+      border-width: 0;
+      box-shadow: 0 0 0 0 transparent;
+    }
+  }
+  .random-invite-info{
+    position: fixed;
+    left: 12vw;
+    top: 47%;
+    z-index: 9999;
+    height: 30vh;
+    width: 80vw;
+    p{
+      padding-left: 2vw;
+      margin-bottom: 2vh;
+      width: 80vw;
+      border-radius: 1vw;
+      height: 5vh;
+      line-height: 5vh;
+      color: white;
+      font-size: 3vw;
+      background-color: rgba(0,0,0,0.7);
+      span:first-child{
+        display: inline-block;
+        margin: 0 2vw;
+        color: #decc35;
+      }
+    }
+    p:first-child,p:last-child{
+      margin-left: -4vw;
+    }
+    p:nth-child(3){
+      margin-left: 4vw;
+    }
+  }
   .index-container-wrap{
     width: 100vw;
     padding: 2.5vw;
@@ -134,9 +215,26 @@
       padding-top: 1vw;
       width: 42.67vw;
       height: 17vh;
+      overflow: hidden;
       background-repeat: no-repeat;
       background-position: center;
       background-size: 100%;
+      .eyes-game{
+        position: absolute;
+        right: 0;
+        top: 0;
+        display: inline-block;
+        width: 10vw;
+        height: 5vw;
+        background-image: url("../../layouts/image/eyesgame.png");
+        background-size: 100% 100%;
+        img{
+          width: 6vw;
+          height: 3vw;
+          float: right;
+          margin: 1vw;
+        }
+      }
       span{
         position:relative;;
         padding-left: 20%;

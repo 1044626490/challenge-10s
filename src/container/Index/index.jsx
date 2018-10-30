@@ -1,5 +1,5 @@
 import React from 'react';
-import {Form, Icon, Modal, Tabs, Input, Button, message} from "antd";
+import {Form, Icon, Modal, Tabs, Input, Button, message, Badge} from "antd";
 import "./index.less"
 import connect from "react-redux/es/connect/connect";
 // import * as Message from '~/components/common/message'
@@ -95,7 +95,9 @@ class Index extends React.Component {
             isHomeNeedPwd:false,
             homeId:"",
             isResetMyInfo:false,
-            isOpenModel:false
+            isOpenModel:false,
+            isOpenInfoModel:false,
+            isOpenMask:false
             // inputIndex:0,
         };
     }
@@ -271,37 +273,54 @@ class Index extends React.Component {
         }
     }
 
-    openModal = (isOpen) => {
+    openInfoModal = (isOpen) => {
         this.setState({
-            isOpenModel:isOpen
+            isOpenInfoModel:isOpen
         })
     };
 
     render(){
-        console.log(this.state.isLogin)
+        console.log(this.state.isOpenInfoModel)
         const button = ["S","M","H","1","2","3","4","5","6","7","8","9","重输","0","确认"];
         const userInfo = this.props.userInfo.data;
         const item = ["初级房间","中级房间","高级房间","输入房号"];
         return(
             <div className="index-container">
                 <HeaderNav name="挑战10秒"/>
+                {
+                    this.state.isOpenMask?<div className="mask"></div>:null
+                }
+                <div className="random-invite">
+                    {
+                        !this.state.isOpenMask?<Badge dot={true}>
+                            <span onTouchStart={()=>this.setState({isOpenMask:true})} className="invite-hide"></span>
+                        </Badge>:<span onTouchStart={()=>this.setState({isOpenMask:false})} className="invite-close">
+                        </span>
+                    }
+                </div>
+                {
+                    this.state.isOpenMask?<div className="random-invite-info">
+                        <p>[M123456]: 玩家“阿狸大大”邀请你入房    <span>接受</span><span>拒绝</span></p>
+                        <p>[M123456]: 玩家“阿狸大大”邀请你入房    <span>接受</span><span>拒绝</span></p>
+                        <p>[M123456]: 玩家“阿狸大大”邀请你入房    <span>接受</span><span>拒绝</span></p>
+                        <p>[M123456]: 玩家“阿狸大大”邀请你入房    <span>接受</span><span>拒绝</span></p>
+                        <p>[M123456]: 玩家“阿狸大大”邀请你入房    <span>接受</span><span>拒绝</span></p>
+                    </div>:null
+                }
                 <div className="head-wrap">
-                    <img onTouchStart={()=>this.openModal(true)} src={userInfo?userInfo.avatar:require("../../layouts/image/head.png")} alt=""/>
+                    <img onTouchStart={()=>this.openInfoModal(true)} src={userInfo?userInfo.avatar:require("../../layouts/image/head.png")} alt=""/>
                     <div className="my-info">
                         <span>{userInfo?userInfo.username:""}</span>
                         <br/>
                         <span>ID:{userInfo?userInfo.uid:0}</span>
                     </div>
-                    {/*<div className="my-sliver-item">*/}
-                        {/*<span>{userInfo?userInfo.silver:0}</span>*/}
-                        {/*<span className="my-money-item-pay">{null}</span>*/}
-                    {/*</div>*/}
                     <div className="my-money-item">
                         <span>{userInfo?userInfo.gold:0}</span>
                         <span className="my-money-item-pay" onTouchStart={()=>{window.location.href = "#/Dashboard/PayPage"}}>{null}</span>
-                        <span className="my-trophy">{null}</span>
-                        <span onTouchStart={()=>{window.location.href = "#/Dashboard/MyMedal/2"}} className="my-trophy my-task">{null}</span>
+                        <span onTouchStart={()=>{window.location.href = "#/Dashboard/RankList"}} className="my-trophy">{null}</span>
+                        <span onTouchStart={()=>{}} className="my-trophy my-task">{null}</span>
                         <span className="my-trophy relief-payment">{null}</span>
+                        <span className="my-trophy sign-in">{null}</span>
                     </div>
                 </div>
                 <div className="index-container-wrap">
@@ -311,6 +330,9 @@ class Index extends React.Component {
                                         onTouchStart={item === "输入房号"?()=>this.openModal(true):
                                             ()=>{window.location.href = "#/Dashboard/NewHome/"+index}}>
                                     {item !== "输入房号"?<span>people-number</span>:null}
+                                    {item !== "输入房号"?<i className="eyes-game">
+                                        <img src={require("../../layouts/image/eyes.png")} alt=""/>
+                                    </i>:null}
                                 <p>{item}</p>
                             </div>
                         })
@@ -396,7 +418,7 @@ class Index extends React.Component {
                                                             })
                                                         }
                                                         <FormItem>
-                                                            <Button onTouchStart={()=>this.handleSubmit("loginForm")} className="check-button" type="primary">登录</Button>
+                                                            <Button onClick={()=>this.handleSubmit("loginForm")} onTouchStart={()=>this.handleSubmit("loginForm")} className="check-button" type="primary">登录</Button>
                                                         </FormItem>
                                                     </Form>
                                                 </div>
@@ -441,8 +463,8 @@ class Index extends React.Component {
                         </div>
                     </Modal>
                 {
-                    this.props.userInfo.code === "3000"?<MyInfoModal info={this.props.userInfo.data} isResetMyInfo={this.state.isResetMyInfo} openModal={()=>this.openModal()}
-                                 isOpenModel={this.state.isOpenModel}
+                    this.props.userInfo.code === "0000"?<MyInfoModal info={this.props.userInfo.data} isResetMyInfo={this.state.isResetMyInfo} openModal={()=>this.openInfoModal()}
+                                 isOpenModel={this.state.isOpenInfoModel}
                                  getUserInfo={()=>{
                                      this.getUserInfo();
                                      this.setState({

@@ -54,7 +54,7 @@ class MyInfoModal extends React.Component{
         Api.uploadMyHead({file:file.file}).then((res) => {
             message.success(res.msg)
             this.setState({
-                header:res.data
+                header:res.src
             })
         }).catch((err) => {
             message.error(err.msg)
@@ -132,7 +132,7 @@ class MyInfoModal extends React.Component{
                     </p>
                     <div className="reset-info-item">
                         <div>
-                            <Avatar size={64} shape="square" icon="user" src={info?info.avatar:require("../../../layouts/image/head.png")} />
+                            <Avatar size={64} shape="square" icon="user" src={info?this.state.header:require("../../../layouts/image/head.png")} />
                         </div>
                         <div>
                             <Upload accept={"image/*"} onChange={(file)=>this.changeHeader(file)} showUploadList={false} beforeUpload={()=>{return false}}>

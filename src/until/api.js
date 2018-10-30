@@ -21,6 +21,7 @@ export default {
     radomeJoinRoom: (params) =>post(C.RADOME_JOIN_ROOM, params),
     uploadMyHead: (params) =>post(C.UPLOAD_MY_HEAD, params),
     updateUserinfo: (params) =>post(C.UPDATE_USERINFO, params),
+    addUserList: (params) =>post(C.ADD_USER_LIST, params),
 
     // logout: (params) => post(C.LOGOUT, params),
     // register: (params) => post(C.REGISTER, params),

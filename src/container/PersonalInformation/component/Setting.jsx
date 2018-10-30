@@ -19,6 +19,7 @@ class Setting extends React.Component{
                     <li><span>音乐</span><Switch checkedChildren="on" unCheckedChildren="off" defaultChecked /></li>
                     <li><span>音效</span><Switch checkedChildren="on" unCheckedChildren="off" defaultChecked /></li>
                     <li><span>振动</span><Switch checkedChildren="on" unCheckedChildren="off" defaultChecked /></li>
+                    <li><span>屏蔽邀请信息</span><Switch checkedChildren="on" unCheckedChildren="off" defaultChecked={false} /></li>
                     <li><span>清理缓存</span><span className="clear">1.03M</span></li>
                     <li><span>退出账号</span></li>
                 </ul>

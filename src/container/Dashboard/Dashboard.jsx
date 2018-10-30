@@ -79,6 +79,14 @@ const routes = [
             loading: MyLoadingComponent
         }),
         isExact: false
+    },
+    {
+        path: "RankList",
+        component: Loadable({
+            loader: () => import("~/container/RankList/RankList"),
+            loading: MyLoadingComponent
+        }),
+        isExact: false
     }
 ];
 
