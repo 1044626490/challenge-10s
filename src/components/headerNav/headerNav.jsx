@@ -60,6 +60,7 @@ class HeaderNav extends React.Component {
                     this.refresh();
                     clearTimeout(setT)
                 },320);
+                clearTimeout(setT)
             },300)
         }
     }
