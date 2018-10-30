@@ -87,6 +87,14 @@ const routes = [
             loading: MyLoadingComponent
         }),
         isExact: false
+    },
+    {
+        path: "MyTask",
+        component: Loadable({
+            loader: () => import("~/container/MyTask/MyTask"),
+            loading: MyLoadingComponent
+        }),
+        isExact: false
     }
 ];
 
@@ -167,6 +175,7 @@ class Dashboard extends React.Component {
                         <RouteWithSubRoutes isLogin={123} key={i} {...route} />
                     ))}
                 </div>
+
                 {/*<Websocket url='ws://www.10sgame.com:8282'*/}
                            {/*required={{"type":"join_room","uid":1,"room_id":123456,"level_room":1}}*/}
                            {/*OnOpen ={{"type":"join_room","uid":1,"room_id":123456,"level_room":1}}*/}

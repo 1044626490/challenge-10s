@@ -318,7 +318,7 @@ class Index extends React.Component {
                         <span>{userInfo?userInfo.gold:0}</span>
                         <span className="my-money-item-pay" onTouchStart={()=>{window.location.href = "#/Dashboard/PayPage"}}>{null}</span>
                         <span onTouchStart={()=>{window.location.href = "#/Dashboard/RankList"}} className="my-trophy">{null}</span>
-                        <span onTouchStart={()=>{}} className="my-trophy my-task">{null}</span>
+                        <span onTouchStart={()=>{window.location.href = "#/Dashboard/MyTask"}} className="my-trophy my-task">{null}</span>
                         <span className="my-trophy relief-payment">{null}</span>
                         <span className="my-trophy sign-in">{null}</span>
                     </div>

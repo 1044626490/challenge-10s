@@ -35,7 +35,7 @@ class MyInfoModal extends React.Component{
         })
     };
 
-    saveInfo(){
+    saveInfo = () => {
         let params = {
             username:this.state.myName,
             signature:this.state.signature,
@@ -43,7 +43,11 @@ class MyInfoModal extends React.Component{
         }
         console.log(params)
         Api.updateUserinfo(params).then((res) => {
-            message.success(res.msg)
+            message.success(res.msg);
+            this.setState({
+                isResetMyInfo:false
+            });
+            this.getUserInfo()
         }).catch((err) => {
             message.error(err.msg)
         })

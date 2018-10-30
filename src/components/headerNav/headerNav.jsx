@@ -1,9 +1,12 @@
 import {Icon} from "antd";
 import React from "react";
 import history from "~/history";
-import { Carousel } from "antd"
+import { Carousel, Button } from "antd"
 import "./headerNav.less"
+import $ from "jquery"
 
+// let num = [1];
+// let num1 = 1;
 class HeaderNav extends React.Component {
     constructor(props) {
         super(props);
@@ -18,21 +21,64 @@ class HeaderNav extends React.Component {
         window.location.hash === "#/Dashboard/index"?window.location.href = "#/Dashboard/index":history.go(-1);
     }
 
-    // componentDidMount(){
-    //     setInterval(()=>{
-    //         let num = this.state.num;
-    //         let num1 = this.state.num1;
-    //         num1++;
-    //         if(this.state.num.length > 1){
-    //             num.splice(0,1)
-    //         }
-    //         num.push(num1);
-    //         this.setState({
-    //             num,
-    //             num1
-    //         })
-    //     },3000)
-    // }
+    componentDidMount(){
+    }
+
+    Carousel(){
+        let num = this.state.num;
+        let num1 = this.state.num1;
+        console.log($(".carousel-item").is(":animated"))
+        if(!$(".carousel-item").is(":animated")){
+            num1++;
+            num.push(num1);
+            this.setState({
+                num,
+                num1
+            });
+            $(".carousel-item").animate(
+                {
+                    marginTop:-20
+                },200);
+            let setT = setTimeout(()=>{
+                this.refresh();
+                clearTimeout(setT)
+            },220);
+            console.log(num1,num)
+        }else {
+            let setT = setTimeout(()=>{
+                num1++;
+                num.push(num1);
+                this.setState({
+                    num,
+                    num1
+                });
+                $(".carousel-item").animate(
+                    {
+                        marginTop:-20
+                    },300);
+                let setT = setTimeout(()=>{
+                    this.refresh();
+                    clearTimeout(setT)
+                },320);
+            },300)
+        }
+    }
+
+    refresh(){
+        let num = this.state.num;
+        if(num.length > 1){
+            console.log(12313);
+            num.splice(0,1);
+            this.setState({
+                num
+            })
+        }
+        $('.carousel-item').animate(
+            {
+                marginTop:0
+            },0)
+    }
+
     //
     // Carousel = () => {
     //     let num = this.state.num;
@@ -46,7 +92,7 @@ class HeaderNav extends React.Component {
     // }
 
     render() {
-        // console.log(this.state.num);
+        console.log(this.state.num,this.state.num1);
         // let num = this.state.num;
         return (
             <div className="top-header">
@@ -57,16 +103,23 @@ class HeaderNav extends React.Component {
                     </p>
                     <Icon type="ellipsis" theme="outlined" />
                 </div>
-                {/*<Carousel slickGoTo={this.goTo(this.state.num.length-1, true)} vertical autoplay={true} dots={false}>*/}
+                <div className="carousel-info-wrap">
+                    {
+                        this.state.num.map((item, index) => {
+                            return <p className={index === 0?"carousel-item":""} key={index}>{item}</p>
+                        })
+                    }
+                </div>
+                {/*<Carousel autoplaySpeed={1000} vertical autoplay={this.state.num.indexOf(num1) === this.state.num.length-1} dots={false}>*/}
                     {/*{*/}
-                        {/*this.state.num.map((item, index) => {*/}
-                            {/*return <div><h3>{item}</h3></div>*/}
+                        {/*num.map((item, index) => {*/}
+                            {/*return <div key={index}><h3>{item}</h3></div>*/}
                         {/*})*/}
                     {/*}*/}
                 {/*</Carousel>*/}
                 {/*<div>*/}
                 {/*</div>*/}
-                {/*<button onClick={()=>this.Carousel()}>123</button>*/}
+                <Button className="asd" onClick={()=>this.Carousel()}>模拟消息获取</Button>
             </div>
         )
     }
