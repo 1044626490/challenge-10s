@@ -6,6 +6,7 @@ import "./GameHome.less"
 
 // let userInfo = []
 let backTime = 3;
+let setI2;
 class GameHome extends React.Component{
     constructor(props) {
         super(props);
@@ -137,7 +138,7 @@ class GameHome extends React.Component{
         this.setState({
             isStartTime:true
         })
-        let setI2 = setInterval(()=>{
+        setI2 = setInterval(()=>{
             millisecond++;
             if(millisecond === 100){
                 millisecond = 0
@@ -243,7 +244,7 @@ class GameHome extends React.Component{
                                          alt=""/>
                                 </div>
                                 <p className="stop-game">
-                                    {this.state.tenSeconds >= 5?<Button>停止</Button>:null}
+                                    {this.state.tenSeconds >= 5?<Button onClick={()=>{clearInterval(setI2)}}>停止</Button>:null}
                                 </p>
                             </div>
                             {

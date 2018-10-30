@@ -79,21 +79,7 @@ class HeaderNav extends React.Component {
             },0)
     }
 
-    //
-    // Carousel = () => {
-    //     let num = this.state.num;
-    //     let num1 = this.state.num[0];
-    //     num1++;
-    //     console.log(num1,123123)
-    //     num.unshift(num1);
-    //     this.setState({
-    //         num
-    //     })
-    // }
-
     render() {
-        console.log(this.state.num,this.state.num1);
-        // let num = this.state.num;
         return (
             <div className="top-header">
                 <div className="top-name">
@@ -110,15 +96,6 @@ class HeaderNav extends React.Component {
                         })
                     }
                 </div>
-                {/*<Carousel autoplaySpeed={1000} vertical autoplay={this.state.num.indexOf(num1) === this.state.num.length-1} dots={false}>*/}
-                    {/*{*/}
-                        {/*num.map((item, index) => {*/}
-                            {/*return <div key={index}><h3>{item}</h3></div>*/}
-                        {/*})*/}
-                    {/*}*/}
-                {/*</Carousel>*/}
-                {/*<div>*/}
-                {/*</div>*/}
                 <Button className="asd" onClick={()=>this.Carousel()}>模拟消息获取</Button>
             </div>
         )
