@@ -38,40 +38,24 @@
           border-radius: 3vw;
         }
         .header-wrap{
-          padding: 5.3vw ;
+          padding: 3vw ;
           background-color: #8e7be6;
           border-radius: 10px;
+          position: relative;
           .ant-avatar{
-            width: 30%!important;
-            height: 30%!important;
+            width: 18vw!important;
+            height: 18vw!important;
             border:1px solid #fff;
+            border-radius: 2vw;
           }
           .my-info{
             padding-left: 5%;
             font-size: 3vw;
             height: 100%;
             p{
+              white-space: nowrap;
               margin-bottom: 1vh;
               color: white;
-              .open-reset-modal{
-                border-radius: 1vw;
-                float: right;
-                width: 10vw;
-                padding: 0;
-                height: 5vw;
-                background-image: url("../../../layouts/image/modal-btn-3.png");
-                background-size: 100% 100%;
-                color: white;
-                border-width: 0;
-                span{
-                  float: left;
-                  font-size: 2vw;
-                  display: inline-block;
-                  width: 10vw;
-                  height: 5vw;
-                  line-height: 5vw;
-                }
-              }
             }
             input{
               width: 50%;
@@ -89,16 +73,41 @@
             text-align: left;
           }
           .my-account{
-            font-size: 2vw;
-            margin-top: 1vh;
-            padding: 0 4vw;
+            font-size: 3vw;
+            margin-top: 4vw;
+            padding: 0 2vw;
             border-radius: 1vw;
             background-color: #7663c9;
+            white-space: nowrap;
             color: white;
             height: 6vw;
             line-height: 6vw;
+            margin-right: 20vw;
+            position: relative;
             span{
               white-space: nowrap;
+            }
+            .open-reset-modal{
+              border-radius: 1vw;
+              position: absolute;
+              right: -12vw;
+              top: 50%;
+              transform: translateY(-50%);
+              width: 10vw;
+              padding: 0;
+              height: 5vw;
+              background-image: url("../../../layouts/image/modal-btn-3.png");
+              background-size: 100% 100%;
+              color: white;
+              border-width: 0;
+              span{
+                float: left;
+                font-size: 2vw;
+                display: inline-block;
+                width: 10vw;
+                height: 5vw;
+                line-height: 5vw;
+              }
             }
           }
         }
@@ -162,7 +171,8 @@
   }
 }
 .reset-my-info{
-  height: 45vh!important;
+  height: 85vw!important;
+  z-index: 9999;
   .ant-modal-content{
     padding: 0!important;
   }
@@ -181,21 +191,21 @@
     }
   }
   .reset-my-info-container{
-    height: 5.9vh;
-    line-height: 5.9vh;
+    height: 11vw;
+    line-height: 11vw;
     color: white;
-    font-size: 6vw;
+    font-size: 5vw;
     font-weight: 500;
     letter-spacing: 1px;
     text-align: center;
     margin: 0;
   }
   .reset-info-item{
-    padding-top: 2vh;
+    padding-top: 4vw;
     text-align: center;
     margin: 1vh auto;
     border-radius: 2vw;
-    height: 36vh;
+    height: 68vw;
     width: 89.81%!important;
     background-color: #8e7be1;
     >div{
@@ -243,7 +253,7 @@
 
       span{
         float: left;
-        font-size: 1vw;
+        font-size: 3vw;
         display: inline-block;
         width: 18vw;
         height: 3vh;

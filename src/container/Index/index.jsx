@@ -97,7 +97,8 @@ class Index extends React.Component {
             isResetMyInfo:false,
             isOpenModel:false,
             isOpenInfoModel:false,
-            isOpenMask:false
+            isOpenMask:false,
+            loginLocation:"2"
             // inputIndex:0,
         };
     }
@@ -124,13 +125,13 @@ class Index extends React.Component {
 
     getUserInfo = () => {
         this.props.dispatch(fetchPostsGetUser()).then((res) => {
-            console.log(res.data)
+            console.log(res.data);
             this.setState({
                 isLogin:!res.msg,
                 userInfo:res.data
             })
         }).catch((err) => {
-            console.log(err)
+            console.log(err);
             this.setState({
                 isLogin:true,
             })
@@ -155,11 +156,26 @@ class Index extends React.Component {
     inputNumber = (button, indexs) => {
         let arr = this.state.intoHomePwd;
         let index = arr.indexOf("");
-        console.log(button[indexs],arr);
-        index !== -1?arr[index] = button[indexs]:null;
-        this.setState({
-            intoHomePwd:arr
-        })
+        console.log(isNaN(button[indexs]));
+        if(!isNaN(button[indexs])){
+            if(index > 0){
+                index !== -1?arr[index] = button[indexs]:null;
+                this.setState({
+                    intoHomePwd:arr
+                })
+            }else {
+                message.warning("请先输入房间等级“S”“M”“H”")
+            }
+        }else {
+            if(index === 0){
+                index !== -1?arr[index] = button[indexs]:null;
+                this.setState({
+                    intoHomePwd:arr
+                })
+            }else {
+                message.warning("后5位只能为数字")
+            }
+        }
     };
 
     resetInput = () => {
@@ -245,7 +261,6 @@ class Index extends React.Component {
             return false
         }
         let params = name === "loginForm"?this.state.login:this.state.register;
-        console.log(123456456456)
         name === "loginForm"?this.props.dispatch(fetchPostsIfNeeded(params)).then((res) => {
             if(res.code ==="0000"){
                 message.success(res.msg);
@@ -255,7 +270,11 @@ class Index extends React.Component {
         }).catch((err) => {
             message.error(err.msg);
         }):Api.register(params).then((res)=>{
-            message.success(res.msg)
+            message.success(123123132);
+            // message.success(res.msg);
+            this.setState({
+                loginLocation:"2"
+            })
         }).catch((err)=>{
             message.error(err.msg)
         })
@@ -280,7 +299,7 @@ class Index extends React.Component {
     };
 
     render(){
-        console.log(this.state.isOpenInfoModel)
+        console.log(this.props.userInfo)
         const button = ["S","M","H","1","2","3","4","5","6","7","8","9","重输","0","确认"];
         const userInfo = this.props.userInfo.data;
         const item = ["初级房间","中级房间","高级房间","输入房号"];
@@ -293,22 +312,22 @@ class Index extends React.Component {
                 <div className="random-invite">
                     {
                         !this.state.isOpenMask?<Badge dot={true}>
-                            <span onTouchStart={()=>this.setState({isOpenMask:true})} className="invite-hide"></span>
-                        </Badge>:<span onTouchStart={()=>this.setState({isOpenMask:false})} className="invite-close">
+                            <span onClick={()=>this.setState({isOpenMask:true})} className="invite-hide"></span>
+                        </Badge>:<span onClick={()=>this.setState({isOpenMask:false})} className="invite-close">
                         </span>
                     }
                 </div>
                 {
                     this.state.isOpenMask?<div className="random-invite-info">
-                        <p>[M123456]: 玩家“阿狸大大”邀请你入房    <span>接受</span><span>拒绝</span></p>
-                        <p>[M123456]: 玩家“阿狸大大”邀请你入房    <span>接受</span><span>拒绝</span></p>
-                        <p>[M123456]: 玩家“阿狸大大”邀请你入房    <span>接受</span><span>拒绝</span></p>
-                        <p>[M123456]: 玩家“阿狸大大”邀请你入房    <span>接受</span><span>拒绝</span></p>
-                        <p>[M123456]: 玩家“阿狸大大”邀请你入房    <span>接受</span><span>拒绝</span></p>
+                        <p><span className="message">[M123456]</span>: 玩家“阿狸大大”邀请你入房    <span className="message">接受</span><span>拒绝</span></p>
+                        <p><span className="message">[M123456]</span>: 玩家“阿狸大大”邀请你入房    <span className="message">接受</span><span>拒绝</span></p>
+                        <p><span className="message">[M123456]</span>: 玩家“阿狸大大”邀请你入房    <span className="message">接受</span><span>拒绝</span></p>
+                        <p><span className="message">[M123456]</span>: 玩家“阿狸大大”邀请你入房    <span className="message">接受</span><span>拒绝</span></p>
+                        <p><span className="message">[M123456]</span>: 玩家“阿狸大大”邀请你入房    <span className="message">接受</span><span>拒绝</span></p>
                     </div>:null
                 }
                 <div className="head-wrap">
-                    <img onTouchStart={()=>this.openInfoModal(true)} src={userInfo?userInfo.avatar:require("../../layouts/image/head.png")} alt=""/>
+                    <img onClick={()=>this.openInfoModal(true)} src={userInfo?userInfo.avatar:require("../../layouts/image/head.png")} alt=""/>
                     <div className="my-info">
                         <span>{userInfo?userInfo.username:""}</span>
                         <br/>
@@ -316,9 +335,9 @@ class Index extends React.Component {
                     </div>
                     <div className="my-money-item">
                         <span>{userInfo?userInfo.gold:0}</span>
-                        <span className="my-money-item-pay" onTouchStart={()=>{window.location.href = "#/Dashboard/PayPage"}}>{null}</span>
-                        <span onTouchStart={()=>{window.location.href = "#/Dashboard/RankList"}} className="my-trophy">{null}</span>
-                        <span onTouchStart={()=>{window.location.href = "#/Dashboard/MyTask"}} className="my-trophy my-task">{null}</span>
+                        <span className="my-money-item-pay" onClick={()=>{window.location.href = "#/Dashboard/PayPage"}}>{null}</span>
+                        <span onClick={()=>{window.location.href = "#/Dashboard/RankList"}} className="my-trophy">{null}</span>
+                        <span onClick={()=>{window.location.href = "#/Dashboard/MyTask"}} className="my-trophy my-task">{null}</span>
                         <span className="my-trophy relief-payment">{null}</span>
                         <span className="my-trophy sign-in">{null}</span>
                     </div>
@@ -327,7 +346,7 @@ class Index extends React.Component {
                     {
                         item.map((item, index) => {
                             return <div key={index} className="index-content-item"
-                                        onTouchStart={item === "输入房号"?()=>this.openModal(true):
+                                        onClick={item === "输入房号"?()=>this.openModal(true):
                                             ()=>{window.location.href = "#/Dashboard/NewHome/"+index}}>
                                     {item !== "输入房号"?<span>people-number</span>:null}
                                     {item !== "输入房号"?<i className="eyes-game">
@@ -343,9 +362,11 @@ class Index extends React.Component {
 
                     </div>
                     <ul className="game-rule-item">
-                        <li>1.游戏规则游戏规则游戏规则</li>
-                        <li>2.游戏规则游戏规则游戏规则游戏规则游戏规则游戏规则游戏规则游戏规则游戏规则</li>
-                        <li>3.游戏规则游戏规则</li>
+                        <li>1.金币可通过新手任务、每日签到、对战、充值获得，破产后也可领取救济金</li>
+                        <li>2.游戏3人以下对战，最接近10秒的玩家获胜；3人以上，前三获胜
+                            （金币分配：第一名50%，第二名30%，第三名20%，平局则并列平分该名次、金币）。</li>
+                        <li>3.游戏结束后可选择直接退出，或者再来一局。</li>
+                        <li>4. 房间设有观战模式。玩家可进入房间旁观高手对战，对战玩家退出时也可抢座参与游戏。</li>
                     </ul>
                 </div>
                 <BottomMenu />
@@ -359,7 +380,7 @@ class Index extends React.Component {
                                 }
                                     {
                                         this.state.isLogin?null:
-                                            <span onTouchStart={()=>this.openModal(false)}>
+                                            <span onClick={()=>this.openModal(false)}>
                                             </span>
                                     }
                                 </p>
@@ -367,7 +388,7 @@ class Index extends React.Component {
                             {
                                 this.state.isLogin?
                                     <div className="login-register">
-                                        <Tabs defaultActiveKey="1" animated={false} onChange={null}>
+                                        <Tabs activeKey={this.state.loginLocation} animated={false} onChange={(value)=>{this.setState({loginLocation:value})}}>
                                             <TabPane tab="新用户注册" key="1">
                                                 <div>
                                                     <Form>
@@ -393,7 +414,7 @@ class Index extends React.Component {
                                                             })
                                                         }
                                                         <FormItem>
-                                                            <Button onTouchStart={()=>this.handleSubmit("Register")} className="check-button" type="primary">注册</Button>
+                                                            <Button onClick={()=>this.handleSubmit("Register")} className="check-button" type="primary">注册</Button>
                                                         </FormItem>
                                                     </Form>
                                                 </div>
@@ -418,7 +439,7 @@ class Index extends React.Component {
                                                             })
                                                         }
                                                         <FormItem>
-                                                            <Button onClick={()=>this.handleSubmit("loginForm")} onTouchStart={()=>this.handleSubmit("loginForm")} className="check-button" type="primary">登录</Button>
+                                                            <Button onClick={()=>this.handleSubmit("loginForm")} onClick={()=>this.handleSubmit("loginForm")} className="check-button" type="primary">登录</Button>
                                                         </FormItem>
                                                     </Form>
                                                 </div>
@@ -430,7 +451,7 @@ class Index extends React.Component {
                                         <span>{this.state.isHomeNeedPwd?"请输入口令":"请输入房间号"}</span>
                                         {
                                             this.state.intoHomePwd.map((item, index)=>{
-                                                return <span key={index} className="input-item" onTouchStart={()=>this.inputPwd(index)}>{item}</span>
+                                                return <span key={index} className="input-item" onClick={()=>this.inputPwd(index)}>{item}</span>
                                             })
                                         }
                                     </div>
@@ -438,19 +459,19 @@ class Index extends React.Component {
                                         {
                                             button.map((item, index) => {
                                                 if(item === "重输"){
-                                                    return <button key={index} onTouchStart={()=>this.resetInput()}><img src={require("../../layouts/image/reset.png")} alt=""/></button>
+                                                    return <button key={index} onClick={()=>this.resetInput()}><img src={require("../../layouts/image/reset.png")} alt=""/></button>
                                                 }else if (item === "确认"){
-                                                    return <button key={index} disabled={this.state.intoHomePwd.indexOf("") !== -1} onTouchStart={()=>this.intoHome()}>
+                                                    return <button key={index} disabled={this.state.intoHomePwd.indexOf("") !== -1} onClick={()=>this.intoHome()}>
                                                         <img src={require("../../layouts/image/check.png")} alt=""/>
                                                     </button>
                                                 }
                                                 if(!this.state.isHomeNeedPwd){
-                                                    return <button key={index} onTouchStart={()=>this.inputNumber(button, index)}>
+                                                    return <button key={index} onClick={()=>this.inputNumber(button, index)}>
                                                         <img src={require("../../layouts/image/"+item+".png")} alt=""/>
                                                     </button>
                                                 }else {
                                                     if(index > 2){
-                                                        return <button key={index} onTouchStart={()=>this.inputNumber(button, index)}>
+                                                        return <button key={index} onClick={()=>this.inputNumber(button, index)}>
                                                             <img src={require("../../layouts/image/"+item+".png")} alt=""/>
                                                         </button>
                                                     }

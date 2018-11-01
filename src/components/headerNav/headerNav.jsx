@@ -11,8 +11,8 @@ class HeaderNav extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            num:[1],
-            num1:1,
+            num:["玩家阿狸大大获得百胜成就"],
+            num1:"玩家阿狸大大获得百胜成就",
         }
     }
 
@@ -29,7 +29,8 @@ class HeaderNav extends React.Component {
         let num1 = this.state.num1;
         console.log($(".carousel-item").is(":animated"))
         if(!$(".carousel-item").is(":animated")){
-            num1++;
+            let a = Math.random()
+            num1.concat(a);
             num.push(num1);
             this.setState({
                 num,
@@ -74,6 +75,22 @@ class HeaderNav extends React.Component {
                 num
             })
         }
+        if(num.length === 1){
+            let setT = setTimeout(()=>{
+                $('.carousel-item').animate(
+                    {
+                        marginTop:-20
+                    },300);
+                num.splice(0,1);
+                clearTimeout(setT)
+            },3000);
+            let setTT = setTimeout(()=>{
+                this.setState({
+                    num
+                });
+                clearTimeout(setTT)
+            },3320);
+        }
         $('.carousel-item').animate(
             {
                 marginTop:0
@@ -84,7 +101,9 @@ class HeaderNav extends React.Component {
         return (
             <div className="top-header">
                 <div className="top-name">
-                    <span onTouchStart={(e)=>this.goBackHistory(e)}><Icon type="left" theme="outlined" />返回</span>
+                    {
+                        window.location.hash === "#/Dashboard/index"?null:<span onClick={(e)=>this.goBackHistory(e)}><Icon type="left" theme="outlined" />返回</span>
+                    }
                     <p>
                         {this.props.name}
                     </p>
@@ -93,11 +112,16 @@ class HeaderNav extends React.Component {
                 <div className="carousel-info-wrap">
                     {
                         this.state.num.map((item, index) => {
-                            return <p className={index === 0?"carousel-item":""} key={index}>{item}</p>
+                            return <p className={index === 0?"carousel-item":""} key={index}>
+                                <span className="trumpet"></span>
+                                <span>{item.slice(0,2)}</span>
+                                <span style={{color:"rgba(222,204,53,0.7)"}}>{item.slice(2,6)}</span>
+                                <span>{item.slice(6,item.length)}</span>
+                            </p>
                         })
                     }
                 </div>
-                <Button className="asd" onClick={()=>this.Carousel()}>模拟消息获取</Button>
+                {/*<button style={{marginTop:30}} onClick={()=>this.Carousel()}>123</button>*/}
             </div>
         )
     }

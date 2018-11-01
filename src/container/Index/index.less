@@ -43,12 +43,16 @@
       top:50%;
       transform: translateY(-50%);
     }
-    span:not(.my-trophy){
-      font-size: 2vw;
+    span:not(.my-trophy) {
+      font-size: 3vw;
       display: inline-block;
-      height: 5vw;
-      line-height: 5vw;
+      height: 4vw;
+      line-height: 4vw;
+      float: right;
     }
+    //span:not(.my-trophy){
+    //  font-size: 3vw;
+    //}
     .my-money-item-pay{
       content: "";
       display: inline-block;
@@ -147,7 +151,7 @@
   .random-invite{
     position: fixed;
     left: 0;
-    top: 60%;
+    top: 70%;
     z-index: 999;
     width: 12vw;
     .invite-hide{
@@ -169,6 +173,8 @@
       position: absolute;
       top: 0.75vw;
       left: 2vw;
+      width: 2vw;
+      height: 2vw;
       border-width: 0;
       box-shadow: 0 0 0 0 transparent;
     }
@@ -176,11 +182,12 @@
   .random-invite-info{
     position: fixed;
     left: 12vw;
-    top: 47%;
+    top: 56%;
     z-index: 9999;
     height: 30vh;
     width: 80vw;
     p{
+      white-space: nowrap;
       padding-left: 2vw;
       margin-bottom: 2vh;
       width: 80vw;
@@ -190,10 +197,13 @@
       color: white;
       font-size: 3vw;
       background-color: rgba(0,0,0,0.7);
-      span:first-child{
+     .message{
         display: inline-block;
         margin: 0 2vw;
         color: #decc35;
+      }
+      .message:first-child{
+        margin: 0;
       }
     }
     p:first-child,p:last-child{
@@ -216,9 +226,7 @@
       width: 42.67vw;
       height: 17vh;
       overflow: hidden;
-      background-repeat: no-repeat;
-      background-position: center;
-      background-size: 100%;
+      background-size: 100% 100%;
       .eyes-game{
         position: absolute;
         right: 0;
@@ -294,6 +302,7 @@
       list-style: none;
       color: #fff;
       margin-top: 3vh;
+      margin-bottom: 14vh;
       li{
         font-size: 2vh;
         width: 80vw;
@@ -307,10 +316,11 @@
   }
 }
 .into-home-modal{
+  overflow: visible;
   width: 80vw!important;
   margin: 0;
   position: fixed;
-  top:50%;
+  top:40%;
   left: 50%;
   transform: translate(-50%,-50%);
   padding: 5px;
@@ -322,7 +332,7 @@
     border-radius: 5px;
     margin: 0;
     width: 80vw!important;
-    width: 80vw!important;
+    height: auto!important;
     position: absolute;
     top: 0;
     left: 0;
@@ -342,8 +352,9 @@
               background-image: url("../../layouts/image/border-img.png");
               background-size: 100%;
               position: absolute;
-              padding: 15px;
+              padding: 5vw 5vw 0;
               margin-left: -0.2px;
+              overflow: visible;
               .ant-tabs-nav-wrap{
                 width: 90%;
                 margin: 0 auto;
@@ -374,7 +385,11 @@
               }
               .ant-tabs-content{
                 text-align: center;
+                .ant-form-item{
+                  margin-bottom: 1vw;
+                }
                 .ant-form-item-control-wrapper{
+                  text-align: center;
                   .before-icon{
                     position: absolute;
                     font-size: 1.2em;
@@ -396,7 +411,7 @@
                     border-bottom: 1px solid #5a577f!important;
                   }
                   .get-kaptchald{
-                    font-size: 2vw;
+                    font-size: 3vw;
                     margin-left: 4vw;
                     border-radius: 10px;
                     height: 3.6vh;
@@ -411,12 +426,10 @@
                     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=rgb(247,207,40),endColorstr=rgb(108,113,6),GradientType=0);
                   }
                   .check-button{
-                    font-size: 2vw;
+                    font-size: 3.5vw;
                     border-width: 0;
-                    border-radius: 5px;
-                    margin-left: 50%;
-                    transform: translateX(-50%);
-                    width: 25vw;
+                    border-radius: 3vw;
+                    width: 40%;
                     height: 3.7vh;
                     box-shadow: 0 0 5px 1px rgb(127,237,63);
                     background: -webkit-linear-gradient(top,rgb(127,237,63) 0,rgb(20,109,2) 100%);
@@ -430,6 +443,17 @@
                   }
                 }
               }
+            }
+            .ant-tabs:after{
+              content: "";
+              display: inline-block;
+              background-image: url("../../layouts/image/bor_bottow.png");
+              background-size: 100% 100%;
+              position: absolute;
+              bottom: -2vw;
+              left: 0;
+              width: 80vw;
+              height: 2vw;
             }
           }
           .into-home-header{

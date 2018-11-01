@@ -77,6 +77,7 @@ class NewHome extends React.Component {
 
 
     finHome = () =>{
+        console.log(123123123)
         let intoHomePwd = this.state.intoHomePwd;
         if(intoHomePwd.indexOf("") === -1 || intoHomePwd.indexOf("") === 0){
             let params = {
@@ -120,7 +121,7 @@ class NewHome extends React.Component {
                             <Button onClick={()=>this.radomeHome()}><p>随机匹配</p></Button>
                         </div>
                         <div className="into-home-button">
-                            <Button onTouchStart={()=>this.openModal(true)}><p>新建房间</p></Button>
+                            <Button onClick={()=>this.openModal(true)}><p>新建房间</p></Button>
                         </div>
                     </div>
                 </div>
@@ -129,17 +130,17 @@ class NewHome extends React.Component {
                        closable={false} destroyOnClose={true}>
                     <div className="into-home">
                             <div className="into-home-header">
-                                <p>加入房间
-                                    <span onTouchStart={()=>this.openModal(false)}>
+                                <p>创建房间
+                                    <span onClick={()=>this.openModal(false)}>
                                     </span>
                                 </p>
                             </div>
                         <div className="modal-content">
                             <div className="into-home-password">
-                                <span>请输入口令</span>
+                                <span>请设置口令</span>
                                 {
                                     this.state.intoHomePwd.map((item, index)=>{
-                                        return <span key={index} className="input-item" onTouchStart={()=>this.inputPwd(index)}>{item}</span>
+                                        return <span key={index} className="input-item" onClick={()=>this.inputPwd(index)}>{item}</span>
                                     })
                                 }
                             </div>
@@ -147,13 +148,13 @@ class NewHome extends React.Component {
                                 {
                                     button.map((item, index) => {
                                         if(item === "重输"){
-                                            return <button key={index} onTouchStart={()=>this.resetInput()}><img src={require("../../layouts/image/reset.png")} alt=""/></button>
+                                            return <button key={index} onClick={()=>this.resetInput()}><img src={require("../../layouts/image/reset.png")} alt=""/></button>
                                         }else if (item === "确认"){
-                                            return <button key={index} disabled={this.state.intoHomePwd.indexOf("") !== -1} onTouchStart={()=>this.finHome()}>
+                                            return <button key={index} disabled={this.state.intoHomePwd.indexOf("") !== -1&&this.state.intoHomePwd.indexOf("") !== 0} onClick={()=>this.finHome()}>
                                                 <img src={require("../../layouts/image/check.png")} alt=""/>
                                             </button>
                                         }
-                                        return <button key={index} onTouchStart={()=>this.inputNumber(button, index)}>
+                                        return <button key={index} onClick={()=>this.inputNumber(button, index)}>
                                             <img src={require("../../layouts/image/"+item+".png")} alt=""/>
                                         </button>
                                     })

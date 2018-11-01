@@ -1,11 +1,11 @@
 import React from "react"
 import HeaderNav from "../../components/headerNav/headerNav";
-import { Modal, Avatar, Button, Drawer, Icon, Popconfirm } from "antd"
+import { Modal, Avatar, Button, Drawer, Icon, Popconfirm, message } from "antd"
 import connect from "react-redux/es/connect/connect";
+import OtherUserInfo from "./component/OtherUserInfo"
+import Api from '~/until/api';
 import "./GameHome.less"
 
-// let userInfo = []
-let backTime = 3;
 let setI2;
 class GameHome extends React.Component{
     constructor(props) {
@@ -27,7 +27,13 @@ class GameHome extends React.Component{
             isOpenPlayer:false,
             playerInfo:[],
             level:"初级",
-            isOpenMask:false
+            isOpenMask:false,
+            otherPlayer:[],
+            room_order:null,
+            gameResult:[],
+            userResult:[],
+            isGameOver:false,
+            NOme:0
         }
     }
 
@@ -41,6 +47,12 @@ class GameHome extends React.Component{
         })
     }
 
+    gameStart(){;
+        this.setState({
+            isOpenMask:false
+        })
+    }
+
     getWebSocket = (homeId) => {
         let level = homeId.slice(0,1);
         let level1 = level === "S"?1:level === "M"?2:3;
@@ -51,77 +63,117 @@ class GameHome extends React.Component{
         };
         this.ws.onmessage = (e)=>{
             let data = JSON.parse(e.data);
-            let userData = data.data
+            let userData = data.data;
             let type = data.type || "";
+            console.log(userData)
             switch (type) {
                 case "ping":
-
                     break;
-
                 case 'active':
-                    // let user_data = JSON.parse(data.data);
+                    if(userData){
+                        if(userData.length){
+                            let id = this.state.userInfo.uid;
+                            for(let i=0;i<userData.length;i++){
+                                if(id === userData[i].uid){
+                                    this.setState({
+                                        isHomeowner:userData[i].is_homeowner
+                                    })
+                                }
+                            }
+                            let length = userData.length
+                            for(let i = length;i < 6;i++){
+                                userData.push({})
+                            }
+                            this.setState({
+                                userData
+                            })
+                        }else {
+                            let arr = [];
+                            arr[0] = userData["0"];
+                            arr[0].is_homeowner = userData.is_homeowner;
+                            for(let i = 1;i < 6;i++){
+                                arr.push({})
+                            }
+                            this.setState({
+                                isHomeowner:true,
+                                userData:arr
+                            })
+                        }
+                    }
                     break;
-
+                case 'join_room':
+                    break;
                 case 'leave':
-                    // let user_datas = JSON.parse(data.data);
+                    break;
+                case 'rank_result':
+                    let NOme = this.state.NOme;
+
+                    for(let j=0;j<userData.length-1;j++){
+                        //两两比较，如果前一个比后一个大，则交换位置。
+                        for(let i=0;i<userData.length-1-j;i++){
+                            if(userData[i]>userData[i+1]){
+                                let temp = userData[i];
+                                userData[i] = userData[i+1];
+                                userData[i+1] = temp;
+                            }
+                        }
+                    }
+                    for(let i=0;i<userData.length;i++){
+                        if(Number(this.state.userInfo.uid) === userData[i].uid){
+                            NOme = i+1
+                        }
+                    }
+                    this.setState({
+                        gameResult:userData,
+                        isGameOver:true
+                    });
+                    break;
+                case 'begin_game':
+                    let setI = setTimeout(()=>{
+                        this.setState({
+                            isReadyGame:true,
+                            isStartGame:true,
+                            isOpenMask:false,
+                            backTime:3,
+                            room_order:data.room_order
+                        });
+                        clearTimeout(setI)
+                    },100);
+                    break;
+                case 'user_result':
+                    this.setState({
+                        userResult:userData
+                    });
                     break;
                 default:
                     break;
             }
-            if(userData){
-                if(userData.length){
-                    let id = this.state.userInfo.uid;
-                    for(let i=0;i<userData.length;i++){
-                        if(id === userData[i].uid){
-                            this.setState({
-                                isHomeowner:userData[i].is_homeowner
-                            })
-                        }
-                    }
-                    let length = userData.length
-                    for(let i = length;i < 6;i++){
-                        userData.push({})
-                    }
-                    this.setState({
-                        userData
-                    })
-                }else {
-                    let arr = [];
-                    arr[0] = userData["0"];
-                    arr[0].is_homeowner = userData.is_homeowner;
-                    for(let i = 1;i < 6;i++){
-                        arr.push({})
-                    }
-                    this.setState({
-                        isHomeowner:true,
-                        userData:arr
-                    })
-                }
-            }
-            console.log(data)
         }
-    }
+    };
 
     componentWillUnmount(){
         this.ws.close()
     }
 
     startGame = () => {
-        this.setState({
-            isReadyGame:true,
-            isOpenMask:false
-        });
-        let setI = setTimeout(()=>{
-            this.setState({
-                isStartGame:true
-            });
+        let userData = [];
+        for(let i=0;i<6;i++){
+            if(this.state.userData[i].uid){
+                userData.push(this.state.userData[i].uid)
+            }
+        }
+        let params = {
+            uid:userData.join(","),
+            room_id:this.state.homeId
+        };
+        Api.beginGame(params).then((res) =>{
 
-            clearTimeout(setI)
-        },100)
+        }).catch(err => {
+        });
     };
 
     backTime = () =>{
-        let arr = [];
+        let backTime = 3;
         let setI2 = setInterval(()=>{
             this.setState({
                 backTime:--backTime
@@ -137,7 +189,7 @@ class GameHome extends React.Component{
         let tenSeconds = Number(this.state.tenSeconds);
         this.setState({
             isStartTime:true
-        })
+        });
         setI2 = setInterval(()=>{
             millisecond++;
             if(millisecond === 100){
@@ -156,9 +208,43 @@ class GameHome extends React.Component{
         },10)
     };
 
-    openPlayerInfo(){
-        this.setState({
-            isOpenPlayer:true
+    openPlayerInfo = (isOpen,uid) => {
+        if(isOpen){
+            Api.otherUserInfo({uid}).then((res) => {
+                this.setState({
+                    otherPlayer:res.data,
+                    isOpenPlayer:isOpen
+                })
+            });
+        }else {
+            this.setState({
+                otherPlayer:[],
+                isOpenPlayer:isOpen
+            })
+        }
+    };
+
+    returnHome = () =>{
+        console.log(1111111);
+        window.location.href = "#/Dashboard/GameHome/"+this.state.homeId
+    };
+
+    gameOver(){
+        clearInterval(setI2);
+        let resultTen = this.state.tenSeconds;
+        let resultMil = this.state.millisecond;
+        if(resultMil.length < 2){
+            resultMil = "0"+resultMil
+        }
+        let result = resultTen.concat(resultMil);
+        let params = {
+            result,
+            room_id:this.state.homeId,
+            uid:this.state.userInfo.uid,
+            room_order:this.state.room_order
+        };
+        Api.gameOver(params).then(res => {
+        }).catch(err => {
         })
     }
 
@@ -166,6 +252,7 @@ class GameHome extends React.Component{
         if(!this.state.isStartTime&&this.state.isStartGame&&this.state.backTime <= 0&&this.state.millisecond === "0"&&this.state.tenSeconds === "0"){
             this.timeGoOn()
         }
+        const uid = this.props.userInfo.data.uid;
         return(
             <div className="game-home-wrap">
                 <HeaderNav name={"["+this.state.homeId+"]"}/>
@@ -191,15 +278,10 @@ class GameHome extends React.Component{
                             <ul>
                                 {
                                     this.state.userData&&this.state.userData.map((item ,index) => {
-                                        if(item.is_homeowner === 1){
-                                            return <li key={index} className="home">
-                                                    <Avatar onTouchStart={()=>this.openPlayerInfo()} icon="user" src={item.avatar||require("../../layouts/image/sc.png")} alt=""/>
-                                                    <span className="is-homeowner">房主</span>
-                                                </li>
-                                        }
-                                        return <li key={index}>
-                                            <Avatar icon="user" src={item.avatar||require("../../layouts/image/sc.png")} alt=""/>
-                                        </li>
+                                        return <li key={index} className={item.is_homeowner === 1?"home":""}>
+                                            <Avatar onClick={item.uid === uid?null:()=>this.openPlayerInfo(true,item.uid)} icon="user" src={item.avatar||require("../../layouts/image/sc.png")} alt=""/>
+                                                {item.is_homeowner === 1?<span className="is-homeowner">房主</span>:null}
+                                            </li>
                                     })
                                 }
                             </ul>
@@ -207,10 +289,12 @@ class GameHome extends React.Component{
                                 <Popconfirm overlayClassName={"start-game-pop"}
                                             placement="top" title={"确认开始"}
                                             onCancel={()=>this.startGame()}
-                                            onConfirm={()=>{this.setState({isOpenMask:false})}}
+                                            onVisibleChange={()=>this.gameStart()}
+                                            onConfirm={()=>this.gameStart()}
                                             okText="取消"
                                             cancelText="确认">
-                                    <Button onClick={()=>{this.setState({isOpenMask:true})}} disabled={false}>开始游戏</Button>
+                                    <Button className={this.state.userData.length&&!this.state.userData[1].uid?"start-game-no":"start-game-yes"}
+                                            disabled={this.state.userData.length&&!this.state.userData[1].uid}>开始游戏</Button>
                                 </Popconfirm>
                             </div>
                         </div>
@@ -222,29 +306,38 @@ class GameHome extends React.Component{
                 :<div>
                         <div className="game-start-menber-content">
                             <div className="time-goeson">
-                                <div>
-                                    <img src={this.state.tenSeconds < 10?
-                                        require("../../layouts/image/timego/0.png"):
-                                        require("../../layouts/image/timego/"+this.state.tenSeconds[0]+".png")}
-                                         alt=""/>
-                                </div>
-                                <div>
-                                    <img src={require("../../layouts/image/timego/"+this.state.tenSeconds.slice(this.state.tenSeconds.length-1,this.state.tenSeconds.length)+".png")}
-                                         alt=""/>
-                                </div>
-                                <span className="point">:</span>
-                                <div>
-                                    <img src={this.state.millisecond < 10?
-                                    require("../../layouts/image/timego/0.png"):
-                                    require("../../layouts/image/timego/"+this.state.millisecond[0]+".png")}
-                                          alt=""/>
-                                </div>
-                                <div>
-                                    <img src={require("../../layouts/image/timego/"+this.state.millisecond.slice(this.state.millisecond.length-1,this.state.millisecond.length)+".png")}
-                                         alt=""/>
-                                </div>
+                                {/*<div>*/}
+                                    {/*<img src={this.state.tenSeconds < 10?*/}
+                                        {/*require("../../layouts/image/timego/0.png"):*/}
+                                        {/*require("../../layouts/image/timego/"+this.state.tenSeconds[0]+".png")}*/}
+                                         {/*alt=""/>*/}
+                                {/*</div>*/}
+                                {/*<div>*/}
+                                    {/*<img src={require("../../layouts/image/timego/"+this.state.tenSeconds.slice(this.state.tenSeconds.length-1,this.state.tenSeconds.length)+".png")}*/}
+                                         {/*alt=""/>*/}
+                                {/*</div>*/}
+                                <span className="point">
+                                    {this.state.tenSeconds < 10?
+                                        "0"+this.state.tenSeconds:this.state.tenSeconds}
+                                        <span>
+                                            :
+                                        </span>
+                                    &nbsp;
+                                    {this.state.millisecond < 10?
+                                        "0"+this.state.millisecond:this.state.millisecond}
+                                </span>
+                                {/*<div>*/}
+                                    {/*<img src={this.state.millisecond < 10?*/}
+                                    {/*require("../../layouts/image/timego/0.png"):*/}
+                                    {/*require("../../layouts/image/timego/"+this.state.millisecond[0]+".png")}*/}
+                                          {/*alt=""/>*/}
+                                {/*</div>*/}
+                                {/*<div>*/}
+                                    {/*<img src={require("../../layouts/image/timego/"+this.state.millisecond.slice(this.state.millisecond.length-1,this.state.millisecond.length)+".png")}*/}
+                                         {/*alt=""/>*/}
+                                {/*</div>*/}
                                 <p className="stop-game">
-                                    {this.state.tenSeconds >= 5?<Button onClick={()=>{clearInterval(setI2)}}>停止</Button>:null}
+                                    {this.state.tenSeconds >= 5?<Button onClick={()=>this.gameOver()}>停止</Button>:null}
                                 </p>
                             </div>
                             {
@@ -252,56 +345,66 @@ class GameHome extends React.Component{
                             }
                             {
                                 this.state.isStartGame&&this.state.backTime > 0?<div className="game-back-time">
-                                    <img className={"game-back-time"+this.state.backTime} src={require("../../layouts/image/back"+this.state.backTime+".png")} alt=""/>
+                                    <img className={"game-back-time"+this.state.backTime} src={require("../../layouts/image/back"+
+                                        this.state.backTime+".png")} alt=""/>
                                 </div>:null
                             }
                             <ul className={this.state.isStartGame?"game-start":null}>
                                 {
                                     this.state.userData&&this.state.userData.map((item ,index) => {
-                                        if(item.is_homeowner === 1){
-                                            return <li key={index} className="home">
-                                                <Avatar icon="user" src={item.avatar||require("../../layouts/image/sc.png")} alt=""/>
-                                                <span className="is-homeowner">房主</span>
+                                        // if(item.is_homeowner === 1){
+                                            return <li key={index} className={item.is_homeowner === 1?"home":""}>
+                                                    {
+                                                        this.state.userResult.map((item1, index1)=>{
+                                                                return Number(item1.uid) === item.uid?
+                                                                <i className="user-mask">
+                                                                    {item1.result.slice(0,-2)}:{item1.result.slice(-2,item1.result.length)}
+                                                                </i>:null
+                                                        })
+                                                    }
+                                                <Avatar onClick={item.uid?item.uid === uid?null:()=>this.openPlayerInfo(true,item.uid):null}
+                                                        icon="user" src={item.avatar||require("../../layouts/image/sc.png")} alt=""/>
+                                                    {
+                                                        item.is_homeowner === 1?<span className="is-homeowner">房主</span>:null
+                                                    }
                                             </li>
-                                        }
-                                        return <li key={index}>
-                                            <Avatar icon="user" src={item.avatar||require("../../layouts/image/sc.png")} alt=""/>
-                                        </li>
                                     })
                                 }
                             </ul>
                         </div>
                     </div>
                 }
-                <Drawer
-                    title=""
-                    maskClosable={false}
-                    closable={false}
-                    onClose={this.onClose}
-                    visible={false}
-                    className="bottom-pour"
-                    placement="bottom"
-                >
-                    <p className="up">
-                        <span></span>
-                    </p>
-                    <p className="home-name"><span>{this.state.level}房间</span></p>
-                    <p className="into-home-price"><img className="into-home-price-icon" src={require("../../layouts/image/homePage_icon.png")}/><span>入场费：</span><span>100金币</span></p>
-                    <div className="button-operation">
-                        <Button>进入房间</Button>
-                        <Button>前往押注</Button>
-                    </div>
-                </Drawer>
-                <Modal entered={true} visible={this.state.isOpenPlayer}  wrapClassName={"all-modal open-player-info"}
-                        closable={false} destroyOnClose={true}>
-                    <Icon className="close-modal" onTouchStart={()=>{this.setState({isOpenPlayer:false})}} type="close" theme="outlined" />
-                    <div className="player-info">
-
-                    </div>
-                </Modal>
-                <Modal entered={true} visible={false}  wrapClassName={"all-modal game-over win"}
+                {/*<Drawer*/}
+                    {/*title=""*/}
+                    {/*maskClosable={false}*/}
+                    {/*closable={false}*/}
+                    {/*onClose={this.onClose}*/}
+                    {/*visible={false}*/}
+                    {/*className="bottom-pour"*/}
+                    {/*placement="bottom"*/}
+                {/*>*/}
+                    {/*<p className="up">*/}
+                        {/*<span></span>*/}
+                    {/*</p>*/}
+                    {/*<p className="home-name"><span>{this.state.level}房间</span></p>*/}
+                    {/*<p className="into-home-price"><img className="into-home-price-icon" src={require("../../layouts/image/homePage_icon.png")}/><span>入场费：</span><span>100金币</span></p>*/}
+                    {/*<div className="button-operation">*/}
+                        {/*<Button>进入房间</Button>*/}
+                        {/*<Button>前往押注</Button>*/}
+                    {/*</div>*/}
+                {/*</Drawer>*/}
+                {
+                    this.state.isOpenPlayer?<OtherUserInfo info={this.state.otherPlayer}
+                                                           isOpenPlayer={this.state.isOpenPlayer}
+                                                           openPlayerInfo={this.openPlayerInfo.bind(this)}
+                    />:null
+                }
+                <Modal entered={true} visible={this.state.isGameOver}
+                       wrapClassName={Number(this.state.NOme) < 4?
+                    "all-modal game-over win"+this.state.NOme:
+                    "all-modal game-over lose"}
                        closable={false} destroyOnClose={true}>
-                    {/*<Icon className="close-modal" onTouchStart={()=>{this.setState({isOpenPlayer:false})}} type="close" theme="outlined" />*/}
+                    {/*<Icon className="close-modal" onClick={()=>{this.setState({isOpenPlayer:false})}} type="close" theme="outlined" />*/}
                     <div className="player-info">
                         <div className="game-over-header">
                             <Avatar icon="user" src={this.props.userInfo.data.avatar||""}/>
@@ -312,38 +415,40 @@ class GameHome extends React.Component{
                         <div className="game-info">
                             <table>
                                 <tbody>
-                                <tr className="win-tr">
-                                    <td><span>No.1：</span></td>
-                                    <td><div>阿狸大大,金币-200,积分+10</div></td>
-                                </tr>
-                                <tr className="win-tr">
-                                    <td><span>No.2：</span></td>
-                                    <td><div>阿狸大大,金币-200,积分+10</div></td>
-                                </tr>
-                                <tr className="win-tr">
-                                    <td><span>No.3：</span></td>
-                                    <td><div>阿狸大大123123123123,金币-200,积分+10</div></td>
-                                </tr>
-                                <tr>
-                                    <td><span>lose：</span></td>
-                                    <td><div>阿狸大大,金币-200,积分+10</div></td>
-                                </tr>
-                                <tr>
-                                    <td><span>lose：</span></td>
-                                    <td><div>阿狸大大,金币-200,积分+10</div></td>
-                                </tr>
-                                <tr>
-                                    <td><span>lose：</span></td>
-                                    <td><div>阿狸大大,金币-200,积分+10</div></td>
-                                </tr>
+                                {this.state.gameResult.map((item ,index) =>{
+                                    return <tr className={item.is_win?"win-tr":""}>
+                                        <td><span>No.{index+1}：</span></td>
+                                        <td><div>{item.username},{item.result.slice(0,-2)}.{item.result.slice(-2,item.result.length)}s,金币+{item.gold},积分+{item.this_integral}</div></td>
+                                    </tr>
+                                    // <tr className="win-tr">
+                                    //     <td><span>No.2：</span></td>
+                                    // <td><div>阿狸大大,金币-200,积分+10</div></td>
+                                    // </tr>
+                                    // <tr className="win-tr">
+                                    //     <td><span>No.3：</span></td>
+                                    //     <td><div>阿狸大大123123123123,金币-200,积分+10</div></td>
+                                    // </tr>
+                                    // <tr>
+                                    // <td><span>lose：</span></td>
+                                    // <td><div>阿狸大大,金币-200,积分+10</div></td>
+                                    // </tr>
+                                    // <tr>
+                                    //     <td><span>lose：</span></td>
+                                    //     <td><div>阿狸大大,金币-200,积分+10</div></td>
+                                    // </tr>
+                                    // <tr>
+                                    // <td><span>lose：</span></td>
+                                    // <td><div>阿狸大大,金币-200,积分+10</div></td>
+                                    // </tr>
+                                })}
                                 </tbody>
                             </table>
                         </div>
                         <div className="button-operation">
                             <Button>炫耀一下</Button>
-                            <Button>再来一次</Button>
+                            <Button onClick={()=>this.returnHome()}>再来一次</Button>
                         </div>
-                        <Icon type="close-circle" theme="outlined" />
+                        {/*<Icon type="close-circle" theme="outlined" />*/}
                     </div>
                 </Modal>
             </div>

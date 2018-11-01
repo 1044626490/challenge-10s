@@ -17,19 +17,23 @@
         width: 13vw;
         height: 5vw;
         line-height: 5vw;
-        font-size: 6px!important;
+        //font-size: 6px!important;
+        font-size: 3vw;
         background-color: #f6f62f;
         color: #6d4c9d;
         border-radius: 1vw;
         margin-right: 2vw;
       }
       .add-friend-name{
+        font-size: 3vw;
         display: inline-block;
         height: 5vw;
         line-height: 5vw;
         color: #f6f62f;
       }
       .ant-avatar{
+        border: 1px solid white;
+        border-radius: 2vw;
         width: 10.9vw;
         height: 10.9vw;
         svg{
@@ -37,15 +41,20 @@
         }
       }
       .anticon-star{
+        margin-top: 1vw;
+        font-size: 4vw;
         color: #f6f62f;
         margin-right: 2vw;
       }
       .ranking{
+        display: inline-block;
         color: #a59bd3;
-        font-size: 1vw;
+        font-size: 3vw;
+        margin-top: -10vw;
       }
       .ant-checkbox-wrapper{
         float: right;
+        margin-right: 1vw;
         margin-top: 20%;
         .ant-checkbox{
           width: 5vw;
@@ -82,9 +91,15 @@
       width: 100vw;
       text-align: center;
       position: fixed;
-      bottom: 10%;
+      bottom: 2vh;
+      height: 10vw;
+      line-height: 10vw;
       left: 0;
       button{
+        padding: 0!important;
+        width: 20vw;
+        height: 8vw;
+        font-size: 3vw;
         background-color: #4abd12;
         color: #fff;
         border-radius: 1vw;
@@ -109,44 +124,53 @@
         transform: rotate(360deg);
         transition-duration: 0.3s;
       }
+      .ant-checkbox-wrapper{
+        position: absolute;
+        top: 50%;
+        right: 15%;
+        transform: translateY(-60%);
+      }
     }
   }
   .check-all{
-    position: absolute;
-    right: 15%;
-    bottom: 1.5vw;
-    .ant-checkbox-wrapper{
-      float: right;
-      margin-top: 20%;
-      .ant-checkbox{
-        width: 5vw;
-        height: 5vw;
-        border-radius: 50%;
-        .ant-checkbox-input{
-          width: 5vw;
-          height: 5vw;
-          border-radius: 50%;
-        }
-        .ant-checkbox-inner{
-          width: 5vw;
-          height: 5vw;
-          border-radius: 50%;
-        }
-      }
-      .ant-checkbox-checked{
-        .ant-checkbox-inner{
-          background-color: #4abd12;
-          position: relative;
-          border: 1px solid #4abd12;
-        }
-      }
-      .ant-checkbox-inner:after{
-        top: 15%;
-        left: 35%;
-        position: absolute;
-        width: 2vw;
-        height: 3vw;
-      }
+    margin-top: -2%;
+    button{
+      font-size: 3vw;
+      width: 20vw;
+      height: 8vw;
+      padding: 0;
     }
+    .ant-checkbox-wrapper{
+      margin-top: -1%;
+    }
+  }
+  .ant-checkbox{
+    width: 5vw;
+    height: 5vw;
+    border-radius: 50%;
+    .ant-checkbox-input{
+      width: 5vw;
+      height: 5vw;
+      border-radius: 50%;
+    }
+    .ant-checkbox-inner{
+      width: 5vw;
+      height: 5vw;
+      border-radius: 50%;
+    }
+  }
+  .ant-checkbox-checked{
+    .ant-checkbox-inner{
+      background-color: #4abd12;
+      position: relative;
+      border: 1px solid #4abd12;
+    }
+  }
+  .ant-checkbox-inner:after{
+    top: 15%;
+    left: 35%;
+    position: absolute;
+    width: 2vw;
+    height: 3vw;
   }
 }

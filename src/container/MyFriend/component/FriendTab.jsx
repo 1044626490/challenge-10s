@@ -1,5 +1,5 @@
 import React from "react"
-import { Avatar, Row, Col, Checkbox, Icon, Button} from "antd"
+import { Avatar, Row, Col, Checkbox, Icon, Button, message} from "antd"
 import "./FriendTab.less"
 import MyFriendInfo from "./MyFriendInfo";
 import Api from '~/until/api';
@@ -10,8 +10,10 @@ class FriendTab extends React.Component{
         this.state = {
             addFriendInfo:[],
             isRefresh:false,
+            friendForm:[],
             checkBox:[],
-            type:1
+            type:1,
+            count:0,
         }
     }
 
@@ -28,6 +30,14 @@ class FriendTab extends React.Component{
             })
         }).catch((err) => {
             console.log(err)
+        })
+        Api.selfFriend().then((res) => {
+            this.setState({
+                friendForm:res.data,
+                count:res.count
+            })
+        }).catch((err) => {
+
         })
     };
 
@@ -74,20 +84,46 @@ class FriendTab extends React.Component{
             ,300)
     };
 
+    checkAddFriend(isCheckAdd){
+        let checkBox = this.state.checkBox.join(",");
+        console.log(checkBox)
+        if(isCheckAdd){
+            Api.batchAgreeApply({uid:checkBox}).then((res) => {
+                console.log(res)
+                this.addUserList()
+            })
+        }else {
+            Api.batchRefuseApply({uid:checkBox}).then((res) =>{
+                console.log(res)
+                this.addUserList()
+            }).catch((err) => {
+                console.log(err)
+            })
+        }
+    }
+
+    applyAddUser(){
+        let checkBox = this.state.checkBox.join(",");
+        Api.batchAddUser({uid:checkBox}).then((res) => {
+            message.info(res.msg)
+        }).catch((err) => {
+            console.log(err)
+        })
+    }
+
     render(){
-        console.log(this.props.item,this.state.checkBox);
+        console.log(this.state.checkBox.length === this.state.addFriendInfo.length);
         const key = this.props.item.key;
         return(
             <div className="tab-friend-wrap">
                 {
                     key === "1"?<div className="my-friend-info-container">
                         <div>
-                            <MyFriendInfo />
+                            <MyFriendInfo isFriendRank={true} friendForm={this.state.friendForm} count={this.state.count}/>
                         </div>
                     </div>:key === "2"?<div className="add-friend-container">
                         {
                             this.state.addFriendInfo[0]&&this.state.addFriendInfo.map((item, index) =>{
-                                console.log(this.state.checkBox.indexOf(item.uid) !== -1)
                                 return <div className="add-friend-item" key={index}>
                                     <Row type="flex" justify="start" align="top">
                                         <Col span={5}>
@@ -105,15 +141,19 @@ class FriendTab extends React.Component{
                             })
                         }
                         <div className="operation-button">
-                            <Button>申请添加</Button>
-                            <span onTouchStart={()=>this.refresh()}
-                                  className={this.state.isRefresh?"refresh refresh-active":"refresh"}>
-                            </span>
                             {
-                                this.state.addFriendInfo[0]?
+                                this.state.addFriendInfo[0]&&this.state.type === 1?
                                     <div className="check-all" key={Math.random()}>
+                                        <Button onClick={()=>this.checkAddFriend(true)}>确认添加</Button>
+                                        <Button style={{backgroundColor:"#a094a3"}} onClick={()=>this.checkAddFriend(false)}>拒绝添加</Button>
                                         <Checkbox defaultChecked={this.state.checkBox.length === this.state.addFriendInfo.length} onChange={()=>this.checkAll()}></Checkbox>
-                                    </div>:null
+                                    </div>:<div key={Math.random()}>
+                                                <Button onClick={()=>this.applyAddUser()}>申请添加</Button>
+                                                <span onClick={()=>this.refresh()}
+                                                    className={this.state.isRefresh?"refresh refresh-active":"refresh"}>
+                                                </span>
+                                        <Checkbox defaultChecked={this.state.checkBox.length == this.state.addFriendInfo.length} onChange={()=>this.checkAll()}></Checkbox>
+                                    </div>
                             }
                         </div>
                     </div>:<div className="add-friend-container invite-friend-container">

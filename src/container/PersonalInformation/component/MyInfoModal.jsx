@@ -29,7 +29,11 @@ class MyInfoModal extends React.Component{
     }
 
     resetMyInfo = (e,name) => {
-        console.log(e.target.value,name)
+        console.log(e.target.value,name,e.target.value.length > 8);
+        if(e.target.value.length > 8){
+            message.warning([name]+"的长度不能大于八位");
+            return false
+        }
         this.setState({
             [name]:e.target.value
         })
@@ -73,7 +77,9 @@ class MyInfoModal extends React.Component{
     }
 
     render(){
+
         const info = this.props.info;
+        const winRate =  info.total_office === 0?0:Math.round((info.victory/info.total_office)*100);
         return(
             <div className="my-info-modal-wrap">
                 <Modal entered={true} visible={this.props.isOpenModel} wrapClassName={"my-info-modal"}
@@ -88,29 +94,31 @@ class MyInfoModal extends React.Component{
                                     {/*this.state.isResetName? */}
                                     {/*<span>*/}
                                     {/*<Input placeholder="修改昵称" onChange={(e)=>{this.setState({myName:e.target.value})}}/>*/}
-                                    {/*<Icon type="check" theme="outlined"  onTouchStart={()=>{this.resetName()}}/>*/}
-                                    {/*<Icon type="close" theme="outlined"  onTouchStart={()=>{this.setState({isResetName:false})}}/>*/}
+                                    {/*<Icon type="check" theme="outlined"  onClick={()=>{this.resetName()}}/>*/}
+                                    {/*<Icon type="close" theme="outlined"  onClick={()=>{this.setState({isResetName:false})}}/>*/}
                                     {/*</span>:*/}
                                     {/*<span>*/}
                                     {/*<span className="my-name">{info?info.username:""}</span>&nbsp;&nbsp;*/}
-                                    {/*<Icon type="edit" theme="outlined" onTouchStart={()=>{this.setState({isResetName:true})}}/>*/}
+                                    {/*<Icon type="edit" theme="outlined" onClick={()=>{this.setState({isResetName:true})}}/>*/}
                                     {/*</span>*/}
                                     {/*}*/}
                                     <span>
                                     <span className="my-name">{info?info.username:""}</span>&nbsp;&nbsp;
-                                        {/*<Icon type="edit" theme="outlined" onTouchStart={()=>{this.setState({isResetName:true})}}/>*/}
+                                        {/*<Icon type="edit" theme="outlined" onClick={()=>{this.setState({isResetName:true})}}/>*/}
                                     </span>
+                                    {/*<Icon className="open-reset-modal" type="edit" theme="outlined"*/}
+                                          {/*onClick={()=>{this.setState({isResetMyInfo:true})}}/>*/}
                                 </p>
                                 <p>
                                     签名：{info?info.uid:0}
                                 </p>
                                 <p>
-                                    胜负：{info?info.victory+"/"+info.total_office+"("+this.state.victoryRate+")":0}
-                                    <Button className="open-reset-modal" onTouchStart={()=>{this.setState({isResetMyInfo:true})}}>编辑</Button>
+                                    胜负：{info?info.victory+"/"+info.total_office+"("+winRate+"%)":0}
                                 </p>
                             </div>
                             <div className="my-account">
                                 <span>我的账号：</span><span></span>
+                                <Button className="open-reset-modal" onClick={()=>{this.setState({isResetMyInfo:true})}}>编辑</Button>
                             </div>
                         </div>
                         <div className="my-class-medal">
@@ -126,12 +134,12 @@ class MyInfoModal extends React.Component{
                             </div>
                         </div>
                     </div>
-                    <Icon onTouchStart={()=>this.props.openModal(false)} type="close-circle" theme="outlined" />
+                    <Icon onClick={()=>this.props.openModal(false)} type="close-circle" theme="outlined" />
                 </Modal>
                 <Modal entered={true} visible={this.state.isResetMyInfo||this.props.isResetMyInfo} wrapClassName={"my-info-modal reset-my-info"}
                        closable={false} destroyOnClose={true}>
                     <p className="reset-my-info-container">编辑资料
-                        <Icon type="close" theme="outlined" onTouchStart={()=>this.getUserInfo()}
+                        <Icon type="close" theme="outlined" onClick={()=>this.getUserInfo()}
                         />
                     </p>
                     <div className="reset-info-item">

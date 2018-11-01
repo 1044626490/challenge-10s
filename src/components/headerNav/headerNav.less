@@ -59,19 +59,38 @@
 .top-header{
   .carousel-info-wrap{
     width: 100vw;
-    height: 3vh;
+    height: 4vh;
     color: white;
     position: fixed;
-    background-color: rgba(0,0,0,0.5);
     left: 0;
     top: 5.2vh;
     overflow: hidden;
     z-index: 999;
     p{
+      background-color: rgba(0,0,0,0.5);
       text-align: center;
       margin: 0;
       height: 20px;
       line-height: 20px;
+      position: relative;
+      font-size: 14px;
+      color: #bbbbbb;
+      .trumpet{
+        display: inline-block;
+        width: 16px;
+        height: 16px;
+        background-image: url("../../layouts/image/info.png");
+        background-size: 100% 100%;
+        margin-right: 5px;
+        margin-top: -2px;
+      }
+      span{
+        margin-top: -2px;
+        vertical-align: middle;
+        display: inline-block;
+        height: 20px;
+        line-height: 20px;
+      }
     }
   }
 }

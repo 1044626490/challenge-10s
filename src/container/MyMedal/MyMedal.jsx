@@ -15,11 +15,6 @@ class MyMedal extends React.Component{
     }
 
     componentDidMount(){
-        // let id = this.props.match.params.id;
-        // this.setState({
-        //     pageId:id
-        // })
-        // console.log(id)
         Api.getUserMedal().then((res) => {
             console.log(res)
         }).catch((err => {
@@ -35,12 +30,26 @@ class MyMedal extends React.Component{
                 <div className="my-medal-container">
                     <div className="my-medal-content">
                         <Tabs
-                            defaultActiveKey={this.state.pageId}
+                            activeKey={this.state.pageId}
                             tabPosition="left"
+                            onChange={(value)=>{this.setState({pageId:value})}}
+                            animated={true}
                         >
-                            <TabPane tab="等级" key="1">Content of tab 1</TabPane>
-                            <TabPane tab="任务" key="2">Content of tab 2</TabPane>
-                            <TabPane tab="隐藏" key="3">Content of tab 3</TabPane>
+                            <TabPane tab="等级" key="1">
+                                <div className="level">
+                                    123123
+                                </div>
+                            </TabPane>
+                            <TabPane tab="任务" key="2">
+                                <div className="task">
+                                    sadasdasd
+                                </div>
+                            </TabPane>
+                            <TabPane tab="隐藏" key="3">
+                                <div className="conceal">
+                                    2s2s2s2s22s
+                                </div>
+                            </TabPane>
                         </Tabs>
                     </div>
                 </div>

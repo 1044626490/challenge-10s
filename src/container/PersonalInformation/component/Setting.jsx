@@ -1,14 +1,22 @@
 import React from "react"
 import HeaderNav from "../../../components/headerNav/headerNav";
 import "./Setting.less"
-import { Switch } from "antd"
+import { Switch, Modal, Icon, Row, Col, Avatar } from "antd"
+import Api from '~/until/api';
+import {fetchPostsGetUser} from '~/action/getUserInfo';
+import connect from "react-redux/es/connect/connect";
+import Sign from "./Sign";
 
 class Setting extends React.Component{
     constructor(props) {
         super(props);
         this.state = {
-
+            num:3
         }
+    }
+
+    componentDidMount(){
+
     }
 
     render(){
@@ -21,11 +29,20 @@ class Setting extends React.Component{
                     <li><span>振动</span><Switch checkedChildren="on" unCheckedChildren="off" defaultChecked /></li>
                     <li><span>屏蔽邀请信息</span><Switch checkedChildren="on" unCheckedChildren="off" defaultChecked={false} /></li>
                     <li><span>清理缓存</span><span className="clear">1.03M</span></li>
-                    <li><span>退出账号</span></li>
+                    <li onClick={()=>{Api.loginOut().then(res => {
+                        window.location.href = "#"})
+                        this.props.dispatch(fetchPostsGetUser())
+                    }
+                    }><span>退出账号</span></li>
                 </ul>
+                <Sign />
             </div>
         )
     }
 }
 
-export default Setting
+const mapStateToProps = state => {
+    const {loginReducer,userInfo} = state;
+    return {loginReducer,userInfo}
+};
+export default connect(mapStateToProps)(Setting)

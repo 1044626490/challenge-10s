@@ -11,6 +11,10 @@ const fetchPosts = (params) => dispatch => {
             });
             resolve(res)
         }).catch((err) => {
+            dispatch({
+                type: C.GET_USERINGO,
+                data: Object.assign({}, err)
+            });
             reject(err)
         })
     })

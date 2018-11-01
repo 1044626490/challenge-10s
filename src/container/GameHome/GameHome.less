@@ -101,7 +101,7 @@
           position: relative;
           img{
             width: 19.73vw;
-            height: auto;
+            height: 19.73vw;
           }
           .is-homeowner{
             color: white;
@@ -136,7 +136,11 @@
   }
   .ant-avatar{
     width: 19.73vw;
-    height: auto;
+    height: 19.73vw;
+    img{
+      width: 100%!important;
+      height: 100%!important;
+    }
   }
   .game-start-menber-content{
     .time-goeson{
@@ -148,10 +152,25 @@
       left: 0;
       vertical-align: bottom;
       .point{
-        display: inline-block;
-        font-size: 17vw;
+        //display: inline-block;
+        //height: 25vw;
+        //line-height: 25vw;
+        font-size: 20vw;
         color: white;
-        vertical-align: bottom;
+        //vertical-align: bottom;
+        font-family: "Source Code Variable";
+        //text-shadow:#fff 1px 0 0,#fff 0 1px 0,#fff -1px 0 0,#fff 0 -1px 0;
+        text-shadow: 0 0 2px white;
+        vertical-align: top;
+        //box-shadow: 0 0 5px 1px white;
+        span{
+          display: inline-block;
+          height: 100%;
+          line-height: 100%;
+          font-size: 16vw;
+          position: absolute;
+          margin-top: 5vw;
+        }
       }
       div{
         display: inline-block;
@@ -238,6 +257,20 @@
         li {
           position: fixed;
           transition-duration: 1s;
+          .user-mask{
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background-color: rgba(0,0,0,0.5);
+            z-index: 99;
+            color: white;
+            line-height: 19.73vw;
+            text-align: center;
+            font-size: 6vw;
+          }
         }
         li:first-child{
           top: 30%;
@@ -291,37 +324,37 @@
       li:first-child{
         top: 50%;
         left: 20%;
-        z-index: 9999;
+        z-index: 9;
         transform: translateY(-50%);
       }
       li:nth-child(2){
         top: 50%;
         left: 30%;
-        z-index: 9998;
+        z-index: 8;
         transform: translateY(-50%);
       }
       li:nth-child(3){
         top: 50%;
         right: 40%;
-        z-index: 9997;
+        z-index: 7;
         transform: translateY(-50%);
       }
       li:nth-child(4){
         bottom: 50%;
         left: 50%;
-        z-index: 9996;
+        z-index: 6;
         transform: translateY(50%);
       }
       li:nth-child(5){
         bottom: 50%;
         left: 60%;
-        z-index: 9995;
+        z-index: 5;
         transform: translateY(50%);
       }
       li:nth-child(6){
         bottom: 50%;
         right: 10%;
-        z-index: 9994;
+        z-index: 4;
         transform: translateY(50%);
       }
     }
@@ -381,7 +414,7 @@
       //background-color: #5b4ba9;
       //box-shadow: 0 2px 5px 1px #51459d inset;
       table{
-        font-size: 2vw;
+        font-size: 3vw;
         display: block;
         padding: 1.5vh 0;
         margin: auto;
@@ -398,15 +431,13 @@
             display: block;
             margin: 1vh 0;
             border-radius: 1.5vh;
-            font-size: 6px;
+            font-size: 2.5vw;
             background-color: #5b4ba9;
             box-shadow:  0 1px 5px 0.5px #4c4796 inset;
             td{
               span{
-                font-size: 6px;
+                font-size: 2.5vw;
                 display: inline-block;
-                height: 3vh;
-                line-height: 3vh;
                 white-space: normal;
               }
             }
@@ -445,15 +476,9 @@
     }
   }
 }
-.lose,.win{
+.lose,.win1,.win2,.win3{
   position: relative;
   overflow: visible!important;
-}
-.win{
-  .game-over-header{
-    background-image: url("../../layouts/image/No1.png");
-    background-size: 100% 100%;
-  }
 }
 .lose:before,.win:before{
   content: "";
@@ -470,8 +495,14 @@
 .lose:before{
   background-image: url("../../layouts/image/lose.png");
 }
-.win:before{
-  background-image: url("../../layouts/image/win.png");
+.win1:before{
+  background-image: url("../../layouts/image/No1.png");
+}
+.win3:before{
+  background-image: url("../../layouts/image/No3.png");
+}
+.win2:before{
+  background-image: url("../../layouts/image/No2.png");
 }
 .bottom-pour{
   .ant-drawer-content-wrapper{
@@ -616,6 +647,12 @@
     background-color: #786db0!important;
     border-radius: 3vw;
     border: 1px solid #3c3768;
+  }
+  .start-game-yes{
+    background-image: url("../../layouts/image/start_tes.png")!important;
+  }
+  .start-game-no{
+    background-image: url("../../layouts/image/start_no.png")!important;
   }
   .ant-popover-inner{
     width: 71vw;

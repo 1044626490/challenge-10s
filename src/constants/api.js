@@ -12,12 +12,20 @@ export const GET_USER_INFO = '/user_info';//个人勋章列表
 export const EDIT_USERNAME = '/edit_username';//个人勋章列表
 export const COUPON = '/coupon';//活动页优惠券
 export const JOIN_ROOM_ID = '/join_room_id';//加入房间
-export const CREATE_ROOM = '/create_room';//加入房间
-export const CONFIRM_ROOM_PASS = '/confirm_room_pass';//加入房间
+export const CREATE_ROOM = '/create_room';//创建房间
+export const CONFIRM_ROOM_PASS = '/confirm_room_pass';//验证房间密码
 export const RADOME_JOIN_ROOM = '/join_room';//加入房间
-export const UPLOAD_MY_HEAD = '/upload';//加入房间
-export const UPDATE_USERINFO = '/update_userinfo';//加入房间
+export const UPLOAD_MY_HEAD = '/upload';//上传头像
+export const UPDATE_USERINFO = '/update_userinfo';//更新用户信息
 export const ADD_USER_LIST = '/add_user_list';//添加好友列表
+export const BATCH_AGREE_APPLY = '/batch_agree_apply';//同意添加好友
+export const OTHER_USER_INFO = '/other_user_info';//好友信息
+export const BATCH_REFUSE_APPLY = '/batch_refuse_apply';//拒绝添加好友
+export const BATCH_ADD_USER = '/batch_add_user';//申请添加好友
+export const SELF_FRIEND = '/self_friend';//好友列表
+export const BEGIN_GAME = '/begin_game';//好友列表
+export const CHALL_RES = '/chall_res';//好友列表
+export const LOGIN_OUT = '/logout';//好友列表
 
 
 

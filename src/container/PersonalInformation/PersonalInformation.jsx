@@ -77,7 +77,7 @@ class PersonalInformation extends React.Component {
                                 <div className="name-class">
                                     <p><span>账号：</span><span>
                                         <span className="my-name">{info?info.username:""}</span><span>({info?info.uid:""})</span>&nbsp;&nbsp;
-                                        <Icon type="edit" theme="outlined" onTouchStart={()=>{this.setState({isResetMyInfo:true})}}/>
+                                        <Icon type="edit" theme="outlined" onClick={()=>{this.setState({isResetMyInfo:true})}}/>
                                     </span>
                                     </p>
                                     <div className="my-level"><span className="class-rank">签名：</span>
@@ -98,9 +98,9 @@ class PersonalInformation extends React.Component {
                                         <p>{info?info.silver:0}</p>
                                         <span>银币</span>
                                     </li>
-                                    <li onTouchStart={()=>{window.location.href = "#/Dashboard/MyFriend/1"}}>
+                                    <li onClick={()=>{window.location.href = "#/Dashboard/MyFriend/1"}}>
                                         <div>
-                                            <Badge count={9} overflowCount={9}>98
+                                            <Badge count={10} overflowCount={9}>98
                                             </Badge>
                                         </div>
                                         <span>好友</span>
@@ -111,13 +111,13 @@ class PersonalInformation extends React.Component {
                     <div className="my-info-operation">
                         <div className="operation-list">
                             <ul>
-                                <li onTouchStart={()=>this.openModal(true)}>
+                                <li onClick={()=>this.openModal(true)}>
                                     <p>个人信息</p><Icon type="right" theme="outlined" />
                                 </li>
-                                <li onTouchStart={()=>{window.location.href = "#/Dashboard/MyMedal/1"}}>
+                                <li onClick={()=>{window.location.href = "#/Dashboard/MyMedal"}}>
                                     <p>我的勋章</p><Icon type="right" theme="outlined" />
                                 </li>
-                                <li onTouchStart={()=>{window.location.href = "#/Dashboard/MyFriend/3"}}>
+                                <li onClick={()=>{window.location.href = "#/Dashboard/MyFriend/3"}}>
                                     <p>邀请好友</p><Icon type="right" theme="outlined" />
                                 </li>
                                 <li>
@@ -125,7 +125,7 @@ class PersonalInformation extends React.Component {
                                 </li>
                             </ul>
                         </div>
-                        <div onTouchStart={()=>{window.location.href = "#/Dashboard/Setting"}} className="setting-operation">
+                        <div onClick={()=>{window.location.href = "#/Dashboard/Setting"}} className="setting-operation">
                             <p>设置</p><Icon type="right" theme="outlined" />
                         </div>
                     </div>

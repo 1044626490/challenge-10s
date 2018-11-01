@@ -4,6 +4,7 @@ import MyLoadingComponent from "~/components/common/loadComponents";
 import Loadable from "react-loadable";
 import { connect } from "react-redux";
 import "./Dashboard.less";
+import Api from '~/until/api';
 // import Websocket from 'react-websocket';
 import {message} from "antd";
 import {fetchPostsGetUser} from '~/action/getUserInfo';
@@ -73,7 +74,7 @@ const routes = [
         isExact: false
     },
     {
-        path: "MyMedal/:id",
+        path: "MyMedal",
         component: Loadable({
             loader: () => import("~/container/MyMedal/MyMedal"),
             loading: MyLoadingComponent
@@ -108,10 +109,11 @@ class Dashboard extends React.Component {
     }
 
     componentDidMount(){
-        this.props.dispatch(fetchPostsGetUser()).then((res) => {
+        Api.getUserInfo().then((res) => {
             console.log(res)
         }).catch((err) => {
             console.log(err)
+            window.location.href = "#/Dashboard/index"
             // message.error(err.msg);
         })
     }
