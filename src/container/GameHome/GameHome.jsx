@@ -226,7 +226,8 @@ class GameHome extends React.Component{
 
     returnHome = () =>{
         console.log(1111111);
-        window.location.href = "#/Dashboard/GameHome/"+this.state.homeId
+        // window.location.href = "#/Dashboard/GameHome/"+this.state.homeId
+        window.location.reload()
     };
 
     gameOver(){
