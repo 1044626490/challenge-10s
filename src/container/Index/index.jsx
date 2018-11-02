@@ -9,6 +9,7 @@ import Api from '~/until/api';
 import {fetchPostsIfNeeded} from '~/action/login';
 import {fetchPostsGetUser} from '~/action/getUserInfo';
 import MyInfoModal from "../PersonalInformation/component/MyInfoModal";
+import Sign from "./Sign/Sign"
 //
 
 const TabPane = Tabs.TabPane;
@@ -98,7 +99,8 @@ class Index extends React.Component {
             isOpenModel:false,
             isOpenInfoModel:false,
             isOpenMask:false,
-            loginLocation:"2"
+            loginLocation:"2",
+            isOpenSign:false
             // inputIndex:0,
         };
     }
@@ -309,6 +311,9 @@ class Index extends React.Component {
                 {
                     this.state.isOpenMask?<div className="mask"></div>:null
                 }
+                {
+                    this.state.isOpenSign?<Sign closeSign={()=>{this.setState({isOpenSign:false})}} isOpenSign={this.state.isOpenSign}/>:null
+                }
                 <div className="random-invite">
                     {
                         !this.state.isOpenMask?<Badge dot={true}>
@@ -339,7 +344,7 @@ class Index extends React.Component {
                         <span onClick={()=>{window.location.href = "#/Dashboard/RankList"}} className="my-trophy">{null}</span>
                         <span onClick={()=>{window.location.href = "#/Dashboard/MyTask"}} className="my-trophy my-task">{null}</span>
                         <span className="my-trophy relief-payment">{null}</span>
-                        <span className="my-trophy sign-in">{null}</span>
+                        <span onClick={()=>{this.setState({isOpenSign:true})}} className="my-trophy sign-in">{null}</span>
                     </div>
                 </div>
                 <div className="index-container-wrap">

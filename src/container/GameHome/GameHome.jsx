@@ -111,13 +111,14 @@ class GameHome extends React.Component{
                     for(let j=0;j<userData.length-1;j++){
                         //两两比较，如果前一个比后一个大，则交换位置。
                         for(let i=0;i<userData.length-1-j;i++){
-                            if(userData[i]>userData[i+1]){
+                            if(userData[i].result<userData[i+1].result){
                                 let temp = userData[i];
                                 userData[i] = userData[i+1];
                                 userData[i+1] = temp;
                             }
                         }
                     }
+                    console.log(userData);
                     for(let i=0;i<userData.length;i++){
                         if(Number(this.state.userInfo.uid) === userData[i].uid){
                             NOme = i+1
@@ -226,8 +227,8 @@ class GameHome extends React.Component{
 
     returnHome = () =>{
         console.log(1111111);
-        // window.location.href = "#/Dashboard/GameHome/"+this.state.homeId
-        window.location.reload()
+        window.location.href = "#/Dashboard/GameHome/"+this.state.homeId
+        // window.location.reload()
     };
 
     gameOver(){

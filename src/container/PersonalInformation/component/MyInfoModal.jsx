@@ -29,32 +29,34 @@ class MyInfoModal extends React.Component{
     }
 
     resetMyInfo = (e,name) => {
-        console.log(e.target.value,name,e.target.value.length > 8);
-        if(e.target.value.length > 8){
-            message.warning([name]+"的长度不能大于八位");
-            return false
-        }
         this.setState({
             [name]:e.target.value
         })
     };
 
     saveInfo = () => {
-        let params = {
-            username:this.state.myName,
-            signature:this.state.signature,
-            avatar:this.state.header
+        if(this.state.myName.length > 8){
+            message.warning("昵称的长度不能大于八位");
+            return false
+        }else if(this.state.signature.length > 8){
+            message.warning("个性签名的长度不能大于八位");
+            return false
+        }else {
+            let params = {
+                username:this.state.myName,
+                signature:this.state.signature,
+                avatar:this.state.header
+            };
+            Api.updateUserinfo(params).then((res) => {
+                message.success(res.msg);
+                this.setState({
+                    isResetMyInfo:false
+                });
+                this.getUserInfo()
+            }).catch((err) => {
+                message.error(err.msg)
+            })
         }
-        console.log(params)
-        Api.updateUserinfo(params).then((res) => {
-            message.success(res.msg);
-            this.setState({
-                isResetMyInfo:false
-            });
-            this.getUserInfo()
-        }).catch((err) => {
-            message.error(err.msg)
-        })
     }
 
     changeHeader(file){

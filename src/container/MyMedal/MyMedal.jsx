@@ -2,7 +2,7 @@ import React from "react"
 import Api from '~/until/api';
 import HeaderNav from "../../components/headerNav/headerNav";
 import "./MyMedal.less"
-import { Tabs, Radio } from 'antd';
+import { Tabs, Radio, Carousel } from 'antd';
 
 const TabPane = Tabs.TabPane;
 
@@ -29,6 +29,9 @@ class MyMedal extends React.Component{
                 <HeaderNav name="挑战10秒"/>
                 <div className="my-medal-container">
                     <div className="my-medal-content">
+                        <div className="header-img">
+                            <img src={require("../../layouts/image/medal_head.png")} alt=""/>
+                        </div>
                         <Tabs
                             activeKey={this.state.pageId}
                             tabPosition="left"
@@ -37,7 +40,41 @@ class MyMedal extends React.Component{
                         >
                             <TabPane tab="等级" key="1">
                                 <div className="level">
-                                    123123
+                                    <Carousel afterChange={null}>
+                                    <ul>
+                                        <li><img src={require("../../layouts/image/medal/level1.png")} alt=""/><i>33级</i><span>大获全胜0</span></li>
+                                        <li><img src={require("../../layouts/image/medal/level2.png")} alt=""/><i>33级</i><span>大获全胜10</span></li>
+                                        <li><img src={require("../../layouts/image/medal/level3.png")} alt=""/><i>33级</i><span>大获全胜20</span></li>
+                                        <li><img src={require("../../layouts/image/medal/level4.png")} alt=""/><i>33级</i><span>大获全胜30</span></li>
+                                        <li><img src={require("../../layouts/image/medal/level1.png")} alt=""/><i>33级</i><span>大获全胜0</span></li>
+                                        <li><img src={require("../../layouts/image/medal/level2.png")} alt=""/><i>33级</i><span>大获全胜10</span></li>
+                                        <li><img src={require("../../layouts/image/medal/level3.png")} alt=""/><i>33级</i><span>大获全胜20</span></li>
+                                        <li><img src={require("../../layouts/image/medal/level4.png")} alt=""/><i>33级</i><span>大获全胜30</span></li>
+                                        <li><img src={require("../../layouts/image/medal/level4.png")} alt=""/><i>33级</i><span>大获全胜30</span></li>
+                                    </ul>
+                                        <ul>
+                                            <li><img src={require("../../layouts/image/medal/level1.png")} alt=""/><i>33级</i><span>大获全胜0</span></li>
+                                            <li><img src={require("../../layouts/image/medal/level2.png")} alt=""/><i>33级</i><span>大获全胜10</span></li>
+                                            <li><img src={require("../../layouts/image/medal/level3.png")} alt=""/><i>33级</i><span>大获全胜20</span></li>
+                                            <li><img src={require("../../layouts/image/medal/level4.png")} alt=""/><i>33级</i><span>大获全胜30</span></li>
+                                            <li><img src={require("../../layouts/image/medal/level1.png")} alt=""/><i>33级</i><span>大获全胜0</span></li>
+                                            <li><img src={require("../../layouts/image/medal/level2.png")} alt=""/><i>33级</i><span>大获全胜10</span></li>
+                                            <li><img src={require("../../layouts/image/medal/level3.png")} alt=""/><i>33级</i><span>大获全胜20</span></li>
+                                            <li><img src={require("../../layouts/image/medal/level4.png")} alt=""/><i>33级</i><span>大获全胜30</span></li>
+                                            <li><img src={require("../../layouts/image/medal/level4.png")} alt=""/><i>33级</i><span>大获全胜30</span></li>
+                                        </ul>
+                                        <ul>
+                                            <li><img src={require("../../layouts/image/medal/level1.png")} alt=""/><i>33级</i><span>大获全胜0</span></li>
+                                            <li><img src={require("../../layouts/image/medal/level2.png")} alt=""/><i>33级</i><span>大获全胜10</span></li>
+                                            <li><img src={require("../../layouts/image/medal/level3.png")} alt=""/><i>33级</i><span>大获全胜20</span></li>
+                                            <li><img src={require("../../layouts/image/medal/level4.png")} alt=""/><i>33级</i><span>大获全胜30</span></li>
+                                            <li><img src={require("../../layouts/image/medal/level1.png")} alt=""/><i>33级</i><span>大获全胜0</span></li>
+                                            <li><img src={require("../../layouts/image/medal/level2.png")} alt=""/><i>33级</i><span>大获全胜10</span></li>
+                                            <li><img src={require("../../layouts/image/medal/level3.png")} alt=""/><i>33级</i><span>大获全胜20</span></li>
+                                            <li><img src={require("../../layouts/image/medal/level4.png")} alt=""/><i>33级</i><span>大获全胜30</span></li>
+                                            <li><img src={require("../../layouts/image/medal/level4.png")} alt=""/><i>33级</i><span>大获全胜30</span></li>
+                                        </ul>
+                                    </Carousel>
                                 </div>
                             </TabPane>
                             <TabPane tab="任务" key="2">

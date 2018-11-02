@@ -5,7 +5,7 @@ import { Switch, Modal, Icon, Row, Col, Avatar } from "antd"
 import Api from '~/until/api';
 import {fetchPostsGetUser} from '~/action/getUserInfo';
 import connect from "react-redux/es/connect/connect";
-import Sign from "./Sign";
+import Sign from "../../Index/Sign/Sign";
 
 class Setting extends React.Component{
     constructor(props) {
@@ -35,7 +35,6 @@ class Setting extends React.Component{
                     }
                     }><span>退出账号</span></li>
                 </ul>
-                <Sign />
             </div>
         )
     }
