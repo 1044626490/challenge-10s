@@ -2,13 +2,27 @@
   background-color: #3d3470;
   width: 100vw;
   height: 100vh;
+  .rank-info{
+    .rank-my-info{
+      margin-top: 5vw;
+      text-align: center;
+      .info-name{
+        font-size: 4vw;
+        margin-bottom: 1vw;
+        color: white;
+      }
+      p{
+        font-size: 4vw;
+        color: white;
+      }
+    }
+  }
   .my-friend-container{
     margin: 4vh auto;
     height: 80vh;
     width: 92.26vw;
     background-color: #5846a5;
     border-radius: 2vw;
-    //overflow: auto;
     padding-bottom: 2vh;
     .ant-tabs-bar{
       border-bottom: 1px dashed #7a7a7a;
@@ -16,8 +30,16 @@
     .ant-tabs{
       width: 89.36%;
       margin: 0 auto;
-      height: 100%;
-      overflow: auto;
+      height: 80vh;
+      .ant-tabs-content{
+        height: 65vh;
+        .ant-tabs-tabpane{
+          border-bottom-right-radius: 3vw;
+          border-bottom-left-radius: 3vw;
+          height: 65vh;
+          overflow-y: auto;
+        }
+      }
       .ant-tabs-nav{
         width: 100%;
         padding-bottom: 1vh;

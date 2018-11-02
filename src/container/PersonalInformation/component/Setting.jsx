@@ -1,7 +1,7 @@
 import React from "react"
 import HeaderNav from "../../../components/headerNav/headerNav";
 import "./Setting.less"
-import { Switch, Modal, Icon, Row, Col, Avatar } from "antd"
+import { Switch, Modal, Icon, Row, Col, Avatar, Popconfirm } from "antd"
 import Api from '~/until/api';
 import {fetchPostsGetUser} from '~/action/getUserInfo';
 import connect from "react-redux/es/connect/connect";
@@ -29,11 +29,14 @@ class Setting extends React.Component{
                     <li><span>振动</span><Switch checkedChildren="on" unCheckedChildren="off" defaultChecked /></li>
                     <li><span>屏蔽邀请信息</span><Switch checkedChildren="on" unCheckedChildren="off" defaultChecked={false} /></li>
                     <li><span>清理缓存</span><span className="clear">1.03M</span></li>
-                    <li onClick={()=>{Api.loginOut().then(res => {
+                    <Popconfirm overlayClassName={"loginout-game-pop"} placement="top" title="确认退出？"
+                                onConfirm={null}
+                                onCancel={()=>{Api.loginOut().then(res => {
                         window.location.href = "#"})
                         this.props.dispatch(fetchPostsGetUser())
-                    }
-                    }><span>退出账号</span></li>
+                    }} okText="取消" cancelText="确定">
+                        <li><span>退出账号</span></li>
+                    </Popconfirm>
                 </ul>
             </div>
         )

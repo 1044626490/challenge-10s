@@ -3,6 +3,7 @@ import { Avatar, Row, Col, Checkbox, Icon, Button, message} from "antd"
 import "./FriendTab.less"
 import MyFriendInfo from "./MyFriendInfo";
 import Api from '~/until/api';
+import $ from "jquery"
 
 class FriendTab extends React.Component{
     constructor(props) {
@@ -23,10 +24,22 @@ class FriendTab extends React.Component{
 
     addUserList = () => {
         Api.addUserList().then((res) => {
+            let arr = res.data;
             console.log(res);
+            for(let j=0;j<arr.length-1;j++){
+                //两两比较，如果前一个比后一个大，则交换位置。
+                for(let i=0;i<arr.length-1-j;i++){
+                    if(arr[i].rownum>arr[i+1].rownum){
+                        let temp = arr[i];
+                        arr[i] = arr[i+1];
+                        arr[i+1] = temp;
+                    }
+                }
+            }
             this.setState({
-                addFriendInfo:res.data,
-                type:res.type
+                addFriendInfo:arr,
+                type:res.type,
+                count:res.count
             })
         }).catch((err) => {
             console.log(err)
@@ -72,16 +85,16 @@ class FriendTab extends React.Component{
     };
 
     refresh = () => {
-        this.setState({isRefresh:true});
+        $(".refresh").toggleClass("refresh-active");
         this.addUserList();
         let setI = setTimeout(
             ()=>{
                 this.setState({
-                    isRefresh:false,
                     checkBox:[]
                 });
-            clearTimeout(setI)}
-            ,300)
+                $(".refresh").toggleClass("refresh-active");
+                clearTimeout(setI)}
+            ,100)
     };
 
     checkAddFriend(isCheckAdd){
@@ -124,15 +137,15 @@ class FriendTab extends React.Component{
                     </div>:key === "2"?<div className="add-friend-container">
                         {
                             this.state.addFriendInfo[0]&&this.state.addFriendInfo.map((item, index) =>{
-                                return <div className="add-friend-item" key={index}>
+                                return <div className={this.state.checkBox.indexOf(item.uid) === -1?"add-friend-item no-checked":"add-friend-item"} key={index}>
                                     <Row type="flex" justify="start" align="top">
                                         <Col span={5}>
                                             <Avatar shape="square" src={item.avatar} icon="user" />
                                         </Col>
                                         <Col span={15}>
                                             <div>
-                                                <Row><Col span={9}><span className="level-card">第{item.level}级</span></Col><Col span={15}><span className="add-friend-name">{item.username}</span></Col></Row>
-                                                <Row><Col span={24}><Icon type="star" theme="filled" /><span className="ranking">总积分全国前32.11%</span></Col></Row>
+                                                <Row><Col span={7}><span className="level-card">第{item.level}级</span></Col><Col span={17}><span className="add-friend-name">{item.username}</span></Col></Row>
+                                                <Row><Col span={24}><Icon type="star" theme="filled" /><span className="ranking">总积分全国前{(item.rownum/this.state.count*100).toFixed(2)}%</span></Col></Row>
                                             </div>
                                         </Col>
                                         <Col span={4}><Checkbox key={Math.random()} defaultChecked={this.state.checkBox.indexOf(item.uid) !== -1} onChange={(e)=>this.checkBox(e,item)} value={item.uid}></Checkbox></Col>
@@ -150,17 +163,17 @@ class FriendTab extends React.Component{
                                     </div>:<div key={Math.random()}>
                                                 <Button onClick={()=>this.applyAddUser()}>申请添加</Button>
                                                 <span onClick={()=>this.refresh()}
-                                                    className={this.state.isRefresh?"refresh refresh-active":"refresh"}>
+                                                    className="refresh">
                                                 </span>
                                         <Checkbox defaultChecked={this.state.checkBox.length == this.state.addFriendInfo.length} onChange={()=>this.checkAll()}></Checkbox>
                                     </div>
                             }
                         </div>
                     </div>:<div className="add-friend-container invite-friend-container">
-                        <div className="add-friend-item">
+                        <div className="invite-friend-item">
                             <Row type="flex" justify="start" align="top">
                                 <Col span={4}>
-
+                                    <Avatar src={require("../../../layouts/image/invite/weixin.png")} />
                                 </Col>
                                 <Col span={14}>微信</Col>
                                 <Col span={6}>
@@ -168,10 +181,10 @@ class FriendTab extends React.Component{
                                 </Col>
                             </Row>
                         </div>
-                        <div className="add-friend-item">
+                        <div className="invite-friend-item">
                             <Row type="flex" justify="start" align="top">
                                 <Col span={4}>
-
+                                    <Avatar src={require("../../../layouts/image/invite/qq.png")} />
                                 </Col>
                                 <Col span={14}>QQ</Col>
                                 <Col span={6}>
@@ -179,10 +192,10 @@ class FriendTab extends React.Component{
                                 </Col>
                             </Row>
                         </div>
-                        <div className="add-friend-item">
+                        <div className="invite-friend-item">
                             <Row type="flex" justify="start" align="top">
                                 <Col span={4}>
-
+                                    <Avatar src={require("../../../layouts/image/invite/erweima.png")} />
                                 </Col>
                                 <Col span={14}>二维码</Col>
                                 <Col span={6}>

@@ -7,6 +7,7 @@ import Api from '~/until/api';
 import "./GameHome.less"
 
 let setI2;
+let homeId = null;
 class GameHome extends React.Component{
     constructor(props) {
         super(props);
@@ -124,9 +125,11 @@ class GameHome extends React.Component{
                             NOme = i+1
                         }
                     }
+                    console.log(NOme)
                     this.setState({
                         gameResult:userData,
-                        isGameOver:true
+                        isGameOver:true,
+                        NOme
                     });
                     break;
                 case 'begin_game':
@@ -226,9 +229,9 @@ class GameHome extends React.Component{
     };
 
     returnHome = () =>{
-        console.log(1111111);
-        window.location.href = "#/Dashboard/GameHome/"+this.state.homeId
-        // window.location.reload()
+        // console.log(1111111);
+        // window.location.href = "#/Dashboard/GameHome/"+this.state.homeId
+        window.location.reload()
     };
 
     gameOver(){
@@ -367,7 +370,7 @@ class GameHome extends React.Component{
                                                 <Avatar onClick={item.uid?item.uid === uid?null:()=>this.openPlayerInfo(true,item.uid):null}
                                                         icon="user" src={item.avatar||require("../../layouts/image/sc.png")} alt=""/>
                                                     {
-                                                        item.is_homeowner === 1?<span className="is-homeowner">房主</span>:null
+                                                        item.is_homeowner === 1?<span className="is-homeowner game-start-homeoener">房主</span>:null
                                                     }
                                             </li>
                                     })
@@ -402,9 +405,10 @@ class GameHome extends React.Component{
                     />:null
                 }
                 <Modal entered={true} visible={this.state.isGameOver}
-                       wrapClassName={Number(this.state.NOme) < 4?
-                    "all-modal game-over win"+this.state.NOme:
-                    "all-modal game-over lose"}
+                       wrapClassName={this.state.gameResult>3?Number(this.state.NOme) < 4?
+                    "all-modal game-over win win"+this.state.NOme:
+                    "all-modal game-over lose":Number(this.state.NOme) === 1?"all-modal game-over win win"+this.state.NOme:
+                           "all-modal game-over lose"}
                        closable={false} destroyOnClose={true}>
                     {/*<Icon className="close-modal" onClick={()=>{this.setState({isOpenPlayer:false})}} type="close" theme="outlined" />*/}
                     <div className="player-info">

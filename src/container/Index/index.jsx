@@ -10,6 +10,7 @@ import {fetchPostsIfNeeded} from '~/action/login';
 import {fetchPostsGetUser} from '~/action/getUserInfo';
 import MyInfoModal from "../PersonalInformation/component/MyInfoModal";
 import Sign from "./Sign/Sign"
+import MyTask from "./MyTask/MyTask";
 //
 
 const TabPane = Tabs.TabPane;
@@ -100,7 +101,8 @@ class Index extends React.Component {
             isOpenInfoModel:false,
             isOpenMask:false,
             loginLocation:"2",
-            isOpenSign:false
+            isOpenSign:false,
+            isOpenMyTask:false
             // inputIndex:0,
         };
     }
@@ -342,7 +344,7 @@ class Index extends React.Component {
                         <span>{userInfo?userInfo.gold:0}</span>
                         <span className="my-money-item-pay" onClick={()=>{window.location.href = "#/Dashboard/PayPage"}}>{null}</span>
                         <span onClick={()=>{window.location.href = "#/Dashboard/RankList"}} className="my-trophy">{null}</span>
-                        <span onClick={()=>{window.location.href = "#/Dashboard/MyTask"}} className="my-trophy my-task">{null}</span>
+                        <span onClick={()=>{this.setState({isOpenMyTask:true})}} className="my-trophy my-task">{null}</span>
                         <span className="my-trophy relief-payment">{null}</span>
                         <span onClick={()=>{this.setState({isOpenSign:true})}} className="my-trophy sign-in">{null}</span>
                     </div>
@@ -498,6 +500,9 @@ class Index extends React.Component {
                                      })
                                  }}
                     />:null
+                }
+                {
+                    this.state.isOpenMyTask?<MyTask isOpenMyTask={this.state.isOpenMyTask} closeMyTask={()=>{this.setState({isOpenMyTask:false})}}/>:null
                 }
             </div>
         )

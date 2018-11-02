@@ -3,6 +3,7 @@ import { Tabs, Icon } from 'antd';
 import FriendTab from "./component/FriendTab"
 import HeaderNav from "../../components/headerNav/headerNav";
 import "./MyFriend.less"
+import Api from '~/until/api';
 
 const TabPane = Tabs.TabPane;
 
@@ -10,7 +11,9 @@ class MyFriend extends React.Component{
     constructor(props) {
         super(props);
         this.state = {
-            defaultActiveKey:"1"
+            defaultActiveKey:"1",
+            friendForm:[],
+            count:0
         }
     }
 
@@ -22,17 +25,24 @@ class MyFriend extends React.Component{
     }
 
     callback(value){
-        // console.log(value)
+        this.setState({
+            defaultActiveKey:value
+        })
     }
 
     componentDidMount(){
-        // this.getMyFriend(){
-        //
-        // }
+        Api.selfFriend().then((res) => {
+            this.setState({
+                friendForm:res.data,
+                count:res.count
+            })
+        }).catch((err) => {
+
+        })
     }
 
     render(){
-        console.log(this.props.match,this.props.match.params.pageId,this.state.defaultActiveKey)
+        console.log(this.state.defaultActiveKey)
         const tabs = [
             {
                 key:"1",
@@ -51,7 +61,7 @@ class MyFriend extends React.Component{
             <div className="my-friend-wrap">
                 <HeaderNav name="好友"/>
                 <div className="my-friend-container">
-                    <Tabs defaultActiveKey={this.state.defaultActiveKey} onChange={()=>this.callback()}>
+                    <Tabs activeKey={this.state.defaultActiveKey} onChange={this.callback.bind(this)}>
                         {
                             tabs.map((item, index) => {
                                 console.log(item.key)
@@ -64,6 +74,14 @@ class MyFriend extends React.Component{
                             })
                         }
                     </Tabs>
+                    {
+                        this.state.defaultActiveKey === "1"?<div className="rank-info">
+                            <div className="rank-my-info">
+                                <p className="info-name">好友数量&nbsp;&nbsp;&nbsp;{this.state.friendForm.length}/300</p>
+                                <p>我的排名：<span style={{color:"#decc35"}}>未上榜</span></p>
+                            </div>
+                        </div>:null
+                    }
                 </div>
             </div>
         )

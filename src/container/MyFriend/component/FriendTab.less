@@ -2,7 +2,67 @@
   .add-friend-container{
     position: relative;
     .add-friend-item{
-      padding: 1vw 5.6vw;
+      padding: 1vw 0;
+    }
+    .invite-friend-item{
+      .ant-avatar{
+        height: 8vw!important;
+        width: 8vw!important;
+        border-radius: 5vw!important;
+        border-width: 0!important;
+        img{
+          margin: 1vw!important;
+          width: 6vw!important;
+          height: 6vw!important;
+        }
+      }
+      .ant-row-flex{
+        height: 13.33vw;
+        line-height: 13.33vw;
+        .ant-col-4{
+          text-align: center;
+        }
+        .ant-col-14{
+          font-size: 4vw;
+          color: white;
+        }
+        .ant-col-6{
+          button{
+            padding: 0;
+            font-size: 3.5vw;
+            color: white;
+            background-color: #4fbf16;
+            border-width: 0;
+            border-radius: 1vw;
+            height: 6vw;
+            width: 18vw;
+          }
+        }
+      }
+    }
+    .invite-friend-item:first-child{
+      .ant-avatar{
+        background-color: #0db80d;
+      }
+    }
+    .invite-friend-item:nth-child(2){
+      .ant-avatar{
+        background-color: #018fee;
+      }
+    }
+    .invite-friend-item:last-child{
+      .ant-avatar{
+        background-color: #f86200;
+      }
+    }
+    .no-checked{
+      background: -webkit-linear-gradient(top,#614fae 0,#5d4baa 100%)!important;
+      background: -moz-linear-gradient(top,#614fae 0,#5d4baa 100%)!important;
+      background: -o-linear-gradient(top,#614fae 0,#5d4baa 100%)!important;
+      background: linear-gradient(to bottom,#614fae 0,#5d4baa 100%)!important;
+      filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#614fae,endColorstr=#5d4baa,GradientType=0)!important;
+    }
+    .add-friend-item,.invite-friend-item{
       height: 13.33vw;
       margin-bottom: 1vw;
       border-radius: 1vw;
@@ -32,6 +92,7 @@
         color: #f6f62f;
       }
       .ant-avatar{
+        margin-left: 3vw;
         border: 1px solid white;
         border-radius: 2vw;
         width: 10.9vw;
@@ -54,7 +115,7 @@
       }
       .ant-checkbox-wrapper{
         float: right;
-        margin-right: 1vw;
+        margin-right: 6vw;
         margin-top: 20%;
         .ant-checkbox{
           width: 5vw;
@@ -118,12 +179,31 @@
         background-repeat: no-repeat;
         background-position: center;
         background-size: 80% 80%;
-        transform: rotate(0deg);
+        //transform: rotate(0deg);
       }
       .refresh-active{
         transform: rotate(360deg);
-        transition-duration: 0.3s;
+        transition-duration: 0.5s;
+        //animation: fireworks 0.5s;
       }
+      //.fireworks-active{
+      //  img{
+      //    transform: scale(1);
+      //    animation: fireworks 2s;
+      //    opacity: 1;
+      //    //transition: opacity 1s,width 1s,height 1s;
+      //    width: 100%;
+      //    height: 100%;
+      //  }
+      //}
+      //@keyframes fireworks{
+      //  from{
+      //    transform: rotate(0deg);
+      //  }
+      //  to{
+      //    transform: rotate(360deg);
+      //  }
+      //}
       .ant-checkbox-wrapper{
         position: absolute;
         top: 50%;
@@ -172,5 +252,23 @@
     position: absolute;
     width: 2vw;
     height: 3vw;
+  }
+  .rank-info{
+    .rank-my-info{
+      margin-top: 65vh;
+      //position: fixed;
+      //bottom: 5vh;
+      //left: 50%;
+      //transform: translateX(-50%);
+      text-align: center;
+      .info-name{
+        font-size: 5vw;
+        margin-bottom: 1vw;
+        color: white;
+      }
+      p{
+        color: white;
+      }
+    }
   }
 }

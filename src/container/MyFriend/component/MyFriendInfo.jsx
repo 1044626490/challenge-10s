@@ -13,6 +13,8 @@ class MyFriendInfo extends React.Component{
         }
     }
 
+
+
     openFriendModal(isOpen,uid){
         if(isOpen){
             Api.otherUserInfo({uid}).then((res) => {
@@ -31,6 +33,18 @@ class MyFriendInfo extends React.Component{
 
     render(){
         console.log(this.props.friendForm,this.props.count);
+        let arr = this.props.friendForm;
+        console.log(arr)
+        for(let j=0;j<arr.length-1;j++){
+            //两两比较，如果前一个比后一个大，则交换位置。
+            for(let i=0;i<arr.length-1-j;i++){
+                if(arr[i].rownum>arr[i+1].rownum){
+                    let temp = arr[i];
+                    arr[i] = arr[i+1];
+                    arr[i+1] = temp;
+                }
+            }
+        }
         return(
             <div className="my-friend-info">
                 {
