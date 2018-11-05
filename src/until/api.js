@@ -31,6 +31,7 @@ export default {
     beginGame: (params) =>post(C.BEGIN_GAME, params),
     gameOver: (params) =>post(C.CHALL_RES, params),
     leaderBoard: (params) =>post(C.LEADER_BOARD, params),
+    areYouReady: (params) =>post(C.USER_READY, params),
 
     // logout: (params) => post(C.LOGOUT, params),
     // register: (params) => post(C.REGISTER, params),

@@ -27,6 +27,7 @@ export const BEGIN_GAME = '/begin_game';//开始游戏
 export const CHALL_RES = '/chall_res';//游戏结果
 export const LOGIN_OUT = '/logout';//登出
 export const LEADER_BOARD = '/leaderboard';//总排行榜
+export const USER_READY = '/user_ready';//总排行榜
 
 
 

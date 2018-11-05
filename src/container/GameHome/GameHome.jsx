@@ -35,7 +35,9 @@ class GameHome extends React.Component{
             userResult:[],
             isGameOver:false,
             NOme:0,
-            areYouReady:false
+            areYouReady:[],
+            amIReady:false,
+            isAllReady:false
         }
     }
 
@@ -49,12 +51,14 @@ class GameHome extends React.Component{
         })
     }
 
+    //点击开始游戏按钮
     gameStart(){;
         this.setState({
             isOpenMask:false
         })
     }
 
+    //连接websocket
     getWebSocket = (homeId) => {
         let level = homeId.slice(0,1);
         let level1 = level === "S"?1:level === "M"?2:3;
@@ -82,7 +86,7 @@ class GameHome extends React.Component{
                                     })
                                 }
                             }
-                            let length = userData.length
+                            let length = userData.length;
                             for(let i = length;i < 6;i++){
                                 userData.push({})
                             }
@@ -107,6 +111,24 @@ class GameHome extends React.Component{
                     break;
                 case 'leave':
                     break;
+                case 'ready':
+                    console.log(e,userData)
+                    let amIReady;
+                    let count = 0;
+                    for(let i=0;i< userData.length;i++){
+                        userData[i].uid === this.state.userInfo.uid;
+                        if(!userData[i].is_ready){
+                            count++
+                        }
+                        amIReady = userData[i].is_ready
+                    }
+                    this.setState({
+                        areYouReady:userData,
+                        amIReady,
+                        isAllReady:!count
+                    })
+                    console.log(!count)
+                    break;
                 case 'rank_result':
                     let NOme = this.state.NOme;
 
@@ -120,15 +142,11 @@ class GameHome extends React.Component{
                             }
                         }
                     }
-                    // console.log(userData);
                     for(let i=0;i<userData.length;i++){
-                        // console.log()
                         if(this.state.userInfo.uid === userData[i].uid){
                             NOme = userData[i].is_win;
-                            console.log(i,NOme,this.state.userInfo.uid,userData[i].uid)
                         }
                     }
-                    // console.log(NOme)
                     this.setState({
                         gameResult:userData,
                         isGameOver:true,
@@ -158,10 +176,12 @@ class GameHome extends React.Component{
         }
     };
 
+    //断开websocket
     componentWillUnmount(){
         this.ws.close()
     }
 
+    //游戏开始
     startGame = () => {
         let userData = [];
         for(let i=0;i<6;i++){
@@ -179,6 +199,7 @@ class GameHome extends React.Component{
         });
     };
 
+    //3秒倒计时
     backTime = () =>{
         let backTime = 3;
         let setI2 = setInterval(()=>{
@@ -191,6 +212,7 @@ class GameHome extends React.Component{
         },1000);
     };
 
+    //20秒计时
     timeGoOn = () =>{
         let millisecond = Number(this.state.millisecond);
         let tenSeconds = Number(this.state.tenSeconds);
@@ -216,6 +238,7 @@ class GameHome extends React.Component{
         },10)
     };
 
+    //打开其他玩家信息
     openPlayerInfo = (isOpen,uid) => {
         if(isOpen){
             Api.otherUserInfo({uid}).then((res) => {
@@ -232,12 +255,13 @@ class GameHome extends React.Component{
         }
     };
 
+    //游戏结束回到房间
     returnHome = () =>{
-        // console.log(1111111);
         // window.location.href = "#/Dashboard/GameHome/"+this.state.homeId
         window.location.reload()
     };
 
+    //游戏结束
     gameOver(){
         clearInterval(setI2);
         let resultTen = this.state.tenSeconds;
@@ -257,17 +281,20 @@ class GameHome extends React.Component{
         })
     }
 
+    //准备
     areYouReady = () => {
-        this.setState({
-            areYouReady:!this.state.areYouReady
+        // this.setState({
+        //     areYouReady:!this.state.areYouReady
+        // });
+        Api.areYouReady({uid:this.state.userInfo.uid,room_id:this.state.homeId}).then(res => {
+
+        }).catch(err => {
+
         })
-        // Api.areYouReady({}).then(res => {
-        // }).catch(err => {
-        // })
-    }
+    };
 
     render(){
-        // console.log(this.state.gameResult,this.state.NOme);
+        console.log(this.state.userData.length&&!this.state.userData[1].uid&&!this.state.isAllReady)
         if(!this.state.isStartTime&&this.state.isStartGame&&this.state.backTime <= 0&&this.state.millisecond === "0"&&this.state.tenSeconds === "0"){
             this.timeGoOn()
         }
@@ -298,9 +325,11 @@ class GameHome extends React.Component{
                                 {
                                     this.state.userData&&this.state.userData.map((item ,index) => {
                                         return <li key={index} className={item.is_homeowner === 1?"home":""}>
-                                                {/*{*/}
-                                                    {/*item.is_homeowner >= 0&&item.is_homeowner !== 1?<span className="are-you-ready">已准备</span>:null*/}
-                                                {/*}*/}
+                                                {
+                                                    this.state.areYouReady.map((item1, index1)=>{
+                                                        return item.is_homeowner !== 1&&item1.is_ready === 1&&item.uid === item1.uid?<span key={index1} className="are-you-ready"><Icon type="check-circle" theme="outlined" /></span>:null
+                                                    })
+                                                }
                                             <Avatar onClick={item.uid === uid?null:()=>this.openPlayerInfo(true,item.uid)} icon="user" src={item.avatar||require("../../layouts/image/sc.png")} alt=""/>
                                                 {item.is_homeowner === 1?<span className="is-homeowner">房主</span>:null}
                                             </li>
@@ -318,12 +347,12 @@ class GameHome extends React.Component{
                                                         okText="取消"
                                                         cancelText="确认">
                                                 <Button className={this.state.userData.length&&!
-                                            this.state.userData[1].uid?"start-game-no":"start-game-yes"}
+                                            this.state.userData[1].uid?"start-game-no":this.state.isAllReady?"start-game-yes":"start-game-no"}
                                                                        disabled={this.state.userData.length&&!
-                                                                           this.state.userData[1].uid}>开始游戏</Button>
+                                                                           this.state.userData[1].uid&&!this.state.isAllReady}>开始游戏</Button>
                                             </Popconfirm>:
                                             <Button onClick={()=>this.areYouReady()} className="start-game-yes">
-                                                准备
+                                                {this.state.amIReady?"取消准备":"准备"}
                                             </Button>
                                     }
                             </div>
