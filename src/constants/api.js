@@ -23,9 +23,10 @@ export const OTHER_USER_INFO = '/other_user_info';//好友信息
 export const BATCH_REFUSE_APPLY = '/batch_refuse_apply';//拒绝添加好友
 export const BATCH_ADD_USER = '/batch_add_user';//申请添加好友
 export const SELF_FRIEND = '/self_friend';//好友列表
-export const BEGIN_GAME = '/begin_game';//好友列表
-export const CHALL_RES = '/chall_res';//好友列表
-export const LOGIN_OUT = '/logout';//好友列表
+export const BEGIN_GAME = '/begin_game';//开始游戏
+export const CHALL_RES = '/chall_res';//游戏结果
+export const LOGIN_OUT = '/logout';//登出
+export const LEADER_BOARD = '/leaderboard';//总排行榜
 
 
 

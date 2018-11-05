@@ -57,7 +57,7 @@ class MyFriendInfo extends React.Component{
                                 </Col>
                                 <Col span={15}>
                                     <div>
-                                        <Row><Col span={9}><span className="level-card">第21级</span></Col><Col span={15}><span className="add-friend-name">{item.username.slice(0,8)}</span></Col></Row>
+                                        <Row><Col span={6}><span className="level-card">第21级</span></Col><Col span={18}><span className="add-friend-name">{item.username.slice(0,8)}</span></Col></Row>
                                         <Row><Col span={24}><Icon type="star" theme="filled" /><span className="ranking">总积分全国前{Math.round((item.rownum/this.props.count)*100)}%</span></Col></Row>
                                     </div>
                                 </Col>

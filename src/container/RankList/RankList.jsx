@@ -13,8 +13,10 @@ class RankList extends React.Component{
         this.state = {
             defaultActiveKey:"1",
             friendForm:[],
+            allForm:[],
             count:0,
-            isOpenFriendModal:false
+            isOpenFriendModal:false,
+            myRank:null
         }
     }
 
@@ -51,7 +53,16 @@ class RankList extends React.Component{
         }).catch((res) => {
             console.log(res)
         })
+        Api.leaderBoard().then((res) => {
+            this.setState({
+                allForm:res.data.rank,
+                myRank:res.person_rank
+            })
+        }).catch(err =>{
+            console.log(err)
+        })
     }
+
 
     render(){
         const tabs = [
@@ -73,7 +84,7 @@ class RankList extends React.Component{
                             tabs.map((item, index) => {
                                 console.log(item.key);
                                 return <TabPane tab={item.name} key={item.key}>
-                                    <MyFriendInfo friendForm={this.state.friendForm} count={this.state.count}/>
+                                    <MyFriendInfo friendForm={item.key === "1"?this.state.allForm:this.state.friendForm} count={this.state.count}/>
                                         {
                                             index === 0?<div className="rank-info">
                                                 <div className="rank-my-info">

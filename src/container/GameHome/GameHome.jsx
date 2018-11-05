@@ -34,7 +34,8 @@ class GameHome extends React.Component{
             gameResult:[],
             userResult:[],
             isGameOver:false,
-            NOme:0
+            NOme:0,
+            areYouReady:false
         }
     }
 
@@ -66,7 +67,7 @@ class GameHome extends React.Component{
             let data = JSON.parse(e.data);
             let userData = data.data;
             let type = data.type || "";
-            console.log(userData)
+            console.log(userData);
             switch (type) {
                 case "ping":
                     break;
@@ -112,20 +113,22 @@ class GameHome extends React.Component{
                     for(let j=0;j<userData.length-1;j++){
                         //两两比较，如果前一个比后一个大，则交换位置。
                         for(let i=0;i<userData.length-1-j;i++){
-                            if(userData[i].result<userData[i+1].result){
+                            if(userData[i].this_integral<userData[i+1].this_integral){
                                 let temp = userData[i];
                                 userData[i] = userData[i+1];
                                 userData[i+1] = temp;
                             }
                         }
                     }
-                    console.log(userData);
+                    // console.log(userData);
                     for(let i=0;i<userData.length;i++){
-                        if(Number(this.state.userInfo.uid) === userData[i].uid){
-                            NOme = i+1
+                        // console.log()
+                        if(this.state.userInfo.uid === userData[i].uid){
+                            NOme = userData[i].is_win;
+                            console.log(i,NOme,this.state.userInfo.uid,userData[i].uid)
                         }
                     }
-                    console.log(NOme)
+                    // console.log(NOme)
                     this.setState({
                         gameResult:userData,
                         isGameOver:true,
@@ -202,13 +205,14 @@ class GameHome extends React.Component{
             if(millisecond === 0){
                 tenSeconds++
             }
-            if(tenSeconds === 20){
-                clearInterval(setI2)
-            }
             this.setState({
                 millisecond:millisecond.toString(),
                 tenSeconds:tenSeconds.toString()
-            })
+            });
+            if(tenSeconds === 20){
+                this.gameOver();
+                clearInterval(setI2)
+            }
         },10)
     };
 
@@ -253,7 +257,17 @@ class GameHome extends React.Component{
         })
     }
 
+    areYouReady = () => {
+        this.setState({
+            areYouReady:!this.state.areYouReady
+        })
+        // Api.areYouReady({}).then(res => {
+        // }).catch(err => {
+        // })
+    }
+
     render(){
+        // console.log(this.state.gameResult,this.state.NOme);
         if(!this.state.isStartTime&&this.state.isStartGame&&this.state.backTime <= 0&&this.state.millisecond === "0"&&this.state.tenSeconds === "0"){
             this.timeGoOn()
         }
@@ -284,6 +298,9 @@ class GameHome extends React.Component{
                                 {
                                     this.state.userData&&this.state.userData.map((item ,index) => {
                                         return <li key={index} className={item.is_homeowner === 1?"home":""}>
+                                                {/*{*/}
+                                                    {/*item.is_homeowner >= 0&&item.is_homeowner !== 1?<span className="are-you-ready">已准备</span>:null*/}
+                                                {/*}*/}
                                             <Avatar onClick={item.uid === uid?null:()=>this.openPlayerInfo(true,item.uid)} icon="user" src={item.avatar||require("../../layouts/image/sc.png")} alt=""/>
                                                 {item.is_homeowner === 1?<span className="is-homeowner">房主</span>:null}
                                             </li>
@@ -291,16 +308,24 @@ class GameHome extends React.Component{
                                 }
                             </ul>
                             <div className="start-game-pop">
-                                <Popconfirm overlayClassName={"start-game-pop"}
-                                            placement="top" title={"确认开始"}
-                                            onCancel={()=>this.startGame()}
-                                            onVisibleChange={()=>this.gameStart()}
-                                            onConfirm={()=>this.gameStart()}
-                                            okText="取消"
-                                            cancelText="确认">
-                                    <Button className={this.state.userData.length&&!this.state.userData[1].uid?"start-game-no":"start-game-yes"}
-                                            disabled={this.state.userData.length&&!this.state.userData[1].uid}>开始游戏</Button>
-                                </Popconfirm>
+                                    {
+                                        this.state.isHomeowner?
+                                            <Popconfirm overlayClassName={"start-game-pop"}
+                                                        placement="top" title={"确认开始"}
+                                                        onCancel={()=>this.startGame()}
+                                                        onVisibleChange={()=>this.gameStart()}
+                                                        onConfirm={()=>this.gameStart()}
+                                                        okText="取消"
+                                                        cancelText="确认">
+                                                <Button className={this.state.userData.length&&!
+                                            this.state.userData[1].uid?"start-game-no":"start-game-yes"}
+                                                                       disabled={this.state.userData.length&&!
+                                                                           this.state.userData[1].uid}>开始游戏</Button>
+                                            </Popconfirm>:
+                                            <Button onClick={()=>this.areYouReady()} className="start-game-yes">
+                                                准备
+                                            </Button>
+                                    }
                             </div>
                         </div>
                         <div className="menber-item">
@@ -405,10 +430,9 @@ class GameHome extends React.Component{
                     />:null
                 }
                 <Modal entered={true} visible={this.state.isGameOver}
-                       wrapClassName={this.state.gameResult>3?Number(this.state.NOme) < 4?
-                    "all-modal game-over win win"+this.state.NOme:
-                    "all-modal game-over lose":Number(this.state.NOme) === 1?"all-modal game-over win win"+this.state.NOme:
-                           "all-modal game-over lose"}
+                       wrapClassName={this.state.NOme === 1?
+                    "all-modal game-over win":
+                    "all-modal game-over lose"}
                        closable={false} destroyOnClose={true}>
                     {/*<Icon className="close-modal" onClick={()=>{this.setState({isOpenPlayer:false})}} type="close" theme="outlined" />*/}
                     <div className="player-info">
@@ -424,7 +448,7 @@ class GameHome extends React.Component{
                                 {this.state.gameResult.map((item ,index) =>{
                                     return <tr className={item.is_win?"win-tr":""}>
                                         <td><span>No.{index+1}：</span></td>
-                                        <td><div>{item.username},{item.result.slice(0,-2)}.{item.result.slice(-2,item.result.length)}s,金币+{item.gold},积分+{item.this_integral}</div></td>
+                                        <td><div>{item.username},{item.result.slice(0,-2)}.{item.result.slice(-2,item.result.length)}s,金币+{item.win_gold},积分+{item.this_integral}</div></td>
                                     </tr>
                                     // <tr className="win-tr">
                                     //     <td><span>No.2：</span></td>

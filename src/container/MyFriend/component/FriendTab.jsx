@@ -144,7 +144,7 @@ class FriendTab extends React.Component{
                                         </Col>
                                         <Col span={15}>
                                             <div>
-                                                <Row><Col span={7}><span className="level-card">第{item.level}级</span></Col><Col span={17}><span className="add-friend-name">{item.username}</span></Col></Row>
+                                                <Row><Col span={6}><span className="level-card">第{item.level}级</span></Col><Col span={18}><span className="add-friend-name">{item.username}</span></Col></Row>
                                                 <Row><Col span={24}><Icon type="star" theme="filled" /><span className="ranking">总积分全国前{(item.rownum/this.state.count*100).toFixed(2)}%</span></Col></Row>
                                             </div>
                                         </Col>

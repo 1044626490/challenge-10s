@@ -1,4 +1,6 @@
 .my-friend-info{
+  overflow-y: auto;
+  height: 100%;
   .my-friend-info-item{
     padding: 1vw 4vw;
     height: 15vw;
@@ -9,22 +11,31 @@
     background: -o-linear-gradient(top,#7664c2 0,#6653b4 100%);
     background: linear-gradient(to bottom,#7664c2 0,#6653b4 100%);
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#7664c2,endColorstr=#6653b4,GradientType=0);
-    .level-card{
-      display: inline-block;
-      text-align: center;
-      width: 13vw;
+    .ant-col-6,.ant-col-18{
       height: 5vw;
       line-height: 5vw;
-      //font-size: 6px!important;
-      font-size: 3vw;
+      vertical-align: center;
+      position: relative;
+    }
+    .level-card{
+      position: absolute;
+      left: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      display: inline-block;
+      text-align: center;
+      width: 10vw;
+      height: 3vw;
+      line-height: 3vw;
+      font-size: 2vw;
       background-color: #f6f62f;
       color: #6d4c9d;
       border-radius: 1vw;
-      margin-right: 2vw;
+      //margin-right: 2vw;
     }
     .add-friend-name{
       vertical-align: text-top;
-      font-size: 4vw;
+      font-size: 3vw;
       display: inline-block;
       height: 5vw;
       line-height: 5vw;

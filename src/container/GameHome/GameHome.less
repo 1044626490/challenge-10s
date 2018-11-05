@@ -102,6 +102,11 @@
         li{
           width: 33.33%;
           position: relative;
+          .are-you-ready{
+            position: absolute;
+            color: white;
+            z-index: 999;
+          }
           img{
             width: 19.73vw;
             height: 19.73vw;
@@ -498,14 +503,8 @@
 .lose:before{
   background-image: url("../../layouts/image/lose.png");
 }
-.win1:before{
-  background-image: url("../../layouts/image/No1.png");
-}
-.win3:before{
-  background-image: url("../../layouts/image/No3.png");
-}
-.win2:before{
-  background-image: url("../../layouts/image/No2.png");
+.win:before{
+  background-image: url("../../layouts/image/win.png");
 }
 .bottom-pour{
   .ant-drawer-content-wrapper{

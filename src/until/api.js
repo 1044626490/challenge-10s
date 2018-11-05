@@ -30,6 +30,7 @@ export default {
     selfFriend: (params) =>post(C.SELF_FRIEND, params),
     beginGame: (params) =>post(C.BEGIN_GAME, params),
     gameOver: (params) =>post(C.CHALL_RES, params),
+    leaderBoard: (params) =>post(C.LEADER_BOARD, params),
 
     // logout: (params) => post(C.LOGOUT, params),
     // register: (params) => post(C.REGISTER, params),

@@ -95,8 +95,8 @@ class PersonalInformation extends React.Component {
                                         <span>金币</span>
                                     </li>
                                     <li>
-                                        <p>{info?info.silver:0}</p>
-                                        <span>银币</span>
+                                        <p>{info?info.integral:0}</p>
+                                        <span>积分</span>
                                     </li>
                                     <li onClick={()=>{window.location.href = "#/Dashboard/MyFriend/1"}}>
                                         <div>
