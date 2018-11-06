@@ -96,21 +96,18 @@ class FriendTab extends React.Component{
                 clearTimeout(setI)}
             ,100)
     };
-
     checkAddFriend(isCheckAdd){
         let checkBox = this.state.checkBox.join(",");
         console.log(checkBox)
         if(isCheckAdd){
             Api.batchAgreeApply({uid:checkBox}).then((res) => {
-                console.log(res)
+                message.success(res.msg)
                 this.addUserList()
             })
         }else {
             Api.batchRefuseApply({uid:checkBox}).then((res) =>{
-                console.log(res)
                 this.addUserList()
             }).catch((err) => {
-                console.log(err)
             })
         }
     }

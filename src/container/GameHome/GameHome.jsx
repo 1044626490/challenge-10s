@@ -3,6 +3,7 @@ import HeaderNav from "../../components/headerNav/headerNav";
 import { Modal, Avatar, Button, Drawer, Icon, Popconfirm, message } from "antd"
 import connect from "react-redux/es/connect/connect";
 import OtherUserInfo from "./component/OtherUserInfo"
+import $ from "jquery";
 import Api from '~/until/api';
 import "./GameHome.less"
 
@@ -12,6 +13,8 @@ class GameHome extends React.Component{
     constructor(props) {
         super(props);
         this.ws = new WebSocket("ws://www.10sgame.com:8282");
+        this.setI = null;
+        this.setI1 = null;
         this.state = {
             isAddAdmission:true,
             isAddBet:false,
@@ -43,12 +46,12 @@ class GameHome extends React.Component{
 
     componentDidMount(){
         let homeId = this.props.match.params.homeId;
-        this.getWebSocket(homeId);
         let level = homeId === "1"?"初级":homeId === "2"?"中级":"高级"
         this.setState({
             homeId,
             level
         })
+        this.getWebSocket(homeId);
     }
 
     //点击开始游戏按钮
@@ -62,6 +65,8 @@ class GameHome extends React.Component{
     getWebSocket = (homeId) => {
         let level = homeId.slice(0,1);
         let level1 = level === "S"?1:level === "M"?2:3;
+        let NewHome = "#/Dashboard/NewHome/"+(level1-1);
+        console.log(NewHome);
         this.ws.onopen = ()=>{
             // let data = '{"type":"join_room","uid":1,"room_id":123456,"level_room":1}'
             let data = JSON.stringify({"type":"join_room","uid":this.props.userInfo.data.uid,"room_id":homeId,"level_room":level1});
@@ -71,7 +76,6 @@ class GameHome extends React.Component{
             let data = JSON.parse(e.data);
             let userData = data.data;
             let type = data.type || "";
-            console.log(userData);
             switch (type) {
                 case "ping":
                     break;
@@ -110,28 +114,56 @@ class GameHome extends React.Component{
                 case 'join_room':
                     break;
                 case 'leave':
+                    if(userData){
+                        if(userData.length){
+                            let id = this.state.userInfo.uid;
+                            for(let i=0;i<userData.length;i++){
+                                if(id === userData[i].uid){
+                                    this.setState({
+                                        isHomeowner:userData[i].is_homeowner
+                                    })
+                                }
+                            }
+                            let length = userData.length;
+                            for(let i = length;i < 6;i++){
+                                userData.push({})
+                            }
+                            this.setState({
+                                userData
+                            })
+                        }else {
+                            let arr = [];
+                            arr[0] = userData["0"];
+                            arr[0].is_homeowner = userData.is_homeowner;
+                            for(let i = 1;i < 6;i++){
+                                arr.push({})
+                            }
+                            this.setState({
+                                isHomeowner:true,
+                                userData:arr
+                            })
+                        }
+                    }
                     break;
                 case 'ready':
-                    console.log(e,userData)
                     let amIReady;
                     let count = 0;
                     for(let i=0;i< userData.length;i++){
-                        userData[i].uid === this.state.userInfo.uid;
                         if(!userData[i].is_ready){
                             count++
                         }
-                        amIReady = userData[i].is_ready
+                        if(userData[i].uid === this.state.userInfo.uid){
+                            amIReady = userData[i].is_ready
+                        }
                     }
                     this.setState({
                         areYouReady:userData,
                         amIReady,
-                        isAllReady:!count
+                        isAllReady:!(count-1)
                     })
-                    console.log(!count)
                     break;
                 case 'rank_result':
                     let NOme = this.state.NOme;
-
                     for(let j=0;j<userData.length-1;j++){
                         //两两比较，如果前一个比后一个大，则交换位置。
                         for(let i=0;i<userData.length-1-j;i++){
@@ -147,6 +179,15 @@ class GameHome extends React.Component{
                             NOme = userData[i].is_win;
                         }
                     }
+                    let count1 = 0;
+                    this.setI1 = setInterval(()=>{
+                        count1++;
+                        console.log(count1,NewHome);
+                        if(count1 === 30){
+                            window.location.href = NewHome;
+                            clearInterval(this.setI1);
+                        }
+                    },1000);
                     this.setState({
                         gameResult:userData,
                         isGameOver:true,
@@ -178,6 +219,9 @@ class GameHome extends React.Component{
 
     //断开websocket
     componentWillUnmount(){
+        console.log(123123123)
+        clearInterval(this.setI);
+        clearInterval(this.setI1);
         this.ws.close()
     }
 
@@ -202,6 +246,11 @@ class GameHome extends React.Component{
     //3秒倒计时
     backTime = () =>{
         let backTime = 3;
+        this.setI = setTimeout(()=>{
+            $('.bg-cilcle').animate({
+                transform:"rotate(360deg)"
+            })
+        },2000);
         let setI2 = setInterval(()=>{
             this.setState({
                 backTime:--backTime
@@ -257,8 +306,38 @@ class GameHome extends React.Component{
 
     //游戏结束回到房间
     returnHome = () =>{
-        // window.location.href = "#/Dashboard/GameHome/"+this.state.homeId
-        window.location.reload()
+        clearInterval(this.setI);
+        let homeId = this.props.match.params.homeId;
+        let level = homeId === "1"?"初级":homeId === "2"?"中级":"高级";
+        clearInterval(this.setI1);
+        this.setState({
+            isAddAdmission:true,
+            isAddBet:false,
+            userInfo:this.props.userInfo.data,
+            homeId:homeId,
+            //userData:[],
+            // isHomeowner:false,
+            isStartGame:false,
+            isReadyGame:false,
+            backTime:3,
+            tenSeconds:"0",
+            millisecond:"0",
+            isStartTime:false,
+            isOpenPlayer:false,
+            playerInfo:[],
+            level:level,
+            isOpenMask:false,
+            otherPlayer:[],
+            room_order:null,
+            gameResult:[],
+            userResult:[],
+            isGameOver:false,
+            NOme:0,
+            areYouReady:[],
+            amIReady:false,
+            isAllReady:false
+        });
+        // window.location.reload()
     };
 
     //游戏结束
@@ -303,6 +382,9 @@ class GameHome extends React.Component{
             <div className="game-home-wrap">
                 <HeaderNav name={"["+this.state.homeId+"]"}/>
                 {
+                    this.state.isStartGame?<div className="bg-cilcle"></div>:null
+                }
+                {
                     !this.state.isReadyGame?
                 <div>
                     {
@@ -327,11 +409,12 @@ class GameHome extends React.Component{
                                         return <li key={index} className={item.is_homeowner === 1?"home":""}>
                                                 {
                                                     this.state.areYouReady.map((item1, index1)=>{
-                                                        return item.is_homeowner !== 1&&item1.is_ready === 1&&item.uid === item1.uid?<span key={index1} className="are-you-ready"><Icon type="check-circle" theme="outlined" /></span>:null
+                                                        return item.is_homeowner !== 1&&item.uid === item1.uid&&item1.is_ready === 1?<span key={index1} className="are-you-ready"><Icon type="check-circle" theme="outlined" /></span>:null
                                                     })
                                                 }
                                             <Avatar onClick={item.uid === uid?null:()=>this.openPlayerInfo(true,item.uid)} icon="user" src={item.avatar||require("../../layouts/image/sc.png")} alt=""/>
                                                 {item.is_homeowner === 1?<span className="is-homeowner">房主</span>:null}
+                                                <p>{item.username}</p>
                                             </li>
                                     })
                                 }
@@ -349,9 +432,9 @@ class GameHome extends React.Component{
                                                 <Button className={this.state.userData.length&&!
                                             this.state.userData[1].uid?"start-game-no":this.state.isAllReady?"start-game-yes":"start-game-no"}
                                                                        disabled={this.state.userData.length&&!
-                                                                           this.state.userData[1].uid&&!this.state.isAllReady}>开始游戏</Button>
+                                                                           this.state.userData[1].uid||!this.state.isAllReady}>开始游戏</Button>
                                             </Popconfirm>:
-                                            <Button onClick={()=>this.areYouReady()} className="start-game-yes">
+                                            <Button key={Math.random()} onClick={()=>this.areYouReady()} className="start-game-yes">
                                                 {this.state.amIReady?"取消准备":"准备"}
                                             </Button>
                                     }
@@ -459,10 +542,22 @@ class GameHome extends React.Component{
                     />:null
                 }
                 <Modal entered={true} visible={this.state.isGameOver}
-                       wrapClassName={this.state.NOme === 1?
-                    "all-modal game-over win":
-                    "all-modal game-over lose"}
+                       wrapClassName={"all-modal game-over"}
                        closable={false} destroyOnClose={true}>
+                    {
+                        this.state.NOme === 1?<div className="twinkle-little-star win">
+                            <div className="star1"><span>
+                                </span></div>
+                            <div className="star2"><span>
+                                </span></div>
+                            <div className="star3"><span>
+                                </span></div>
+                            <div className="star4"><span>
+                                </span></div>
+                            <div className="win-pc">
+                            </div>
+                        </div>:<div className="lose"></div>
+                    }
                     {/*<Icon className="close-modal" onClick={()=>{this.setState({isOpenPlayer:false})}} type="close" theme="outlined" />*/}
                     <div className="player-info">
                         <div className="game-over-header">

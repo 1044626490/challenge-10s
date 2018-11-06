@@ -24,7 +24,7 @@ class OtherUserInfo extends React.Component{
     render(){
         console.log(this.props.info);
         const info = this.props.info;
-        console.log(info.victory/info.total_office)
+        console.log(info.victory/info.total_office);
         const winRate =  info.total_office === 0?0:Math.round((info.victory/info.total_office)*100);
         return(
             <div className="other-userinfo-wrap">
@@ -35,7 +35,9 @@ class OtherUserInfo extends React.Component{
                         <Row>
                             <Col span={8}>
                                 <Avatar icon="user" src={info.avatar||""}/>
-                                <Icon type="plus-circle" onClick={()=>this.addFriend(info.uid)} theme="filled" />
+                                {
+                                    info.is_friend?null:<Icon type="plus-circle" onClick={()=>this.addFriend(info.uid)} theme="filled" />
+                                }
                             </Col>
                             <Col span={16}>
                                 <Row>&nbsp;&nbsp;<span className="info-username">{info.username.slice(0,8)}（{info.uid}）</span></Row>

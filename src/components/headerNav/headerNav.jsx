@@ -18,7 +18,8 @@ class HeaderNav extends React.Component {
 
     goBackHistory(e){
         console.log(e,window.location.hash);
-        window.location.hash === "#/Dashboard/index"?window.location.href = "#/Dashboard/index":history.go(-1);
+        let hash = window.location.hash;
+        hash === "#/Dashboard/index"?window.location.href = "#/Dashboard/index":hash.indexOf("NewHome") !== -1?window.location.href = "#/Dashboard/index":window.history.back();
     }
 
     componentDidMount(){

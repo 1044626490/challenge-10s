@@ -161,24 +161,31 @@ class Index extends React.Component {
         let arr = this.state.intoHomePwd;
         let index = arr.indexOf("");
         console.log(isNaN(button[indexs]));
-        if(!isNaN(button[indexs])){
-            if(index > 0){
-                index !== -1?arr[index] = button[indexs]:null;
-                this.setState({
-                    intoHomePwd:arr
-                })
+        if(!this.state.isHomeNeedPwd){
+            if(!isNaN(button[indexs])){
+                if(index > 0){
+                    index !== -1?arr[index] = button[indexs]:null;
+                    this.setState({
+                        intoHomePwd:arr
+                    })
+                }else {
+                    message.warning("请先输入房间等级“S”“M”“H”")
+                }
             }else {
-                message.warning("请先输入房间等级“S”“M”“H”")
+                if(index === 0){
+                    index !== -1?arr[index] = button[indexs]:null;
+                    this.setState({
+                        intoHomePwd:arr
+                    })
+                }else {
+                    message.warning("后5位只能为数字")
+                }
             }
         }else {
-            if(index === 0){
-                index !== -1?arr[index] = button[indexs]:null;
-                this.setState({
-                    intoHomePwd:arr
-                })
-            }else {
-                message.warning("后5位只能为数字")
-            }
+            arr[index] = button[indexs];
+            this.setState({
+                intoHomePwd:arr
+            })
         }
     };
 
@@ -197,13 +204,15 @@ class Index extends React.Component {
             })
         }
         Api.joinRoomId({room_id: this.state.intoHomePwd.join("")}).then((res)=>{
+            message.info(res.msg);
             console.log(res)
             if(res.code === "0000"){
-                console.log(res)
+                console.log(res);
                 window.location.href = "#/Dashboard/GameHome/"+this.state.intoHomePwd.join("")
             }
         }).catch((err)=>{
             console.log(err)
+            message.info(err.msg);
             if(err.code === "30002"){
                 message.info(err.msg)
                 this.setState({
