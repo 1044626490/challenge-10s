@@ -34,6 +34,7 @@ export default {
     areYouReady: (params) =>post(C.USER_READY, params),
     signList: (params) =>post(C.SIGN_LIST, params),
     userSign: (params) =>post(C.USER_SIGN, params),
+    medalInfo: (params) =>post(C.MEDAL_INFO, params),
 
     // logout: (params) => post(C.LOGOUT, params),
     // register: (params) => post(C.REGISTER, params),
