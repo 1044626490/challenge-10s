@@ -27,6 +27,7 @@ class Setting extends React.Component{
                     <li><span>音效</span><Switch checkedChildren="on" unCheckedChildren="off" defaultChecked /></li>
                     <li><span>振动</span><Switch checkedChildren="on" unCheckedChildren="off" defaultChecked /></li>
                     <li><span>屏蔽邀请信息</span><Switch checkedChildren="on" unCheckedChildren="off" defaultChecked={false} /></li>
+                    <li><span>关闭观战界面</span><Switch checkedChildren="on" unCheckedChildren="off" defaultChecked={false} /></li>
                     <li><span>清理缓存</span><span className="clear">1.03M</span></li>
                     <Popconfirm overlayClassName={"loginout-game-pop"} placement="top" title="确认退出？"
                                 onConfirm={null}
@@ -37,18 +38,6 @@ class Setting extends React.Component{
                         <li><span>退出账号</span></li>
                     </Popconfirm>
                 </ul>
-                <div className="twinkle-little-star">
-                    <div className="star1"><span>
-                    </span></div>
-                    <div className="star2"><span>
-                    </span></div>
-                    <div className="star3"><span>
-                    </span></div>
-                    <div className="star4"><span>
-                    </span></div>
-                    <div className="win-pc">
-                    </div>
-                </div>
             </div>
         )
     }

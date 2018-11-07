@@ -4,10 +4,12 @@
  * @param  {error} error error加载组件错误的信息
  * */
 import React from 'react';
+import { Spin, Alert  } from 'antd';
+import "./loadComponents.less"
 
 const MyLoadingComponent = ({isLoading, error}) => {
     if (isLoading) {
-        return <div>Loading...</div>;
+        return <Spin tip="Loading..."></Spin>;
     }
     else if (error) {
         console.log(error);

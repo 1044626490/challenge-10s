@@ -34,19 +34,22 @@ class Sign extends React.Component{
             clearTimeout(setT)
         }, 0);
         let setT1 = setTimeout(() => {
-            $(".fireworks_s").toggleClass("fireworks-active")
+            $(".fireworks_s").toggleClass("fireworks-actives")
             let count = 2;
             let setI1 = setInterval(() => {
                 if (count === 0){
-                    $(".fireworks_s").removeClass("fireworks-active")
+                    $(".fireworks_s").removeClass("fireworks-actives")
                     clearInterval(setI1)
                 }
-                $(".fireworks_s").toggleClass("fireworks-active")
+                $(".fireworks_s").css({
+
+                })
+                $(".fireworks_s").toggleClass("fireworks-actives")
                 count--;
                 setTimeout(() => {
-                    $(".fireworks_s").toggleClass("fireworks-active")
+                    $(".fireworks_s").toggleClass("fireworks-actives")
                 }, 100)
-            }, 2000);
+            }, 1500);
             clearTimeout(setT1)
         }, 500);
         let setT2 = setTimeout(() => {
@@ -124,13 +127,13 @@ class Sign extends React.Component{
             }).animate({
                 left:winWidth,
                 top: winHeight,
-            },800);
+            },600);
             let setT = setTimeout(()=>{
                 $(name).css({
                     display: "none"
                 });
                 clearTimeout(setT)
-            },900);
+            },700);
             console.log(count,$(name));
             if(count === 17){
                 Api.userSign().then( res =>{
@@ -140,6 +143,7 @@ class Sign extends React.Component{
                     // this.setState({
                     //     signInfo
                     // })
+                    this.props.getUserInfo;
                     Api.signList().then(res => {
                         let signDay = res.data.sign_data.map((item) => {
                             return item.date
@@ -148,8 +152,8 @@ class Sign extends React.Component{
                         this.setState({
                             signInfo:res.data,
                             signDay
-                        })
-                    })
+                        });
+                    });
                 }).catch( err =>{
                     message.info(err.msg)
                 })
@@ -349,12 +353,12 @@ class Sign extends React.Component{
                         <div className="sign-progress">
                             <div className="gift-item">
                                 <ul>
-                                    <li><img src={require("../../../layouts/image/has_gift2.png")} alt=""/></li>
-                                    <li><img src={require("../../../layouts/image/gift.png")} alt=""/></li>
-                                    <li><img src={require("../../../layouts/image/gift.png")} alt=""/></li>
-                                    <li><img src={require("../../../layouts/image/gift.png")} alt=""/></li>
-                                    <li><img src={require("../../../layouts/image/gift.png")} alt=""/></li>
-                                    <li><img src={require("../../../layouts/image/big_gift.png")} alt=""/></li>
+                                    <li><img src={this.state.signDay.length >= 3?require("../../../layouts/image/has_gift2.png"):require("../../../layouts/image/gift.png")} alt=""/></li>
+                                    <li><img src={this.state.signDay.length >= 7?require("../../../layouts/image/has_gift2.png"):require("../../../layouts/image/gift.png")} alt=""/></li>
+                                    <li><img src={this.state.signDay.length >= 10?require("../../../layouts/image/has_gift2.png"):require("../../../layouts/image/gift.png")} alt=""/></li>
+                                    <li><img src={this.state.signDay.length >= 15?require("../../../layouts/image/has_gift2.png"):require("../../../layouts/image/gift.png")} alt=""/></li>
+                                    <li><img src={this.state.signDay.length >= 20?require("../../../layouts/image/has_gift2.png"):require("../../../layouts/image/gift.png")} alt=""/></li>
+                                    <li><img src={this.state.signDay.length >= 25?require("../../../layouts/image/has_gift.png"):require("../../../layouts/image/big_gift.png")} alt=""/></li>
                                 </ul>
                             </div>
                             <ul className="progress-circle">
@@ -365,7 +369,7 @@ class Sign extends React.Component{
                                 <li></li>
                                 <li></li>
                             </ul>
-                            <Progress successPercent={16} showInfo={false}/>
+                            <Progress successPercent={(this.state.signDay.length/this.state.signInfo.total_day).toFixed(2)*100} showInfo={false}/>
                             <ul>
                                 <li><span>3天</span></li>
                                 <li><span>7天</span></li>

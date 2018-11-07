@@ -3,18 +3,27 @@ import connect from "react-redux/es/connect/connect";
 import HeaderNav from "../../components/headerNav/headerNav";
 import BottomMenu from "../../components/bottomMenu/bottonMenu";
 import { Button, Modal, message } from "antd"
+import $ from "jquery"
 import Api from '~/until/api';
 import "./NewHome.less"
+
 
 class NewHome extends React.Component {
     constructor(props) {
         super(props);
+        this.home = this.props.match.params.id;
+        this.checkBox = this.home === "0"?{value:[500,1000,2000,5000],txt:["500","1k","2k","5k"]}
+            :this.home === "1"?{value:[10000,20000,30000,50000],txt:["10k","20k","30k","50k"]}:
+                {value:[100000,200000,300000,500000],txt:["100k","200k","300k","500k"]}
         this.state = {
             header:"",
             level:"",
             userInfo:this.props.userInfo.data,
             isCreateHome:false,
-            intoHomePwd:["","","","","",""]
+            intoHomePwd:["","","","","",""],
+            homePrice:this.checkBox.value[0],
+            isGoingHome:false,
+            createHome:false
         };
     }
 
@@ -26,7 +35,7 @@ class NewHome extends React.Component {
         this.setState({
             header,
             level
-        })
+        });
     }
 
     createHome = () => {
@@ -65,66 +74,98 @@ class NewHome extends React.Component {
         })
     };
 
-    radomeHome(){
-        Api.radomeJoinRoom({level:this.state.level}).then((res)=>{
-            console.log(res)
-            message.info("加入房间成功")
-            window.location.href = "#/Dashboard/GameHome/"+res.data.room_id
-        }).catch((err) => {
-            message.info(err.msg)
-        })
+    radomeHome(price){
+        console.log(price)
+        if(this.state.createHome){
+            let params = {
+                level:this.state.level,
+                homePassword:this.state.intoHomePwd.join(""),
+                room_gold:price
+            };
+            Api.createRoom(params).then((res) => {
+                message.info(res.msg);
+                console.log(res);
+                window.location.href = "#/Dashboard/GameHome/"+res.data.room_id+"/1";
+            }).catch((err) => {
+                message.info(err.msg)
+            });
+        }else {
+            console.log(123123123,price)
+            Api.radomeJoinRoom({level:this.state.level,room_gold:price}).then((res)=>{
+                message.info("加入房间成功")
+                window.location.href = "#/Dashboard/GameHome/"+res.data.room_id+"/1"
+            }).catch((err) => {
+                message.info(err.msg)
+            })
+        }
     }
 
 
     finHome = () =>{
-        console.log(123123123)
         let intoHomePwd = this.state.intoHomePwd;
         if(intoHomePwd.indexOf("") === -1 || intoHomePwd.indexOf("") === 0){
-            let params = {
-                level:this.state.level,
-                homePassword:this.state.intoHomePwd.join("")
-            };
-            Api.createRoom(params).then((res) => {
-                message.info(res.msg);
-                console.log(res)
-                window.location.href = "#/Dashboard/GameHome/"+res.data.room_id;
-            }).catch((err) => {
-                message.info(err.msg)
-            })
-            console.log(params);
+            this.setState({
+                isGoingHome:true,
+                createHome:true
+            });
         }else {
             message.warning("请输入完整的6位密码")
             return false
         }
-    }
+    };
 
     render(){
+        console.log(this.state.isGoingHome,this.checkBox.value[0],this.state.isGoingHome === this.checkBox.value[0])
         const button = [1,2,3,4,5,6,7,8,9,"重输",0,"确认"];
         const { userInfo } = this.state;
         return (
-            <div className="into-home">
+            <div className="into-home-wrap">
                 <HeaderNav name={this.state.header}/>
                 <div>
                     <div className="head-wrap">
                         <img src={userInfo?userInfo.avatar:require("../../layouts/image/head.png")} alt=""/>
                         <div className="my-info">
-                            <span>{userInfo?userInfo.username:""}</span>
-                            <br/>
-                            <span>ID:{userInfo?userInfo.uid:0}</span>
+                            <p>{userInfo?userInfo.username:""}</p>
+                            <p>ID:{userInfo?userInfo.uid:0}</p>
                         </div>
-                        <div className="my-money-item">
-                            <span>{userInfo?userInfo.gold:0}</span>
+                        <div className="my-money-items">
+                            <span>{userInfo?userInfo.gold>10000?(userInfo.gold/10000).toFixed(1)+"w":userInfo.gold:0}</span>
                         </div>
                     </div>
                     <div className="go-home-button">
                         <div className="into-home-button">
-                            <Button onClick={()=>this.radomeHome()}><p>随机匹配</p></Button>
+                            <Button onClick={()=>{this.setState({isGoingHome:true})}}><p>随机匹配</p></Button>
                         </div>
                         <div className="into-home-button">
                             <Button onClick={()=>this.openModal(true)}><p>新建房间</p></Button>
                         </div>
                     </div>
                 </div>
+                {/*<Modal entered={true} visible={this.state.isGoingHome} wrapClassName={"check-apply"}*/}
+                       {/*closable={false} destroyOnClose={true} onCancel={()=>{this.setState({isGoingHome:false,createHome:false})}}*/}
+                       {/*maskClosable={true} zIndex={99999}>*/}
+                    {/*{*/}
+                        {/*this.checkBox.value.map((item, index) =>{*/}
+                            {/*return <i onClick={()=>{this.setState({homePrice:item})}} onDoubleClick={()=>this.radomeHome(item)}*/}
+                                      {/*className={this.state.homePrice === item?"check-active":""}>{this.checkBox.txt[index]}</i>*/}
+                        {/*})*/}
+                    {/*}*/}
+                {/*</Modal>*/}
+                {
+                    this.state.isGoingHome?<div className="mask-check-apply">
+                    </div>:null
+                }
+                {
+                    this.state.isGoingHome?<div className="check-apply">
+                        {
+                                this.checkBox.value.map((item, index) =>{
+                                return <i onClick={()=>{this.setState({homePrice:item})}}
+                                className={this.state.homePrice === item?"check-active":""}>{this.checkBox.txt[index]}</i>
+                            })
+                        }
+                        <Button onClick={()=>this.radomeHome(this.state.homePrice)}>确定</Button>
+                    </div>:null
+                }
                 <BottomMenu />
                 <Modal entered={true} visible={this.state.isCreateHome} wrapClassName={"into-home-modal"}
                        closable={false} destroyOnClose={true}>

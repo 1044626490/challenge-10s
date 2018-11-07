@@ -100,7 +100,7 @@ class PersonalInformation extends React.Component {
                                     </li>
                                     <li onClick={()=>{window.location.href = "#/Dashboard/MyFriend/1"}}>
                                         <div>
-                                            <Badge count={10} overflowCount={9}>98
+                                            <Badge count={10} dot={99>99} overflowCount={99}>98
                                             </Badge>
                                         </div>
                                         <span>好友</span>

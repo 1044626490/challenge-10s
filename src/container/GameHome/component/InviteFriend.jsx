@@ -64,8 +64,6 @@ class InviteFriend extends React.Component{
                 <Modal entered={true} visible={true}
                        wrapClassName={"all-modal invite-wrap"}
                        closable={false} destroyOnClose={true}>
-                              wrapClassName={"all-modal invite-wrap"}
-                              closable={false} destroyOnClose={true}>
                     <Icon className="close-modal" onClick={()=>this.props.inviteFriend(false)} type="close" theme="outlined" />
                     <div className="player-info">
                         <div className="add-friend-container">

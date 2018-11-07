@@ -188,28 +188,41 @@
             text-align: center;
             position: relative;
             z-index: 999;
-            img{
+            .medal-img{
               width: 50%;
+              margin: 3vh 25% 1vh;
               height: auto;
-            }
-            .level{
-              position: absolute;
-              left: 50%;
-              top: 49%;
-              transform: translate(-50%);
-              color: white;
-              font-size: 3vw;
+              position: relative;
+              img{
+                width: 80%;
+                height: auto;
+              }
+              .level{
+                position: absolute;
+                left: 50%;
+                bottom: 5%;
+                transform: translate(-50%);
+                color: white;
+                font-size: 3.5vw;
+              }
             }
             .medal-name{
+              font-size: 5.5vw;
               color: #e4dd9d;
+              margin-bottom: 0;
+              position: relative;
               span{
+                position: absolute;
                 display: inline-block;
                 width: 5vw;
                 height: 2.5vw;
+                bottom: 0;
+                margin-bottom: 1.5vw;
+                margin-left: 1.25vw;
                 line-height: 2.5vw;
                 vertical-align: middle;
                 font-size: 2vw;
-                border: 1px solid rgba(228,221,157,0.5);
+                border: 1px solid rgba(228,221,157,0.2);
                 color: #e4dd9d;
               }
             }
@@ -220,6 +233,15 @@
           .my-medal-operation{
             text-align: center;
             margin-top: 5vh;
+            position: relative;
+            .get-gold{
+              //display: none;
+              opacity: 0;
+              color: #f6f62f;
+              position: absolute;
+              left: 50%;
+              transform: translate(-50%,-70%);
+            }
             button{
               height: 4vh;
               width: 25vw;
@@ -237,6 +259,7 @@
             p:first-child{
               color: #eeff19;
               position: relative;
+              margin-bottom: 1vw;
             }
             p:first-child:before{
               content: "";
@@ -255,6 +278,9 @@
             p{
               color: #c7bcfc;
               text-align: center;
+            }
+            p:last-child{
+              margin-top: 1vw;
             }
           }
         }

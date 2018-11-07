@@ -30,7 +30,9 @@ export const LEADER_BOARD = '/leaderboard';//总排行榜
 export const USER_READY = '/user_ready';//总排行榜
 export const SIGN_LIST = '/sign_list';//签到
 export const USER_SIGN = '/user_sign';//签到
-export const MEDAL_INFO = '/medal_info';//签到
+export const MEDAL_INFO = '/medal_info';//勋章单个信息
+export const WATCH_GAME = '/watch_game';//勋章单个信息
+export const RECEIVE_GOLD = '/receive_gold';//勋章单个信息
 
 
 

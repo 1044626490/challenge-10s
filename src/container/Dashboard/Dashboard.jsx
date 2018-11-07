@@ -50,7 +50,7 @@ const routes = [
         isExact: false
     },
     {
-        path: "GameHome/:homeId",
+        path: "GameHome/:homeId/:status",
         component: Loadable({
             loader: () => import("~/container/GameHome/GameHome"),
             loading: MyLoadingComponent

@@ -35,6 +35,8 @@ export default {
     signList: (params) =>post(C.SIGN_LIST, params),
     userSign: (params) =>post(C.USER_SIGN, params),
     medalInfo: (params) =>post(C.MEDAL_INFO, params),
+    watchGame: (params) =>post(C.WATCH_GAME, params),
+    receiveGold: (params) =>post(C.RECEIVE_GOLD, params),
 
     // logout: (params) => post(C.LOGOUT, params),
     // register: (params) => post(C.REGISTER, params),

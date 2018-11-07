@@ -7,6 +7,7 @@ import $ from "jquery";
 import InviteFriend from "./component/InviteFriend"
 import Api from '~/until/api';
 import "./GameHome.less"
+import ReactAudioPlayer from 'react-audio-player';
 
 let setI2;
 let homeId = null;
@@ -22,6 +23,7 @@ class GameHome extends React.Component{
             userInfo:this.props.userInfo.data,
             homeId:null,
             userData:[],
+            watchUserData:[],
             isHomeowner:false,
             isStartGame:false,
             isReadyGame:false,
@@ -42,22 +44,25 @@ class GameHome extends React.Component{
             areYouReady:[],
             amIReady:false,
             isAllReady:false,
-            isInviteFriend:false
+            isInviteFriend:false,
+            userType:"1"
         }
     }
 
     componentDidMount(){
         let homeId = this.props.match.params.homeId;
-        let level = homeId === "1"?"初级":homeId === "2"?"中级":"高级"
+        let userType = this.props.match.params.status;
+        let level = homeId === "1"?"初级":homeId === "2"?"中级":"高级";
         this.setState({
             homeId,
-            level
+            level,
+            userType
         })
         this.getWebSocket(homeId);
     }
 
     //点击开始游戏按钮
-    gameStart(){;
+    gameStart(){
         this.setState({
             isOpenMask:false
         })
@@ -69,7 +74,7 @@ class GameHome extends React.Component{
         let level1 = level === "S"?1:level === "M"?2:3;
         let NewHome = "#/Dashboard/NewHome/"+(level1-1);
         this.ws.onopen = ()=>{
-            let data = JSON.stringify({"type":"join_room","uid":this.props.userInfo.data.uid,"room_id":homeId,"level_room":level1});
+            let data = JSON.stringify({"type":"join_room","uid":this.props.userInfo.data.uid,"room_id":homeId,"level_room":level1,'user_type':Number(this.props.match.params.status)});
             this.ws.send(data)
         };
         this.ws.onmessage = (e)=>{
@@ -86,16 +91,27 @@ class GameHome extends React.Component{
                             for(let i=0;i<userData.length;i++){
                                 if(id === userData[i].uid){
                                     this.setState({
-                                        isHomeowner:userData[i].is_homeowner
+                                        isHomeowner:userData[i].is_homeowner,
+                                        userType:userData[i].user_type.toString()
                                     })
                                 }
                             }
-                            let length = userData.length;
+                            let arr1 = [];
+                            let arr2 = [];
+                            for(let i =0;i<userData.length;i++){
+                                if(userData[i].user_type.toString() === "1"){
+                                    arr1.push(userData[i])
+                                }else {
+                                    arr2.push(userData[i])
+                                }
+                            }
+                            let length = arr1.length;
                             for(let i = length;i < 6;i++){
-                                userData.push({})
+                                arr1.push({})
                             }
                             this.setState({
-                                userData
+                                userData:arr1,
+                                watchUserData:arr2,
                             })
                         }else {
                             let arr = [];
@@ -120,16 +136,27 @@ class GameHome extends React.Component{
                             for(let i=0;i<userData.length;i++){
                                 if(id === userData[i].uid){
                                     this.setState({
-                                        isHomeowner:userData[i].is_homeowner
+                                        isHomeowner:userData[i].is_homeowner,
+                                        userType:userData[i].user_type.toString()
                                     })
                                 }
                             }
-                            let length = userData.length;
+                            let arr1 = [];
+                            let arr2 = [];
+                            for(let i =0;i<userData.length;i++){
+                                if(userData[i].user_type.toString() === "1"){
+                                    arr1.push(userData[i])
+                                }else {
+                                    arr2.push(userData[i])
+                                }
+                            }
+                            let length = arr1.length;
                             for(let i = length;i < 6;i++){
-                                userData.push({})
+                                arr1.push({})
                             }
                             this.setState({
-                                userData
+                                userData:arr1,
+                                watchUserData:arr2,
                             })
                         }else {
                             let arr = [];
@@ -180,13 +207,15 @@ class GameHome extends React.Component{
                         }
                     }
                     let count1 = 0;
-                    this.setI1 = setInterval(()=>{
-                        count1++;
-                        if(count1 === 30){
-                            window.location.href = NewHome;
-                            clearInterval(this.setI1);
-                        }
-                    },1000);
+                    if(this.state.userType === "1"){
+                        this.setI1 = setInterval(()=>{
+                            count1++;
+                            if(count1 === 30){
+                                window.location.href = NewHome;
+                                clearInterval(this.setI1);
+                            }
+                        },1000)
+                    };
                     this.setState({
                         gameResult:userData,
                         isGameOver:true,
@@ -218,6 +247,18 @@ class GameHome extends React.Component{
 
     //断开websocket
     componentWillUnmount(){
+        if(this.state.isStartGame){
+            clearInterval(setI2);
+            let params = {
+                result:2000,
+                room_id:this.state.homeId,
+                uid:this.state.userInfo.uid,
+                room_order:this.state.room_order
+            };
+            Api.gameOver(params).then(res => {
+            }).catch(err => {
+            })
+        }
         clearInterval(this.setI);
         clearInterval(this.setI1);
         this.ws.close()
@@ -372,7 +413,6 @@ class GameHome extends React.Component{
     };
 
     render(){
-        console.log(this.state.userData)
         if(!this.state.isStartTime&&this.state.isStartGame&&this.state.backTime <= 0&&this.state.millisecond === "0"&&this.state.tenSeconds === "0"){
             this.timeGoOn()
         }
@@ -380,6 +420,15 @@ class GameHome extends React.Component{
         return(
             <div className="game-home-wrap">
                 <HeaderNav name={"["+this.state.homeId+"]"}/>
+                {/*<ReactAudioPlayer*/}
+                    {/*src={require("../../layouts/video/bg1.mp3")}*/}
+                    {/*autoPlay*/}
+                    {/*style={{width: 0}}*/}
+                {/*/>*/}
+                {/*<video className="game-audio"  src={require("../../layouts/video/bg1.mp3")} */}
+                       {/*autoPlay={true} loop={true} style={{width: 0}}></video>*/}
+                <audio className="game-audio"  src={require("../../layouts/video/bg1.mp3")}
+                       autoPlay={true} loop={true} style={{width: 0}}></audio>
                 {
                     this.state.isStartGame?<div className="bg-cilcle"></div>:null
                 }
@@ -395,7 +444,9 @@ class GameHome extends React.Component{
                                     <span>{this.state.userInfo.username}{this.state.isHomeowner?<span className="is-homeowner">房主</span>:null}</span>
                                 </p>
                                 {
-                                    this.state.userData.length&&this.state.userData[5].uid?null:<Button onClick={()=>this.inviteFriend()} className="start-game-yes">随机邀请</Button>
+                                    this.state.userData.length&&this.state.userData[5].uid?null:
+                                        this.state.userType === "1"&&this.state.isHomeowner?
+                                        <Button onClick={()=>this.inviteFriend()} className="start-game-yes">随机邀请</Button>:null
                                 }
                             </div>
                             <div className="game-menber">
@@ -423,7 +474,7 @@ class GameHome extends React.Component{
                                     </ul>
                                     <div className="start-game-pop">
                                         {
-                                            this.state.isHomeowner?
+                                            this.state.userType === "0"?null:this.state.isHomeowner?
                                                 <Popconfirm overlayClassName={"start-game-pop"}
                                                             placement="top" title={"确认开始"}
                                                             onCancel={()=>this.startGame()}
@@ -441,8 +492,6 @@ class GameHome extends React.Component{
                                                 </Button>
                                         }
                                     </div>
-                                </div>
-                                <div className="menber-item">
                                 </div>
                             </div>
                         </div>
@@ -529,7 +578,7 @@ class GameHome extends React.Component{
                        wrapClassName={"all-modal game-over"}
                        closable={false} destroyOnClose={true}>
                     {
-                        this.state.NOme === 1?<div className="twinkle-little-star win">
+                        this.state.userType === "0"?null:this.state.NOme === 1?<div className="twinkle-little-star win">
                             <div className="star1"><span>
                                 </span></div>
                             <div className="star2"><span>
@@ -542,7 +591,7 @@ class GameHome extends React.Component{
                             </div>
                         </div>:<div className="lose"></div>
                     }
-                    {/*<Icon className="close-modal" onClick={()=>{this.setState({isOpenPlayer:false})}} type="close" theme="outlined" />*/}
+                    <Icon className="close-modal" onClick={()=>{this.setState({isGameOver:false})}} type="close" theme="outlined" />
                     <div className="player-info">
                         <div className="game-over-header">
                             <Avatar icon="user" src={this.props.userInfo.data.avatar||""}/>
@@ -562,12 +611,27 @@ class GameHome extends React.Component{
                                 </tbody>
                             </table>
                         </div>
-                        <div className="button-operation">
-                            <Button>炫耀一下</Button>
-                            <Button onClick={()=>this.returnHome()}>再来一次</Button>
-                        </div>
+                        {
+                            this.state.userType === "1"?<div className="button-operation">
+                                <Button>炫耀一下</Button>
+                                <Button onClick={()=>this.returnHome()}>再来一次</Button>
+                            </div>:null
+                        }
                     </div>
                 </Modal>
+                <div className="watch-game-menber">
+                    {
+                        this.state.watchUserData.length?<ul>
+                                {
+                                    this.state.watchUserData.map((item, index) => {
+                                        return<li key={index}>
+                                            <Avatar size="small" icon="user" src={item.avatar}/>
+                                        </li>
+                                    })
+                                }
+                        </ul>:<p>暂无人观战...</p>
+                    }
+                </div>
             </div>
         )
     }

@@ -129,13 +129,11 @@ class Index extends React.Component {
 
     getUserInfo = () => {
         this.props.dispatch(fetchPostsGetUser()).then((res) => {
-            console.log(res.data);
             this.setState({
                 isLogin:!res.msg,
                 userInfo:res.data
             })
         }).catch((err) => {
-            console.log(err);
             this.setState({
                 isLogin:true,
             })
@@ -168,7 +166,7 @@ class Index extends React.Component {
                     this.setState({
                         intoHomePwd:arr
                     })
-                }else {
+                }else if(this.state.intoHomePwd.indexOf("") === 0){
                     message.warning("请先输入房间等级“S”“M”“H”")
                 }
             }else {
@@ -198,7 +196,7 @@ class Index extends React.Component {
     intoHome(){
         if(this.state.isHomeNeedPwd){
             Api.confirmRoomPass({room_id:this.state.homeId,homePassword: this.state.intoHomePwd.join("")}).then((res)=>{
-                window.location.href = "#/Dashboard/GameHome/"+this.state.homeId
+                window.location.href = "#/Dashboard/GameHome/"+this.state.homeId+"/1"
             }).catch((err)=>{
                 message.info(err.msg)
             })
@@ -311,6 +309,17 @@ class Index extends React.Component {
         })
     };
 
+    watchGame(e,level){
+        e.stopPropagation();
+        e.cancelBubble = true;
+        Api.watchGame({room_level:level+1}).then(res =>{
+            window.location.href = "#/Dashboard/GameHome/"+res.data.room_id+"/0"
+        }).catch(err =>{
+            message.info(err.msg)
+            return false
+        })
+    }
+
     render(){
         console.log(this.props.userInfo)
         const button = ["S","M","H","1","2","3","4","5","6","7","8","9","重输","0","确认"];
@@ -323,7 +332,7 @@ class Index extends React.Component {
                     this.state.isOpenMask?<div className="mask"></div>:null
                 }
                 {
-                    this.state.isOpenSign?<Sign closeSign={()=>{this.setState({isOpenSign:false})}} isOpenSign={this.state.isOpenSign}/>:null
+                    this.state.isOpenSign?<Sign closeSign={()=>{this.setState({isOpenSign:false})}} getUserInfo={()=>this.getUserInfo()} isOpenSign={this.state.isOpenSign}/>:null
                 }
                 <div className="random-invite">
                     {
@@ -350,7 +359,7 @@ class Index extends React.Component {
                         <span>ID:{userInfo?userInfo.uid:0}</span>
                     </div>
                     <div className="my-money-item">
-                        <span>{userInfo?userInfo.gold:0}</span>
+                        <span>{userInfo?userInfo.gold>10000?(userInfo.gold/10000).toFixed(1)+"w":userInfo.gold:0}</span>
                         <span className="my-money-item-pay" onClick={()=>{window.location.href = "#/Dashboard/PayPage"}}>{null}</span>
                         <span onClick={()=>{window.location.href = "#/Dashboard/RankList"}} className="my-trophy">{null}</span>
                         <span onClick={()=>{this.setState({isOpenMyTask:true})}} className="my-trophy my-task">{null}</span>
@@ -365,7 +374,7 @@ class Index extends React.Component {
                                         onClick={item === "输入房号"?()=>this.openModal(true):
                                             ()=>{window.location.href = "#/Dashboard/NewHome/"+index}}>
                                     {item !== "输入房号"?<span>people-number</span>:null}
-                                    {item !== "输入房号"?<i className="eyes-game">
+                                    {item !== "输入房号"?<i onClick={(e)=>this.watchGame(e,index)} className="eyes-game">
                                         <img src={require("../../layouts/image/eyes.png")} alt=""/>
                                     </i>:null}
                                 <p>{item}</p>

@@ -1,13 +1,14 @@
 .head-wrap{
   position: relative;
   margin-top: 2.2vh;
+  padding: 0 5vw;
   img{
     float: left;
     border-radius: 50%;
     width: 13.3vw;
     height: 13.3vw;
     border:1px solid #fff;
-    margin: 0 4vw;
+    margin: 0 4vw 0 0;
   }
   .my-info{
     color:#fff;
@@ -24,10 +25,12 @@
     text-align: right;
     top:1vw;
     display: block;
-    width: 20vw;
+    margin-right: 2vw;
+    //width: 30vw;
+    padding: 0 6vw 0 7vw;
     height: 5vw;
     color: #fff;
-    padding-right: 5vw;
+    //padding-right: 5vw;
     background-color: rgb(37,30,74);
     border:1px solid rgb(104,70,159);
     border-radius: 3vw;
@@ -49,6 +52,7 @@
       height: 4vw;
       line-height: 4vw;
       float: right;
+      margin-right: -0.5vw;
     }
     //span:not(.my-trophy){
     //  font-size: 3vw;
@@ -56,8 +60,8 @@
     .my-money-item-pay{
       content: "";
       display: inline-block;
-      width: 4.3vw;
-      height: 4.6vw;
+      width: 4.5vw;
+      height: 5vw!important;
       background-size: 100%;
       background-repeat: no-repeat;
       background-position: center;
@@ -74,7 +78,10 @@
   .my-money-item{
     right: 4vw;
     span:not(.my-trophy):before{
-      background-image: url("../../layouts/image/homePage_icon.png");
+      width: 5.5vw;
+      height: 6.3vw;
+      margin-top: 0.3vw;
+      background-image: url("../../layouts/image/gold.png");
       left: -0.5vw;
     }
   }
@@ -87,11 +94,11 @@
   }
   .my-trophy{
     display: block;
-    width: 10.1vw;
-    height: 10.1vw;
+    width: 9vw;
+    height: 9vw;
     position: absolute;
     bottom: -13vw;
-    right: 0;
+    right: -0.5vw;
     background-image: url("../../layouts/image/trophy.png");
     background-size: 100% 100%;
     background-repeat: no-repeat;
@@ -99,11 +106,11 @@
   }
   .my-task{
     display: block;
-    width: 10.1vw;
-    height: 10.1vw;
+    width: 9vw;
+    height: 9vw;
     position: absolute;
     bottom: -13vw;
-    right: 11.5vw;
+    right: 10vw;
     background-image: url("../../layouts/image/1 (6).png");
     background-size: 100% 100%;
     background-repeat: no-repeat;
@@ -111,11 +118,11 @@
   }
   .relief-payment{
     display: block;
-    width: 10.1vw;
-    height: 10.1vw;
+    width: 9vw;
+    height: 9vw;
     position: absolute;
     bottom: -13vw;
-    right: 21.5vw;
+    right: 20vw;
     background-image: url("../../layouts/image/1 (5).png");
     background-size: 100% 100%;
     background-repeat: no-repeat;
@@ -123,11 +130,11 @@
   }
   .sign-in{
     display: block;
-    width: 10.1vw;
-    height: 10.1vw;
+    width: 9vw;
+    height: 9vw;
     position: absolute;
     bottom: -13vw;
-    right: 34vw;
+    right: 31vw;
     background-image: url("../../layouts/image/sign.png");
     background-size: 100% 100%;
     background-repeat: no-repeat;
@@ -299,13 +306,16 @@
       background-size: 100%;
     }
     .game-rule-item{
+      width: 100vw;
+      padding: 0 6vw;
       list-style: none;
       color: #fff;
       margin-top: 3vh;
       margin-bottom: 14vh;
       li{
-        font-size: 2vh;
-        width: 80vw;
+        color: #d0cce3;
+        font-size: 3.5vw;
+        width: 88vw;
         line-height: 3vh;
       }
     }
@@ -466,11 +476,11 @@
               //-webkit-text-stroke: 1px rgb(80,14,119);
               span{
                 display: inline-block;
-                width: 25px;
-                height: 25px;
+                width: 8vw;
+                height: 8vw;
                 position: absolute;
-                right: 20px;
-                top: 15px;
+                right: 3vw;
+                top: 3vw;
                 background-image: url("../../layouts/image/close.png");
                 background-repeat: no-repeat;
                 background-size: 100%;
@@ -513,6 +523,7 @@
                 vertical-align: middle;
               }
               .input-item{
+                line-height: 6vw;
                 display: inline-block;
                 border-radius: 5px;
                 text-align: center;
@@ -537,24 +548,26 @@
             }
             .button-group{
               text-align: center;
-              width: 100%;
+              width: 76vw;
               margin-left: 50%;
               transform: translateX(-50%);
-              margin-top: 4vw;
+              margin-top: 7vw;
+              padding-left: 1.5vw;
               button{
+                float: left;
                 border-width: 0;
-                margin: 5px;
+                margin: 1.5vw 1vw 0;
                 font-size: 5vw;
                 -webkit-text-fill-color: white;
                 -webkit-text-stroke-width: 1px;
                 -webkit-text-stroke-color: #004142;
                 position: relative;
-                width: 19vw;
-                height: 8vw;
-                border-radius: 5px;
+                width: 22vw;
+                height: 10vw;
+                border-radius: 1vw;
                 background-image: url("../../layouts/image/modal-btn-2.png");
                 background-repeat: no-repeat;
-                background-size: 100%;
+                background-size: 100% 100%;
                 img{
                   position: absolute;
                   top: 20%;

@@ -1,8 +1,9 @@
 import React from "react"
 import Api from '~/until/api';
 import HeaderNav from "../../components/headerNav/headerNav";
+import $ from "jquery"
 import "./MyMedal.less"
-import {Tabs, Radio, Carousel, Modal, Icon} from 'antd';
+import {Tabs, Radio, Carousel, Modal, Icon, message} from 'antd';
 
 const TabPane = Tabs.TabPane;
 
@@ -13,7 +14,7 @@ class MyMedal extends React.Component{
             myMedalInfo:[],
             pageId:this.props.match.params.id||"1",
             isOpenMedal:false,
-            item:{}
+            item:{},
         }
     }
 
@@ -33,63 +34,36 @@ class MyMedal extends React.Component{
             console.log(res)
             this.setState({
                 isOpenMedal:true,
-                item
+                item:res.data
             })
         }).catch(err => {
             console.log(err)
         })
     }
 
+    receiveGold(){
+        Api.receiveGold({num_id:this.state.item.num_id}).then(res => {
+            $('.get-gold').animate({
+                marginTop:"-8vw",
+                opacity: 1,
+            },1000).delay(300).animate({
+                opacity: 0
+            },300).delay(100)
+            Api.medalInfo({num_id:this.state.item.num_id}).then(res =>{
+                console.log(res)
+                this.setState({
+                    item:res.data
+                })
+            }).catch(err => {
+                console.log(err)
+            })
+        }).catch(err => {
+            message.info(err.msg)
+        })
+    }
+
     render(){
-        const data = this.state.myMedalInfo
-        // const data = [
-        //     {
-        //         name:"大获全胜0",
-        //         level:"33级",
-        //         src:require("../../layouts/image/medal/level1.png")
-        //     },
-        //     {
-        //         name:"大获全胜10",
-        //         level:"33级",
-        //         src:require("../../layouts/image/medal/level2.png")
-        //     },
-        //     {
-        //         name:"大获全胜20",
-        //         level:"33级",
-        //         src:require("../../layouts/image/medal/level3.png")
-        //     },
-        //     {
-        //         name:"大获全胜30",
-        //         level:"33级",
-        //         src:require("../../layouts/image/medal/level4.png")
-        //     },
-        //     {
-        //         name:"大获全胜0",
-        //         level:"33级",
-        //         src:require("../../layouts/image/medal/level1.png")
-        //     },
-        //     {
-        //         name:"大获全胜10",
-        //         level:"33级",
-        //         src:require("../../layouts/image/medal/level2.png")
-        //     },
-        //     {
-        //         name:"大获全胜20",
-        //         level:"33级",
-        //         src:require("../../layouts/image/medal/level3.png")
-        //     },
-        //     {
-        //         name:"大获全胜30",
-        //         level:"33级",
-        //         src:require("../../layouts/image/medal/level4.png")
-        //     },
-        //     {
-        //         name:"大获全胜0",
-        //         level:"33级",
-        //         src:require("../../layouts/image/medal/level1.png")
-        //     }
-        // ];
-        console.log(this.state.pageId,this.state.pageId === "2");
+        const data = this.state.myMedalInfo||[]
         return(
             <div className="my-medal-wrap">
                 <HeaderNav name="挑战10秒"/>
@@ -109,7 +83,7 @@ class MyMedal extends React.Component{
                                     <Carousel afterChange={null}>
                                     <ul>
                                         {
-                                            data.map((item ,index) => {
+                                            data&&data.map((item ,index) => {
                                                 return <li key={index}>
                                                             <img onClick={()=>this.openMedal(item)}
                                                                  src={item.img} alt=""/>
@@ -175,16 +149,28 @@ class MyMedal extends React.Component{
                                       type="close" theme="outlined" />
                                 <div className="player-info">
                                     <div className="medal-info-content">
-                                        <img src={this.state.item.img} alt=""/>
-                                        <span className="level">{this.state.item.level}</span>
+                                        <div className="medal-img">
+                                            <img src={this.state.item.img} alt=""/>
+                                            <span className="level">{this.state.item.level}级</span>
+                                        </div>
                                         <p className="medal-name">{this.state.item.name}
-                                        {/*<span>Ⅲ</span>*/}
+                                            <span>{
+                                                Number(this.state.item.level) === 1?"Ⅰ":Number(this.state.item.level) === 2?"Ⅱ":Number(this.state.item.level) === 3?"Ⅲ":
+                                                    Number(this.state.item.level) === 4?"Ⅳ":Number(this.state.item.level) === 5?"Ⅴ":Number(this.state.item.level) === 6?"Ⅵ":
+                                                        Number(this.state.item.level) === 7?"Ⅶ":Number(this.state.item.level) === 8?"Ⅷ":Number(this.state.item.level) === 9?"Ⅸ":
+                                                            Number(this.state.item.level) === 10?"Ⅹ":Number(this.state.item.level) === 11?"Ⅺ":Number(this.state.item.level) === 12?"Ⅻ":""
+                                            }</span>
                                         </p>
                                         <p>消费达到100w金币</p>
                                     </div>
                                     <div className="my-medal-operation">
                                         <p>金币+{this.state.item.reward}</p>
-                                        <button className={this.state.item.is_receive?"is-receive":""} disabled={this.state.item.is_receive} onClick={null}>领取奖励</button>
+                                        <span className="get-gold">+{this.state.item.reward}</span>
+                                        <button className={this.state.item.is_receive?"is-receive":""}
+                                                disabled={this.state.item.is_receive}
+                                                onClick={()=>this.receiveGold()}>
+                                            {this.state.item.is_receive?"已领取":"领取奖励"}
+                                        </button>
                                         <p>2018-10-17 获得</p>
                                     </div>
                                 </div>
