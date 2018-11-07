@@ -4,6 +4,7 @@ import { Modal, Avatar, Button, Drawer, Icon, Popconfirm, message } from "antd"
 import connect from "react-redux/es/connect/connect";
 import OtherUserInfo from "./component/OtherUserInfo"
 import $ from "jquery";
+import InviteFriend from "./component/InviteFriend"
 import Api from '~/until/api';
 import "./GameHome.less"
 
@@ -40,7 +41,8 @@ class GameHome extends React.Component{
             NOme:0,
             areYouReady:[],
             amIReady:false,
-            isAllReady:false
+            isAllReady:false,
+            isInviteFriend:false
         }
     }
 
@@ -66,9 +68,7 @@ class GameHome extends React.Component{
         let level = homeId.slice(0,1);
         let level1 = level === "S"?1:level === "M"?2:3;
         let NewHome = "#/Dashboard/NewHome/"+(level1-1);
-        console.log(NewHome);
         this.ws.onopen = ()=>{
-            // let data = '{"type":"join_room","uid":1,"room_id":123456,"level_room":1}'
             let data = JSON.stringify({"type":"join_room","uid":this.props.userInfo.data.uid,"room_id":homeId,"level_room":level1});
             this.ws.send(data)
         };
@@ -182,7 +182,6 @@ class GameHome extends React.Component{
                     let count1 = 0;
                     this.setI1 = setInterval(()=>{
                         count1++;
-                        console.log(count1,NewHome);
                         if(count1 === 30){
                             window.location.href = NewHome;
                             clearInterval(this.setI1);
@@ -219,7 +218,6 @@ class GameHome extends React.Component{
 
     //断开websocket
     componentWillUnmount(){
-        console.log(123123123)
         clearInterval(this.setI);
         clearInterval(this.setI1);
         this.ws.close()
@@ -315,8 +313,6 @@ class GameHome extends React.Component{
             isAddBet:false,
             userInfo:this.props.userInfo.data,
             homeId:homeId,
-            //userData:[],
-            // isHomeowner:false,
             isStartGame:false,
             isReadyGame:false,
             backTime:3,
@@ -362,9 +358,6 @@ class GameHome extends React.Component{
 
     //准备
     areYouReady = () => {
-        // this.setState({
-        //     areYouReady:!this.state.areYouReady
-        // });
         Api.areYouReady({uid:this.state.userInfo.uid,room_id:this.state.homeId}).then(res => {
 
         }).catch(err => {
@@ -372,8 +365,14 @@ class GameHome extends React.Component{
         })
     };
 
+    inviteFriend = (isOpen) =>{
+        this.setState({
+            isInviteFriend:isOpen
+        })
+    };
+
     render(){
-        console.log(this.state.userData.length&&!this.state.userData[1].uid&&!this.state.isAllReady)
+        console.log(this.state.userData)
         if(!this.state.isStartTime&&this.state.isStartGame&&this.state.backTime <= 0&&this.state.millisecond === "0"&&this.state.tenSeconds === "0"){
             this.timeGoOn()
         }
@@ -386,160 +385,145 @@ class GameHome extends React.Component{
                 }
                 {
                     !this.state.isReadyGame?
-                <div>
-                    {
-                        this.state.isOpenMask?<div className="mask"></div>:null
-                    }
-                    <div className="game-home-header">
-                        <Avatar icon="user" src={this.props.userInfo.data.avatar||require("../../layouts/image/head.png")} alt=""/>
-                        <p>
-                            <span>{this.state.userInfo.username}{this.state.isHomeowner?<span className="is-homeowner">房主</span>:null}</span>
-                        </p>
-                    </div>
-                    <div className="game-menber">
+                        <div>
+                            {
+                                this.state.isOpenMask?<div className="mask"></div>:null
+                            }
+                            <div className="game-home-header">
+                                <Avatar icon="user" src={this.props.userInfo.data.avatar||require("../../layouts/image/head.png")} alt=""/>
+                                <p>
+                                    <span>{this.state.userInfo.username}{this.state.isHomeowner?<span className="is-homeowner">房主</span>:null}</span>
+                                </p>
+                                {
+                                    this.state.userData.length&&this.state.userData[5].uid?null:<Button onClick={()=>this.inviteFriend()} className="start-game-yes">随机邀请</Button>
+                                }
+                            </div>
+                            <div className="game-menber">
                         <span className="game-menber-header">
                             <span>
                                 {this.state.homeId}
                             </span>
                         </span>
-                        <div className="game-menber-content">
-                            <ul>
-                                {
-                                    this.state.userData&&this.state.userData.map((item ,index) => {
-                                        return <li key={index} className={item.is_homeowner === 1?"home":""}>
-                                                {
-                                                    this.state.areYouReady.map((item1, index1)=>{
-                                                        return item.is_homeowner !== 1&&item.uid === item1.uid&&item1.is_ready === 1?<span key={index1} className="are-you-ready"><Icon type="check-circle" theme="outlined" /></span>:null
-                                                    })
-                                                }
-                                            <Avatar onClick={item.uid === uid?null:()=>this.openPlayerInfo(true,item.uid)} icon="user" src={item.avatar||require("../../layouts/image/sc.png")} alt=""/>
-                                                {item.is_homeowner === 1?<span className="is-homeowner">房主</span>:null}
-                                                <p>{item.username}</p>
-                                            </li>
-                                    })
-                                }
-                            </ul>
-                            <div className="start-game-pop">
-                                    {
-                                        this.state.isHomeowner?
-                                            <Popconfirm overlayClassName={"start-game-pop"}
-                                                        placement="top" title={"确认开始"}
-                                                        onCancel={()=>this.startGame()}
-                                                        onVisibleChange={()=>this.gameStart()}
-                                                        onConfirm={()=>this.gameStart()}
-                                                        okText="取消"
-                                                        cancelText="确认">
-                                                <Button className={this.state.userData.length&&!
-                                            this.state.userData[1].uid?"start-game-no":this.state.isAllReady?"start-game-yes":"start-game-no"}
-                                                                       disabled={this.state.userData.length&&!
-                                                                           this.state.userData[1].uid||!this.state.isAllReady}>开始游戏</Button>
-                                            </Popconfirm>:
-                                            <Button key={Math.random()} onClick={()=>this.areYouReady()} className="start-game-yes">
-                                                {this.state.amIReady?"取消准备":"准备"}
-                                            </Button>
-                                    }
+                                <div className="game-menber-content">
+                                    <ul>
+                                        {
+                                            this.state.userData&&this.state.userData.map((item ,index) => {
+                                                return <li key={index} className={item.is_homeowner === 1?"home":""}>
+                                                    {
+                                                        this.state.areYouReady.map((item1, index1)=>{
+                                                            return item.is_homeowner !== 1&&item.uid === item1.uid&&item1.is_ready === 1?<span key={index1} className="are-you-ready"><Icon type="check-circle" theme="outlined" /></span>:null
+                                                        })
+                                                    }
+                                                    <Avatar onClick={!item.uid?()=>this.inviteFriend(true):item.uid === uid?null:()=>this.openPlayerInfo(true,item.uid)} icon="user" src={item.avatar||require("../../layouts/image/sc.png")} alt=""/>
+                                                    {item.is_homeowner === 1?<span className="is-homeowner">房主</span>:null}
+                                                    <p>{item.username}</p>
+                                                </li>
+                                            })
+                                        }
+                                    </ul>
+                                    <div className="start-game-pop">
+                                        {
+                                            this.state.isHomeowner?
+                                                <Popconfirm overlayClassName={"start-game-pop"}
+                                                            placement="top" title={"确认开始"}
+                                                            onCancel={()=>this.startGame()}
+                                                            onVisibleChange={()=>this.gameStart()}
+                                                            onConfirm={()=>this.gameStart()}
+                                                            okText="取消"
+                                                            cancelText="确认">
+                                                    <Button className={this.state.userData.length&&!
+                                                        this.state.userData[1].uid?"start-game-no":this.state.isAllReady?"start-game-yes":"start-game-no"}
+                                                            disabled={this.state.userData.length&&!
+                                                                this.state.userData[1].uid||!this.state.isAllReady}>开始游戏</Button>
+                                                </Popconfirm>:
+                                                <Button key={Math.random()} onClick={()=>this.areYouReady()} className="start-game-yes">
+                                                    {this.state.amIReady?"取消准备":"准备"}
+                                                </Button>
+                                        }
+                                    </div>
+                                </div>
+                                <div className="menber-item">
+                                </div>
                             </div>
                         </div>
-                        <div className="menber-item">
-
-                        </div>
-                    </div>
-                </div>
-                :<div>
-                        <div className="game-start-menber-content">
-                            <div className="time-goeson">
-                                {/*<div>*/}
-                                    {/*<img src={this.state.tenSeconds < 10?*/}
-                                        {/*require("../../layouts/image/timego/0.png"):*/}
-                                        {/*require("../../layouts/image/timego/"+this.state.tenSeconds[0]+".png")}*/}
-                                         {/*alt=""/>*/}
-                                {/*</div>*/}
-                                {/*<div>*/}
-                                    {/*<img src={require("../../layouts/image/timego/"+this.state.tenSeconds.slice(this.state.tenSeconds.length-1,this.state.tenSeconds.length)+".png")}*/}
-                                         {/*alt=""/>*/}
-                                {/*</div>*/}
+                        :<div>
+                            <div className="game-start-menber-content">
+                                <div className="time-goeson">
                                 <span className="point">
                                     {this.state.tenSeconds < 10?
                                         "0"+this.state.tenSeconds:this.state.tenSeconds}
-                                        <span>
+                                    <span>
                                             :
                                         </span>
                                     &nbsp;
                                     {this.state.millisecond < 10?
                                         "0"+this.state.millisecond:this.state.millisecond}
                                 </span>
-                                {/*<div>*/}
-                                    {/*<img src={this.state.millisecond < 10?*/}
-                                    {/*require("../../layouts/image/timego/0.png"):*/}
-                                    {/*require("../../layouts/image/timego/"+this.state.millisecond[0]+".png")}*/}
-                                          {/*alt=""/>*/}
-                                {/*</div>*/}
-                                {/*<div>*/}
-                                    {/*<img src={require("../../layouts/image/timego/"+this.state.millisecond.slice(this.state.millisecond.length-1,this.state.millisecond.length)+".png")}*/}
-                                         {/*alt=""/>*/}
-                                {/*</div>*/}
-                                <p className="stop-game">
-                                    {this.state.tenSeconds >= 5?<Button onClick={()=>this.gameOver()}>停止</Button>:null}
-                                </p>
-                            </div>
-                            {
-                                this.state.isStartGame&&this.state.backTime === 3?this.backTime():null
-                            }
-                            {
-                                this.state.isStartGame&&this.state.backTime > 0?<div className="game-back-time">
-                                    <img className={"game-back-time"+this.state.backTime} src={require("../../layouts/image/back"+
-                                        this.state.backTime+".png")} alt=""/>
-                                </div>:null
-                            }
-                            <ul className={this.state.isStartGame?"game-start":null}>
+                                    <p className="stop-game">
+                                        {this.state.tenSeconds >= 5?<Button onClick={()=>this.gameOver()}>停止</Button>:null}
+                                    </p>
+                                </div>
                                 {
-                                    this.state.userData&&this.state.userData.map((item ,index) => {
-                                        // if(item.is_homeowner === 1){
+                                    this.state.isStartGame&&this.state.backTime === 3?this.backTime():null
+                                }
+                                {
+                                    this.state.isStartGame&&this.state.backTime > 0?<div className="game-back-time">
+                                        <img className={"game-back-time"+this.state.backTime} src={require("../../layouts/image/back"+
+                                            this.state.backTime+".png")} alt=""/>
+                                    </div>:null
+                                }
+                                <ul className={this.state.isStartGame?"game-start":null}>
+                                    {
+                                        this.state.userData&&this.state.userData.map((item ,index) => {
+                                            // if(item.is_homeowner === 1){
                                             return <li key={index} className={item.is_homeowner === 1?"home":""}>
-                                                    {
-                                                        this.state.userResult.map((item1, index1)=>{
-                                                                return Number(item1.uid) === item.uid?
-                                                                <i className="user-mask">
-                                                                    {item1.result.slice(0,-2)}:{item1.result.slice(-2,item1.result.length)}
-                                                                </i>:null
-                                                        })
-                                                    }
+                                                {
+                                                    this.state.userResult.map((item1, index1)=>{
+                                                        return Number(item1.uid) === item.uid?
+                                                            <i className="user-mask">
+                                                                {item1.result.slice(0,-2)}:{item1.result.slice(-2,item1.result.length)}
+                                                            </i>:null
+                                                    })
+                                                }
                                                 <Avatar onClick={item.uid?item.uid === uid?null:()=>this.openPlayerInfo(true,item.uid):null}
                                                         icon="user" src={item.avatar||require("../../layouts/image/sc.png")} alt=""/>
-                                                    {
-                                                        item.is_homeowner === 1?<span className="is-homeowner game-start-homeoener">房主</span>:null
-                                                    }
+                                                {
+                                                    item.is_homeowner === 1?<span className="is-homeowner game-start-homeoener">房主</span>:null
+                                                }
                                             </li>
-                                    })
-                                }
-                            </ul>
+                                        })
+                                    }
+                                </ul>
+                            </div>
                         </div>
-                    </div>
                 }
                 {/*<Drawer*/}
-                    {/*title=""*/}
-                    {/*maskClosable={false}*/}
-                    {/*closable={false}*/}
-                    {/*onClose={this.onClose}*/}
-                    {/*visible={false}*/}
-                    {/*className="bottom-pour"*/}
-                    {/*placement="bottom"*/}
+                {/*title=""*/}
+                {/*maskClosable={false}*/}
+                {/*closable={false}*/}
+                {/*onClose={this.onClose}*/}
+                {/*visible={false}*/}
+                {/*className="bottom-pour"*/}
+                {/*placement="bottom"*/}
                 {/*>*/}
-                    {/*<p className="up">*/}
-                        {/*<span></span>*/}
-                    {/*</p>*/}
-                    {/*<p className="home-name"><span>{this.state.level}房间</span></p>*/}
-                    {/*<p className="into-home-price"><img className="into-home-price-icon" src={require("../../layouts/image/homePage_icon.png")}/><span>入场费：</span><span>100金币</span></p>*/}
-                    {/*<div className="button-operation">*/}
-                        {/*<Button>进入房间</Button>*/}
-                        {/*<Button>前往押注</Button>*/}
-                    {/*</div>*/}
+                {/*<p className="up">*/}
+                {/*<span></span>*/}
+                {/*</p>*/}
+                {/*<p className="home-name"><span>{this.state.level}房间</span></p>*/}
+                {/*<p className="into-home-price"><img className="into-home-price-icon" src={require("../../layouts/image/homePage_icon.png")}/><span>入场费：</span><span>100金币</span></p>*/}
+                {/*<div className="button-operation">*/}
+                {/*<Button>进入房间</Button>*/}
+                {/*<Button>前往押注</Button>*/}
+                {/*</div>*/}
                 {/*</Drawer>*/}
                 {
                     this.state.isOpenPlayer?<OtherUserInfo info={this.state.otherPlayer}
                                                            isOpenPlayer={this.state.isOpenPlayer}
                                                            openPlayerInfo={this.openPlayerInfo.bind(this)}
                     />:null
+                }
+                {
+                    this.state.isInviteFriend?<InviteFriend isInviteFriend={this.state.isInviteFriend} inviteFriend={()=>this.inviteFriend()}/>:null
                 }
                 <Modal entered={true} visible={this.state.isGameOver}
                        wrapClassName={"all-modal game-over"}
@@ -574,26 +558,6 @@ class GameHome extends React.Component{
                                         <td><span>No.{index+1}：</span></td>
                                         <td><div>{item.username},{item.result.slice(0,-2)}.{item.result.slice(-2,item.result.length)}s,金币+{item.win_gold},积分+{item.this_integral}</div></td>
                                     </tr>
-                                    // <tr className="win-tr">
-                                    //     <td><span>No.2：</span></td>
-                                    // <td><div>阿狸大大,金币-200,积分+10</div></td>
-                                    // </tr>
-                                    // <tr className="win-tr">
-                                    //     <td><span>No.3：</span></td>
-                                    //     <td><div>阿狸大大123123123123,金币-200,积分+10</div></td>
-                                    // </tr>
-                                    // <tr>
-                                    // <td><span>lose：</span></td>
-                                    // <td><div>阿狸大大,金币-200,积分+10</div></td>
-                                    // </tr>
-                                    // <tr>
-                                    //     <td><span>lose：</span></td>
-                                    //     <td><div>阿狸大大,金币-200,积分+10</div></td>
-                                    // </tr>
-                                    // <tr>
-                                    // <td><span>lose：</span></td>
-                                    // <td><div>阿狸大大,金币-200,积分+10</div></td>
-                                    // </tr>
                                 })}
                                 </tbody>
                             </table>
@@ -602,7 +566,6 @@ class GameHome extends React.Component{
                             <Button>炫耀一下</Button>
                             <Button onClick={()=>this.returnHome()}>再来一次</Button>
                         </div>
-                        {/*<Icon type="close-circle" theme="outlined" />*/}
                     </div>
                 </Modal>
             </div>
