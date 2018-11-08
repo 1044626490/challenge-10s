@@ -55,7 +55,7 @@
         display: inline-block;
         width: 3.7vw;
         height: 4vw;
-        background-size: 100%;
+        background-size: 100% 100%;
         background-repeat: no-repeat;
         background-position: center;
         position: absolute;
@@ -72,8 +72,10 @@
         left: -0.5vw;
       }
       span:after{
+        width: 5vw;
+        height: 5vw!important;
         background-image: url("../../layouts/image/more_gold.png");
-        right: 1vw;
+        right: 0;
       }
     }
     .my-trophy{
@@ -129,7 +131,7 @@
     }
   }
 }
-.into-home-modal{
+.into-home-modals{
   overflow: visible;
   width: 80vw!important;
   margin: 0;
@@ -313,9 +315,10 @@
             background-size: 100% 100%;
             padding: 2vw;
             .into-home-password{
+              padding-left: 3vw;
               margin-left: 50%;
               transform: translateX(-50%);
-              text-align: center;
+              text-align: left;
               width: 100%;
               color: rgb(237,181,251);
               font-size: 14px;
@@ -380,10 +383,10 @@
                   height: 60%;
                 }
               }
-              button:nth-child(13){
+              button:nth-child(10){
                 background-image: url("../../layouts/image/modal-btn-1.png");
               }
-              button:nth-child(15){
+              button:nth-child(12){
                 background-image: url("../../layouts/image/modal-btn-3.png");
               }
             }
@@ -420,10 +423,10 @@
   left: 0;
   background-color: black;
   opacity: 0.5;
-  z-index: 9999;
+  z-index: 10000;
 }
 .check-apply{
-  z-index: 100000!important;
+  z-index: 10001!important;
   margin: 0;
   padding: 0;
   background-color: transparent!important;
@@ -493,6 +496,7 @@
   i.check-active{
     background-image: url("../../layouts/image/checkHome/3.png");
     text-shadow: none;
+    font-style: normal;
     color: #018b52;
   }
   i:first-child{

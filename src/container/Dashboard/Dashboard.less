@@ -1,9 +1,36 @@
 body{
   background-image: url("../../layouts/image/bg.jpg");
 }
+.splash-screen{
+  width: 100vw;
+  height: 100vh;
+  background-image: url("../../layouts/image/checkHome/splash.jpg");
+  background-size: 100% 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 9999;
+  opacity: 1;
+  //animation-delay: 1s!important;
+  //animation-timing-function: linear;
+  //animation: splash 1s;
+}
+//@keyframes splash {
+//  0%{
+//    display: block;
+//    opacity: 1;
+//  }
+//  99%{
+//    opacity: 0;
+//  }
+//  100%{
+//    display: none;
+//  }
+//}
 .ant-message{
   height: 10vw;
   position: fixed!important;
+  overflow-y: hidden;
   top: 50%!important;
   left: 50%!important;
   transform: translate(-50%, -50%)!important;

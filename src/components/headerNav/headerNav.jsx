@@ -4,6 +4,7 @@ import history from "~/history";
 import { Carousel, Button } from "antd"
 import "./headerNav.less"
 import $ from "jquery"
+import connect from "react-redux/es/connect/connect";
 
 // let num = [1];
 // let num1 = 1;
@@ -23,6 +24,7 @@ class HeaderNav extends React.Component {
     }
 
     componentDidMount(){
+
     }
 
     Carousel(){
@@ -128,4 +130,8 @@ class HeaderNav extends React.Component {
     }
 }
 
-export default HeaderNav
+const mapStateToProps = state => {
+    const {loginReducer,userInfo} = state;
+    return {loginReducer,userInfo}
+};
+export default connect(mapStateToProps)(HeaderNav)

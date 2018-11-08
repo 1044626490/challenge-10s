@@ -37,6 +37,10 @@ export default {
     medalInfo: (params) =>post(C.MEDAL_INFO, params),
     watchGame: (params) =>post(C.WATCH_GAME, params),
     receiveGold: (params) =>post(C.RECEIVE_GOLD, params),
+    dailyTaskList: (params) =>post(C.DAILY_TASK_LIST, params),
+    achievementList: (params) =>post(C.ACHIEVEMENT_LIST, params),
+    receiveAchievementTask: (params) =>post(C.RECEIVE_ACHIEVEMENT_TASK, params),
+    receiveDailyTask: (params) =>post(C.RECEIVE_DAILY_TASK, params),
 
     // logout: (params) => post(C.LOGOUT, params),
     // register: (params) => post(C.REGISTER, params),

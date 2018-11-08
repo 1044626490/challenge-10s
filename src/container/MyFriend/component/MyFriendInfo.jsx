@@ -51,13 +51,13 @@ class MyFriendInfo extends React.Component{
                     this.props.friendForm.map((item, index) => {
                         return <div key={index} className="my-friend-info-item">
                             <Row type="flex" justify="start" align="top">
-                                <Col span={3}><span className={index === 0?"rank-first":index === 1?"rank-second":index === 2?"rank-third":"rabk"}></span></Col>
+                                <Col span={3}><span className={index === 0?"rank-first":index === 1?"rank-second":index === 2?"rank-third":"rank"}>{index>2?index+1:null}</span></Col>
                                 <Col span={5}>
                                     <Avatar onClick={()=>this.openFriendModal(true,item.uid)} shape="square" src={item.avatar} icon="user" />
                                 </Col>
                                 <Col span={15}>
                                     <div>
-                                        <Row><Col span={6}><span className="level-card">第21级</span></Col><Col span={18}><span className="add-friend-name">{item.username.slice(0,8)}</span></Col></Row>
+                                        <Row><Col span={6}><span className="level-card">第{item.level}级</span></Col><Col span={18}><span className="add-friend-name">{item.username.slice(0,8)}</span></Col></Row>
                                         <Row><Col span={24}><Icon type="star" theme="filled" /><span className="ranking">总积分全国前{Math.round((item.rownum/this.props.count)*100)}%</span></Col></Row>
                                     </div>
                                 </Col>

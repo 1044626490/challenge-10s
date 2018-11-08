@@ -81,6 +81,7 @@ class GameHome extends React.Component{
             let data = JSON.parse(e.data);
             let userData = data.data;
             let type = data.type || "";
+            console.log(userData)
             switch (type) {
                 case "ping":
                     break;
@@ -375,6 +376,7 @@ class GameHome extends React.Component{
             isAllReady:false
         });
         // window.location.reload()
+        // this.areYouReady()
     };
 
     //游戏结束
@@ -465,7 +467,7 @@ class GameHome extends React.Component{
                                                             return item.is_homeowner !== 1&&item.uid === item1.uid&&item1.is_ready === 1?<span key={index1} className="are-you-ready"><Icon type="check-circle" theme="outlined" /></span>:null
                                                         })
                                                     }
-                                                    <Avatar onClick={!item.uid?()=>this.inviteFriend(true):item.uid === uid?null:()=>this.openPlayerInfo(true,item.uid)} icon="user" src={item.avatar||require("../../layouts/image/sc.png")} alt=""/>
+                                                    <Avatar onClick={!item.uid?()=>this.inviteFriend(true):()=>this.openPlayerInfo(true,item.uid)} icon="user" src={item.avatar||require("../../layouts/image/sc.png")} alt=""/>
                                                     {item.is_homeowner === 1?<span className="is-homeowner">房主</span>:null}
                                                     <p>{item.username}</p>
                                                 </li>
@@ -508,9 +510,11 @@ class GameHome extends React.Component{
                                     {this.state.millisecond < 10?
                                         "0"+this.state.millisecond:this.state.millisecond}
                                 </span>
-                                    <p className="stop-game">
-                                        {this.state.tenSeconds >= 5?<Button onClick={()=>this.gameOver()}>停止</Button>:null}
-                                    </p>
+                                    {
+                                        this.state.userType === "1"?<p className="stop-game">
+                                            {this.state.tenSeconds >= 5?<Button onClick={()=>this.gameOver()}>停止</Button>:null}
+                                        </p>:null
+                                    }
                                 </div>
                                 {
                                     this.state.isStartGame&&this.state.backTime === 3?this.backTime():null
@@ -534,7 +538,7 @@ class GameHome extends React.Component{
                                                             </i>:null
                                                     })
                                                 }
-                                                <Avatar onClick={item.uid?item.uid === uid?null:()=>this.openPlayerInfo(true,item.uid):null}
+                                                <Avatar onClick={item.uid?()=>this.openPlayerInfo(true,item.uid):null}
                                                         icon="user" src={item.avatar||require("../../layouts/image/sc.png")} alt=""/>
                                                 {
                                                     item.is_homeowner === 1?<span className="is-homeowner game-start-homeoener">房主</span>:null
@@ -615,7 +619,10 @@ class GameHome extends React.Component{
                             this.state.userType === "1"?<div className="button-operation">
                                 <Button>炫耀一下</Button>
                                 <Button onClick={()=>this.returnHome()}>再来一次</Button>
-                            </div>:null
+                            </div>:<div className="button-operation">
+                                <Button  onClick={()=>this.returnHome()}>继续观战</Button>
+                                <Button onClick={()=>{window.location.href = "#/Dashboard/index"}}>退出房间</Button>
+                            </div>
                         }
                     </div>
                 </Modal>

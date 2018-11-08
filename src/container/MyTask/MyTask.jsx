@@ -1,6 +1,7 @@
 import React from "react"
 import HeaderNav from "../../components/headerNav/headerNav";
 import { Tabs} from "antd"
+import Api from '~/until/api';
 import "./MyTask.less"
 
 const TabPane = Tabs.TabPane;
@@ -10,6 +11,14 @@ class MyTask extends React.Component{
         this.state = {
             pageId:"1"
         }
+    }
+
+    componentDidMount(){
+        Api.dailyTaskList().then(res => {
+            console.log(res)
+        }).catch(err => {
+
+        })
     }
 
     render(){

@@ -17,73 +17,75 @@ class Sign extends React.Component{
     }
 
     componentDidMount() {
-        let setT = setTimeout(() => {
-            $(".fireworks_f").toggleClass("fireworks-active")
-            let count = 2;
-            let setI = setInterval(() => {
-                if (count === 0) {
-                    $(".fireworks_f").removeClass("fireworks-active")
-                    clearInterval(setI)
-                }
+        if(!this.props.hasSign){
+            let setT = setTimeout(() => {
                 $(".fireworks_f").toggleClass("fireworks-active")
-                count--;
-                setTimeout(() => {
+                let count = 2;
+                let setI = setInterval(() => {
+                    if (count === 0) {
+                        $(".fireworks_f").removeClass("fireworks-active")
+                        clearInterval(setI)
+                    }
                     $(".fireworks_f").toggleClass("fireworks-active")
-                }, 100)
-            }, 2000);
-            clearTimeout(setT)
-        }, 0);
-        let setT1 = setTimeout(() => {
-            $(".fireworks_s").toggleClass("fireworks-actives")
-            let count = 2;
-            let setI1 = setInterval(() => {
-                if (count === 0){
-                    $(".fireworks_s").removeClass("fireworks-actives")
-                    clearInterval(setI1)
-                }
-                $(".fireworks_s").css({
-
-                })
+                    count--;
+                    setTimeout(() => {
+                        $(".fireworks_f").toggleClass("fireworks-active")
+                    }, 100)
+                }, 2000);
+                clearTimeout(setT)
+            }, 0);
+            let setT1 = setTimeout(() => {
                 $(".fireworks_s").toggleClass("fireworks-actives")
-                count--;
-                setTimeout(() => {
+                let count = 2;
+                let setI1 = setInterval(() => {
+                    if (count === 0){
+                        $(".fireworks_s").removeClass("fireworks-actives")
+                        clearInterval(setI1)
+                    }
+                    $(".fireworks_s").css({
+
+                    })
                     $(".fireworks_s").toggleClass("fireworks-actives")
-                }, 100)
-            }, 1500);
-            clearTimeout(setT1)
-        }, 500);
-        let setT2 = setTimeout(() => {
-            $(".fireworks_t").toggleClass("fireworks-active")
-            let count = 2;
-            let setI2 = setInterval(() => {
-                if (count === 0) {
-                    $(".fireworks_t").removeClass("fireworks-active")
-                    clearInterval(setI2)
-                }
+                    count--;
+                    setTimeout(() => {
+                        $(".fireworks_s").toggleClass("fireworks-actives")
+                    }, 100)
+                }, 1500);
+                clearTimeout(setT1)
+            }, 500);
+            let setT2 = setTimeout(() => {
                 $(".fireworks_t").toggleClass("fireworks-active")
-                count--;
-                setTimeout(() => {
+                let count = 2;
+                let setI2 = setInterval(() => {
+                    if (count === 0) {
+                        $(".fireworks_t").removeClass("fireworks-active")
+                        clearInterval(setI2)
+                    }
                     $(".fireworks_t").toggleClass("fireworks-active")
-                }, 100)
-            }, 2000);
-            clearTimeout(setT2)
-        }, 1000);
-        let setT3 = setTimeout(() => {
-            $(".fireworks_fo").toggleClass("fireworks-active")
-            let count = 2;
-            let setI3 = setInterval(() => {
-                if (count === 0) {
-                    $(".fireworks_fo").removeClass("fireworks-active")
-                    clearInterval(setI3)
-                }
+                    count--;
+                    setTimeout(() => {
+                        $(".fireworks_t").toggleClass("fireworks-active")
+                    }, 100)
+                }, 2000);
+                clearTimeout(setT2)
+            }, 1000);
+            let setT3 = setTimeout(() => {
                 $(".fireworks_fo").toggleClass("fireworks-active")
-                count--;
-                setTimeout(() => {
+                let count = 2;
+                let setI3 = setInterval(() => {
+                    if (count === 0) {
+                        $(".fireworks_fo").removeClass("fireworks-active")
+                        clearInterval(setI3)
+                    }
                     $(".fireworks_fo").toggleClass("fireworks-active")
-                }, 100)
-            }, 2000);
-            clearTimeout(setT3)
-        }, 1500);
+                    count--;
+                    setTimeout(() => {
+                        $(".fireworks_fo").toggleClass("fireworks-active")
+                    }, 100)
+                }, 2000);
+                clearTimeout(setT3)
+            }, 1500);
+        }
         // $(".fireworks_f,.fireworks_s,.fireworks_t,.fireworks_fo").animate(
         //     {
         //         transform:"scale(1)"
@@ -111,6 +113,10 @@ class Sign extends React.Component{
                         })
                     }
                 }
+                $('.get-golds').css({
+                    left: winWidth,
+                    top: winHeight
+                })
             // }
         })
     }
@@ -143,7 +149,14 @@ class Sign extends React.Component{
                     // this.setState({
                     //     signInfo
                     // })
-                    this.props.getUserInfo;
+                    console.log(res.data.gold)
+                    $('.get-golds').text("+"+res.data.gold)
+                        .delay(100).animate({
+                        marginTop:"-8vw",
+                        opacity: 1,
+                    },1000).delay(300).animate({
+                        opacity: 0
+                    },300).delay(100)
                     Api.signList().then(res => {
                         let signDay = res.data.sign_data.map((item) => {
                             return item.date
@@ -153,6 +166,7 @@ class Sign extends React.Component{
                             signInfo:res.data,
                             signDay
                         });
+                        this.props.getUserInfo();
                     });
                 }).catch( err =>{
                     message.info(err.msg)
@@ -243,6 +257,7 @@ class Sign extends React.Component{
                 <span className="today-signs15"></span>
                 <span className="today-signs16"></span>
                 <span className="today-signs17"></span>
+                <span className="get-golds">123123</span>
                 <Modal entered={true} visible={this.props.isOpenSign}  wrapClassName={"all-modal sign-in-wrap"}
                        closable={false} destroyOnClose={true}>
                     <span className="fireworks_f"><img src={require("../../../layouts/image/01.png")} alt=""/></span>

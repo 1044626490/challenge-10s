@@ -33,6 +33,10 @@ export const USER_SIGN = '/user_sign';//签到
 export const MEDAL_INFO = '/medal_info';//勋章单个信息
 export const WATCH_GAME = '/watch_game';//勋章单个信息
 export const RECEIVE_GOLD = '/receive_gold';//勋章单个信息
+export const DAILY_TASK_LIST = '/daily_task_list';//勋章单个信息
+export const ACHIEVEMENT_LIST = '/achievement_list';//勋章单个信息
+export const RECEIVE_ACHIEVEMENT_TASK = '/receive_achievement_task';//勋章单个信息
+export const RECEIVE_DAILY_TASK = '/receive_daily_task';//勋章单个信息
 
 
 

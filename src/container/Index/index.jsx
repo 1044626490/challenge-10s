@@ -1,5 +1,5 @@
 import React from 'react';
-import {Form, Icon, Modal, Tabs, Input, Button, message, Badge} from "antd";
+import {Form, Icon, Modal, Tabs, Input, Button, message, Badge, Progress} from "antd";
 import "./index.less"
 import connect from "react-redux/es/connect/connect";
 // import * as Message from '~/components/common/message'
@@ -11,6 +11,7 @@ import {fetchPostsGetUser} from '~/action/getUserInfo';
 import MyInfoModal from "../PersonalInformation/component/MyInfoModal";
 import Sign from "./Sign/Sign"
 import MyTask from "./MyTask/MyTask";
+import $ from "jquery";
 //
 
 const TabPane = Tabs.TabPane;
@@ -22,6 +23,7 @@ class Index extends React.Component {
             isOenModal:false,
             intoHomePwd:["","","","","",""],
             // isNeedLogin:false,
+            progress:0,
             login:{
                 tel:null,
                 password:null
@@ -37,15 +39,15 @@ class Index extends React.Component {
                     key:"tel",
                     name:"tel",
                     required:true,
-                    message:"请输入用户账号",
-                    placeholder:"用户账号",
+                    message:"请输入电话号码",
+                    placeholder:"电话号码",
                     before:<Icon className="before-icon" type="user" theme="outlined" />,
-                    re:/^1[34578]\d{9}$/,
+                    re:/^1[345789]\d{9}$/,
                     isOk:"",
                 },
                 {
                     key:"password",
-                    name:"username",
+                    name:"password",
                     required:true,
                     message:"请输入用户密码",
                     placeholder:"用户密码",
@@ -58,15 +60,15 @@ class Index extends React.Component {
                     key:"tel",
                     name:"tel",
                     required:true,
-                    message:"请输入用户账号",
-                    placeholder:"用户账号",
+                    message:"请输入电话号码",
+                    placeholder:"电话号码",
                     isOk:"",
                     before:<Icon className="before-icon" type="user" theme="outlined" />,
-                    re:/^1[34578]\d{9}$/,
+                    re:/^1[345789]\d{9}$/,
                 },
                 {
                     key:"password",
-                    name:"username",
+                    name:"password",
                     required:true,
                     message:"请输入用户密码",
                     placeholder:"用户密码",
@@ -109,10 +111,11 @@ class Index extends React.Component {
 
     componentWillMount(){
         this.getUserInfo();
-        // console.log(this.props.userInfo.msg)
         // this.setState({
         //     isLogin:this.props.userInfo.msg,
         // })
+    }
+    componentDidMount(){
     }
     //
     // componentWillMount(){
@@ -158,7 +161,6 @@ class Index extends React.Component {
     inputNumber = (button, indexs) => {
         let arr = this.state.intoHomePwd;
         let index = arr.indexOf("");
-        console.log(isNaN(button[indexs]));
         if(!this.state.isHomeNeedPwd){
             if(!isNaN(button[indexs])){
                 if(index > 0){
@@ -203,13 +205,10 @@ class Index extends React.Component {
         }
         Api.joinRoomId({room_id: this.state.intoHomePwd.join("")}).then((res)=>{
             message.info(res.msg);
-            console.log(res)
             if(res.code === "0000"){
-                console.log(res);
-                window.location.href = "#/Dashboard/GameHome/"+this.state.intoHomePwd.join("")
+                window.location.href = "#/Dashboard/GameHome/"+this.state.intoHomePwd.join("")+"/1"
             }
         }).catch((err)=>{
-            console.log(err)
             message.info(err.msg);
             if(err.code === "30002"){
                 message.info(err.msg)
@@ -293,7 +292,7 @@ class Index extends React.Component {
 
     getKaptchald(){
         let tel = this.state.register.tel;
-        let re = /^1[34578]\d{9}$/
+        let re = /^1[345789]\d{9}$/
         if(re.test(tel)){
             Api.sendVerifiCode({tel}).then((res)=>{
                 message.success(res.msg);
@@ -321,7 +320,6 @@ class Index extends React.Component {
     }
 
     render(){
-        console.log(this.props.userInfo)
         const button = ["S","M","H","1","2","3","4","5","6","7","8","9","重输","0","确认"];
         const userInfo = this.props.userInfo.data;
         const item = ["初级房间","中级房间","高级房间","输入房号"];
@@ -332,7 +330,7 @@ class Index extends React.Component {
                     this.state.isOpenMask?<div className="mask"></div>:null
                 }
                 {
-                    this.state.isOpenSign?<Sign closeSign={()=>{this.setState({isOpenSign:false})}} getUserInfo={()=>this.getUserInfo()} isOpenSign={this.state.isOpenSign}/>:null
+                    this.state.isOpenSign?<Sign hasSign={this.state.userInfo.is_sign} closeSign={()=>{this.setState({isOpenSign:false})}} getUserInfo={()=>this.getUserInfo()} isOpenSign={this.state.isOpenSign}/>:null
                 }
                 <div className="random-invite">
                     {
@@ -359,12 +357,12 @@ class Index extends React.Component {
                         <span>ID:{userInfo?userInfo.uid:0}</span>
                     </div>
                     <div className="my-money-item">
-                        <span>{userInfo?userInfo.gold>10000?(userInfo.gold/10000).toFixed(1)+"w":userInfo.gold:0}</span>
+                        <span>{userInfo?userInfo.gold:0}</span>
                         <span className="my-money-item-pay" onClick={()=>{window.location.href = "#/Dashboard/PayPage"}}>{null}</span>
                         <span onClick={()=>{window.location.href = "#/Dashboard/RankList"}} className="my-trophy">{null}</span>
                         <span onClick={()=>{this.setState({isOpenMyTask:true})}} className="my-trophy my-task">{null}</span>
                         <span className="my-trophy relief-payment">{null}</span>
-                        <span onClick={()=>{this.setState({isOpenSign:true})}} className="my-trophy sign-in">{null}</span>
+                        <span onClick={()=>{this.setState({isOpenSign:true})}} className={this.state.userInfo.is_sign?"my-trophy sign-in has-sign":"my-trophy sign-in"}>{null}</span>
                     </div>
                 </div>
                 <div className="index-container-wrap">

@@ -28,9 +28,12 @@ class MyFriend extends React.Component{
         this.setState({
             defaultActiveKey:value
         })
+        if(value === "1"){
+            this.selfFriend()
+        }
     }
 
-    componentDidMount(){
+    selfFriend(){
         Api.selfFriend().then((res) => {
             this.setState({
                 friendForm:res.data,
@@ -39,6 +42,10 @@ class MyFriend extends React.Component{
         }).catch((err) => {
 
         })
+    }
+
+    componentDidMount(){
+        this.selfFriend()
     }
 
     render(){

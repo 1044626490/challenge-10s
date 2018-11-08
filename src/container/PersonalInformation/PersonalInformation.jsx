@@ -20,6 +20,10 @@ class PersonalInformation extends React.Component {
         }
     }
 
+    componentDidMount(){
+        this.getUserInfo()
+    }
+
     getUserInfo = () =>{
         this.props.dispatch(fetchPostsGetUser()).then((res) => {
             console.log(res.data);
@@ -64,9 +68,7 @@ class PersonalInformation extends React.Component {
     };
 
     render(){
-        console.log(this.state.myInfo)
         const info = this.state.myInfo;
-
         return(
             <div className="my-info-container">
                 <HeaderNav name="挑战10秒"/>
@@ -82,7 +84,7 @@ class PersonalInformation extends React.Component {
                                     </p>
                                     <div className="my-level"><span className="class-rank">签名：</span>
                                         <span>
-                                            {this.state.myInfo.signature}
+                                            {info?info.signature:""}
                                         </span>
                                         {/*<Progress successPercent={30} />&nbsp;&nbsp;&nbsp;lv{info?info.level:1}*/}
                                         </div>
@@ -100,7 +102,7 @@ class PersonalInformation extends React.Component {
                                     </li>
                                     <li onClick={()=>{window.location.href = "#/Dashboard/MyFriend/1"}}>
                                         <div>
-                                            <Badge count={10} dot={99>99} overflowCount={99}>98
+                                            <Badge count={info?info.total_friends_request:0} dot={info?info.total_friends_request>99:false} overflowCount={99}>{info?info.total_friends:0}
                                             </Badge>
                                         </div>
                                         <span>好友</span>

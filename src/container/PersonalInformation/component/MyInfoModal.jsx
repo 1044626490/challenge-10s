@@ -112,7 +112,7 @@ class MyInfoModal extends React.Component{
                                           {/*onClick={()=>{this.setState({isResetMyInfo:true})}}/>*/}
                                 </p>
                                 <p>
-                                    签名：{info?info.uid:0}
+                                    签名：{info?info.signature:0}
                                 </p>
                                 <p>
                                     胜负：{info?info.victory+"/"+info.total_office+"("+winRate+"%)":0}
@@ -125,14 +125,14 @@ class MyInfoModal extends React.Component{
                         </div>
                         <div className="my-class-medal">
                             <div className="my-class my-progress">
-                                <p>等级:(12/32)</p>
+                                <p>等级:（{info?info.level:0}/100）</p>
                                 <img src={require("../../../layouts/image/star.png")} alt=""/>
-                                <Progress successPercent={30} />
+                                <Progress successPercent={info?(info.level/100).toFixed(2)*100:0} />
                             </div>
                             <div className="my-medal my-progress">
-                                <p>勋章数:(3/16)</p>
+                                <p>勋章数:（{info?info.medal_num:0}/28）</p>
                                 <img src={require("../../../layouts/image/medal1.png")} alt=""/>
-                                <Progress successPercent={30} />
+                                <Progress successPercent={info?(info.medal_num/28).toFixed(2)*100:0} />
                             </div>
                         </div>
                     </div>

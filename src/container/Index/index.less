@@ -1,3 +1,17 @@
+.splash-screen{
+  width: 100vw;
+  height: 100vh;
+  background-image: url("../../layouts/image/checkHome/splash.jpg");
+  background-size: 100% 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 9999;
+  opacity: 1;
+  //animation-delay: 1s!important;
+  //animation-timing-function: linear;
+  //animation: splash 1s;
+}
 .head-wrap{
   position: relative;
   margin-top: 2.2vh;
@@ -60,9 +74,9 @@
     .my-money-item-pay{
       content: "";
       display: inline-block;
-      width: 4.5vw;
+      width: 5vw;
       height: 5vw!important;
-      background-size: 100%;
+      background-size: 100% 100%;
       background-repeat: no-repeat;
       background-position: center;
       position: absolute;
@@ -139,6 +153,9 @@
     background-size: 100% 100%;
     background-repeat: no-repeat;
     background-position: center;
+  }
+  .has-sign{
+    background-image: url("../../layouts/image/hassign.png");
   }
   .my-trophy:after{
 
@@ -358,7 +375,7 @@
             .ant-tabs{
               margin-top: -1px;
               background-color: #3c3768;
-              width: 100%;
+              width: 100.2%;
               background-image: url("../../layouts/image/border-img.png");
               background-size: 100%;
               position: absolute;
@@ -366,23 +383,30 @@
               margin-left: -0.2px;
               overflow: visible;
               .ant-tabs-nav-wrap{
+                overflow: visible;
                 width: 90%;
                 margin: 0 auto;
               }
               .ant-tabs-nav-scroll{
+                overflow: visible;
                 .ant-tabs-nav{
                   padding: 0 5%;
                   border-bottom: 1px solid #5a577f!important;
                   margin-bottom: 1px;
                   .ant-tabs-tab{
+                    box-sizing: border-box;
+                    overflow: visible;
                     padding: 3px 12px;
                     margin: 0;
                   }
+                  .ant-tabs-nav-container{
+                    overflow: visible;
+                  }
                   .ant-tabs-tab-active{
                     color: rgb(237,181,249);
-                    border-right: 1px solid #5a577f;
-                    border-left: 1px solid #5a577f;
-                    border-top: 1px solid #5a577f;
+                    border-right: 1px solid #5a577f!important;
+                    border-left: 1px solid #5a577f!important;
+                    border-top: 1px solid #5a577f!important;
                     border-top-left-radius: 10px;
                     border-top-right-radius: 10px;
                   }
@@ -423,30 +447,34 @@
                   .get-kaptchald{
                     font-size: 3vw;
                     margin-left: 4vw;
-                    border-radius: 10px;
+                    border-radius: 1px;
                     height: 3.6vh;
                     padding: 0;
                     width: 23vw;
                     border-width: 0;
-                    box-shadow: 0 0 5px 1px rgb(247,207,40);
-                    background: -webkit-linear-gradient(top,rgb(247,207,40) 0,rgb(108,113,6) 100%);
-                    background: -moz-linear-gradient(top,rgb(247,207,40) 0,rgb(108,113,6) 100%);
-                    background: -o-linear-gradient(top,rgb(247,207,40) 0,rgb(108,113,6) 100%);
-                    background: linear-gradient(to bottom,rgb(247,207,40) 0,rgb(108,113,6) 100%);
-                    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=rgb(247,207,40),endColorstr=rgb(108,113,6),GradientType=0);
+                    //box-shadow: 0 0 5px 1px rgb(247,207,40);
+                    background-image: url("../../layouts/image/modal-btn-1.png");
+                    background-size: 100% 100%;
+                    //background: -webkit-linear-gradient(top,rgb(247,207,40) 0,rgb(108,113,6) 100%);
+                    //background: -moz-linear-gradient(top,rgb(247,207,40) 0,rgb(108,113,6) 100%);
+                    //background: -o-linear-gradient(top,rgb(247,207,40) 0,rgb(108,113,6) 100%);
+                    //background: linear-gradient(to bottom,rgb(247,207,40) 0,rgb(108,113,6) 100%);
+                    //filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=rgb(247,207,40),endColorstr=rgb(108,113,6),GradientType=0);
                   }
                   .check-button{
                     font-size: 3.5vw;
                     border-width: 0;
-                    border-radius: 3vw;
+                    border-radius: 1vw;
                     width: 40%;
                     height: 3.7vh;
-                    box-shadow: 0 0 5px 1px rgb(127,237,63);
-                    background: -webkit-linear-gradient(top,rgb(127,237,63) 0,rgb(20,109,2) 100%);
-                    background: -moz-linear-gradient(top,rgb(127,237,63) 0,rgb(20,109,2) 100%);
-                    background: -o-linear-gradient(top,rgb(127,237,63) 0,rgb(20,109,2) 100%);
-                    background: linear-gradient(to bottom,rgb(127,237,63) 0,rgb(20,109,2) 100%);
-                    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=rgb(127,237,63),endColorstr=rgb(20,109,2),GradientType=0);
+                    //box-shadow: 0 0 5px 1px rgb(127,237,63);
+                    background-image: url("../../layouts/image/modal-btn-3.png");
+                    background-size: 100% 100%;
+                    //background: -webkit-linear-gradient(top,rgb(127,237,63) 0,rgb(20,109,2) 100%);
+                    //background: -moz-linear-gradient(top,rgb(127,237,63) 0,rgb(20,109,2) 100%);
+                    //background: -o-linear-gradient(top,rgb(127,237,63) 0,rgb(20,109,2) 100%);
+                    //background: linear-gradient(to bottom,rgb(127,237,63) 0,rgb(20,109,2) 100%);
+                    //filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=rgb(127,237,63),endColorstr=rgb(20,109,2),GradientType=0);
                   }
                   .kaptchald{
                     width: 50%;

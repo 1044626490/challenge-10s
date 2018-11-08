@@ -7,7 +7,7 @@ import $ from "jquery"
 import Api from '~/until/api';
 import "./NewHome.less"
 
-
+let isButton = true;
 class NewHome extends React.Component {
     constructor(props) {
         super(props);
@@ -23,12 +23,12 @@ class NewHome extends React.Component {
             intoHomePwd:["","","","","",""],
             homePrice:this.checkBox.value[0],
             isGoingHome:false,
-            createHome:false
+            createHome:false,
+            bool: true
         };
     }
 
     componentDidMount(){
-        console.log(this.props.match);
         let id = this.props.match.params.id;
         let header = id === "0"?"初级房间":id === "1"?"中级房间":id === "2"?"高级房间":"";
         let level = 1+id*1;
@@ -61,7 +61,6 @@ class NewHome extends React.Component {
     inputNumber = (button, indexs) => {
         let arr = this.state.intoHomePwd;
         let index = arr.indexOf("");
-        console.log(button[indexs],arr);
         index !== -1?arr[index] = button[indexs]:null;
         this.setState({
             intoHomePwd:arr
@@ -74,31 +73,39 @@ class NewHome extends React.Component {
         })
     };
 
-    radomeHome(price){
-        console.log(price)
-        if(this.state.createHome){
-            let params = {
-                level:this.state.level,
-                homePassword:this.state.intoHomePwd.join(""),
-                room_gold:price
-            };
-            Api.createRoom(params).then((res) => {
-                message.info(res.msg);
-                console.log(res);
-                window.location.href = "#/Dashboard/GameHome/"+res.data.room_id+"/1";
-            }).catch((err) => {
-                message.info(err.msg)
-            });
-        }else {
-            console.log(123123123,price)
-            Api.radomeJoinRoom({level:this.state.level,room_gold:price}).then((res)=>{
-                message.info("加入房间成功")
-                window.location.href = "#/Dashboard/GameHome/"+res.data.room_id+"/1"
-            }).catch((err) => {
-                message.info(err.msg)
-            })
+    radomeHome = (price) =>{
+        if(isButton){
+            isButton = false;
+            // let setT = setTimeout(()=>{
+            //     isButton = true;
+            //     clearTimeout(setT)
+            // },1000)
+            if(this.state.createHome){
+                let params = {
+                    level:this.state.level,
+                    homePassword:this.state.intoHomePwd.join(""),
+                    room_gold:price
+                };
+                Api.createRoom(params).then((res) => {
+                    isButton = true;
+                    message.info(res.msg);
+                    window.location.href = "#/Dashboard/GameHome/"+res.data.room_id+"/1";
+                }).catch((err) => {
+                    isButton = true;
+                    message.info(err.msg)
+                });
+            }else {
+                Api.radomeJoinRoom({level:this.state.level,room_gold:price}).then((res)=>{
+                    isButton = true;
+                    message.success("加入房间成功");
+                    window.location.href = "#/Dashboard/GameHome/"+res.data.room_id+"/1";
+                }).catch((err) => {
+                    isButton = true
+                    message.info(err.msg)
+                })
+            }
         }
-    }
+    };
 
 
     finHome = () =>{
@@ -115,7 +122,6 @@ class NewHome extends React.Component {
     };
 
     render(){
-        console.log(this.state.isGoingHome,this.checkBox.value[0],this.state.isGoingHome === this.checkBox.value[0])
         const button = [1,2,3,4,5,6,7,8,9,"重输",0,"确认"];
         const { userInfo } = this.state;
         return (
@@ -129,7 +135,7 @@ class NewHome extends React.Component {
                             <p>ID:{userInfo?userInfo.uid:0}</p>
                         </div>
                         <div className="my-money-items">
-                            <span>{userInfo?userInfo.gold>10000?(userInfo.gold/10000).toFixed(1)+"w":userInfo.gold:0}</span>
+                            <span>{userInfo?userInfo.gold:0}</span>
                         </div>
                     </div>
                     <div className="go-home-button">
@@ -152,22 +158,25 @@ class NewHome extends React.Component {
                     {/*}*/}
                 {/*</Modal>*/}
                 {
-                    this.state.isGoingHome?<div className="mask-check-apply">
+                    this.state.isGoingHome?<div onClick={()=>{this.setState({isGoingHome:false})}} className="mask-check-apply">
                     </div>:null
                 }
                 {
                     this.state.isGoingHome?<div className="check-apply">
                         {
                                 this.checkBox.value.map((item, index) =>{
-                                return <i onClick={()=>{this.setState({homePrice:item})}}
-                                className={this.state.homePrice === item?"check-active":""}>{this.checkBox.txt[index]}</i>
+                                return <i key={index} onClick={this.state.homePrice === item?
+                                    ()=>this.radomeHome(this.state.homePrice):
+                                    ()=>{this.setState({homePrice:item})}
+                                    }
+                                className={this.state.homePrice === item?"check-active":""}>{this.state.homePrice === item?"确定":this.checkBox.txt[index]}</i>
                             })
                         }
-                        <Button onClick={()=>this.radomeHome(this.state.homePrice)}>确定</Button>
+                        {/*<Button onClick={()=>this.radomeHome(this.state.homePrice)}>确定</Button>*/}
                     </div>:null
                 }
                 <BottomMenu />
-                <Modal entered={true} visible={this.state.isCreateHome} wrapClassName={"into-home-modal"}
+                <Modal entered={true} visible={this.state.isCreateHome} wrapClassName={"into-home-modals"}
                        closable={false} destroyOnClose={true}>
                     <div className="into-home">
                             <div className="into-home-header">

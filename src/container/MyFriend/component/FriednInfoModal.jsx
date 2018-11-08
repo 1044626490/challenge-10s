@@ -1,6 +1,7 @@
 import React from "react"
-import {Avatar, Button, Icon, Modal, Progress} from "antd";
+import {Avatar, Button, Icon, message, Modal, Progress} from "antd";
 import "./FriednInfoModal.less"
+import Api from '~/until/api';
 
 class FriednInfoModal extends React.Component{
     constructor(props) {
@@ -8,6 +9,20 @@ class FriednInfoModal extends React.Component{
         this.state = {
 
         }
+    }
+
+    deleteFriend(){
+
+    }
+
+    addFriend(uid){
+        let params = {uid:uid.toString()};
+        console.log(params);
+        Api.batchAddUser(params).then((res) => {
+            message.info(res.msg)
+        }).catch((err) => {
+            console.log(err)
+        })
     }
 
     render(){
@@ -21,6 +36,9 @@ class FriednInfoModal extends React.Component{
                     <div className="info-body">
                         <div className="header-wrap">
                             <Avatar size={64} shape="square" icon="user" src={info?info.avatar:require("../../../layouts/image/head.png")} />
+                            {
+                                info&&info.is_friend?null:<Icon type="plus-circle" onClick={()=>this.addFriend(info.uid)} theme="filled" />
+                            }
                             <div className="my-info">
                                 <p className="name-class"><span>昵称：</span>
                                     <span>
@@ -32,7 +50,9 @@ class FriednInfoModal extends React.Component{
                                 </p>
                                 <p>
                                     胜负：{info?info.victory+"/"+info.total_office+"（"+winRate+"%）":0}
-                                    <span className="delete-friend button"></span>
+                                    {
+                                        info&&info.is_friend?<span onClick={()=>this.deleteFriend()} className="delete-friend button"></span>:null
+                                    }
                                     {/*<Button className="open-reset-modal" onClick={()=>{this.setState({isResetMyInfo:true})}}>编辑</Button>*/}
                                 </p>
                             </div>
@@ -42,14 +62,14 @@ class FriednInfoModal extends React.Component{
                         </div>
                         <div className="my-class-medal">
                             <div className="my-class my-progress">
-                                <p>等级:（12/32）</p>
+                                <p>等级:（{info?info.level:0}/100）</p>
                                 <img src={require("../../../layouts/image/star.png")} alt=""/>
-                                <Progress successPercent={30} />
+                                <Progress successPercent={info?(info.level/100).toFixed(2)*100:0} />
                             </div>
                             <div className="my-medal my-progress">
-                                <p>勋章数:（12/32）</p>
+                                <p>勋章数:（{info?info.medal_num:0}/28）</p>
                                 <img src={require("../../../layouts/image/medal1.png")} alt=""/>
-                                <Progress successPercent={30} />
+                                <Progress successPercent={info?(info.medal_num/28).toFixed(2)*100:0} />
                             </div>
                         </div>
                     </div>

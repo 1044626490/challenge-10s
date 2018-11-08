@@ -5,6 +5,7 @@ import MyFriendInfo from "../MyFriend/component/MyFriendInfo";
 import FriednInfoModal from "../MyFriend/component/FriednInfoModal"
 import Api from '~/until/api';
 import {Tabs} from "antd";
+import connect from "react-redux/es/connect/connect";
 
 const TabPane = Tabs.TabPane;
 class RankList extends React.Component{
@@ -16,7 +17,8 @@ class RankList extends React.Component{
             allForm:[],
             count:0,
             isOpenFriendModal:false,
-            myRank:null
+            myRank:null,
+            myFriendRank:0
         }
     }
 
@@ -45,21 +47,41 @@ class RankList extends React.Component{
     }
 
     getRanklist(){
-        Api.selfFriend().then((res) => {
-            this.setState({
-                friendForm:res.data,
-                count:res.count
-            })
-        }).catch((res) => {
-            console.log(res)
-        })
+        let myRank = null
         Api.leaderBoard().then((res) => {
+            console.log(res)
+            myRank = res.person_rank
             this.setState({
                 allForm:res.data.rank,
                 myRank:res.person_rank
             })
         }).catch(err =>{
             console.log(err)
+        })
+        Api.selfFriend().then((res) => {
+            console.log(res)
+            let rank = 0;
+            for(let i=0;i<res.data.length-1;i++){
+                for(let j=0;j<res.data.length-1-i;j++){
+                    if(res.data[j].rownum>res.data[j+1].rownum){
+                        let temp=res.data[j];
+                        res.data[j]=res.data[j+1];
+                        res.data[j+1]=temp;
+                    }
+                }
+            }
+            for(let i=0;i<res.data.length;i++){
+                if(myRank.uid === res.data[i].uid){
+                    rank = i+1
+                }
+            }
+            this.setState({
+                friendForm:res.data,
+                count:res.count,
+                myFriendRank:rank
+            })
+        }).catch((res) => {
+            console.log(res)
         })
     }
 
@@ -82,19 +104,20 @@ class RankList extends React.Component{
                     <Tabs defaultActiveKey={this.state.defaultActiveKey} onChange={()=>this.callback()}>
                         {
                             tabs.map((item, index) => {
-                                console.log(item.key);
                                 return <TabPane tab={item.name} key={item.key}>
                                     <MyFriendInfo friendForm={item.key === "1"?this.state.allForm:this.state.friendForm} count={this.state.count}/>
                                         {
                                             index === 0?<div className="rank-info">
                                                 <div className="rank-my-info">
                                                     <p className="info-name">总排行&nbsp;&nbsp;&nbsp;前100名</p>
-                                                    <p>我的排名：<span style={{color:"#decc35"}}>未上榜</span></p>
+                                                    <p>我的排名：<span style={{color:"#decc35"}}>
+                                                        {this.state.myRank&&this.state.myRank[0].rownum <= 100?"第"+this.state.myRank[0].rownum+"名":"未上榜"}
+                                                        </span></p>
                                                 </div>
                                             </div>:<div className="rank-info">
                                                 <div className="rank-my-info">
                                                     <p className="info-name">好友数量&nbsp;&nbsp;&nbsp;{this.state.friendForm.length}/300</p>
-                                                    <p>我的排名：<span style={{color:"#decc35"}}>未上榜</span></p>
+                                                    <p>我的排名：<span style={{color:"#decc35"}}>{this.state.myFriendRank?"第"+this.state.myFriendRank+"名":"未上榜"}</span></p>
                                                 </div>
                                             </div>
                                         }
@@ -114,4 +137,8 @@ class RankList extends React.Component{
     }
 }
 
-export default RankList
+const mapStateToProps = state => {
+    const {loginReducer,userInfo} = state;
+    return {loginReducer,userInfo}
+};
+export default connect(mapStateToProps)(RankList)
