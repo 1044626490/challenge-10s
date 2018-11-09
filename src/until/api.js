@@ -41,6 +41,10 @@ export default {
     achievementList: (params) =>post(C.ACHIEVEMENT_LIST, params),
     receiveAchievementTask: (params) =>post(C.RECEIVE_ACHIEVEMENT_TASK, params),
     receiveDailyTask: (params) =>post(C.RECEIVE_DAILY_TASK, params),
+    onlineFriend: (params) =>post(C.ONLINE_FRIEND, params),
+    inviteFriend: (params) =>post(C.INVITE_FRIEND, params),
+    stranger: (params) =>post(C.STRANGER, params),
+    inviteFriendJoin: (params) =>post(C.INVITE_FRIEND_JOIN, params),
 
     // logout: (params) => post(C.LOGOUT, params),
     // register: (params) => post(C.REGISTER, params),

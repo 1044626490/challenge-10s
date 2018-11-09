@@ -53,13 +53,15 @@ class RankList extends React.Component{
             myRank = res.person_rank
             this.setState({
                 allForm:res.data.rank,
-                myRank:res.person_rank
+                myRank:res.data.person_rank,
+                count:res.data.count_num,
             })
+            console.log(res)
         }).catch(err =>{
             console.log(err)
-        })
+        });
         Api.selfFriend().then((res) => {
-            console.log(res)
+            console.log(res);
             let rank = 0;
             for(let i=0;i<res.data.length-1;i++){
                 for(let j=0;j<res.data.length-1-i;j++){
@@ -75,6 +77,7 @@ class RankList extends React.Component{
                     rank = i+1
                 }
             }
+            console.log(res)
             this.setState({
                 friendForm:res.data,
                 count:res.count,
@@ -97,6 +100,7 @@ class RankList extends React.Component{
                 name:"好友排行"
             }
         ];
+        console.log(this.state.count)
         return(
             <div className="rank-list-wrap">
                 <HeaderNav name="挑战10秒"/>

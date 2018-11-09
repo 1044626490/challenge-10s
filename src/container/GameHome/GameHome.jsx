@@ -14,7 +14,7 @@ let homeId = null;
 class GameHome extends React.Component{
     constructor(props) {
         super(props);
-        this.ws = new WebSocket("ws://www.10sgame.com:8282");
+        this.ws = new WebSocket("ws://api.times168.net:8282");
         this.setI = null;
         this.setI1 = null;
         this.state = {
@@ -45,7 +45,8 @@ class GameHome extends React.Component{
             amIReady:false,
             isAllReady:false,
             isInviteFriend:false,
-            userType:"1"
+            userType:"1",
+            homeownerId:0
         }
     }
 
@@ -94,6 +95,11 @@ class GameHome extends React.Component{
                                     this.setState({
                                         isHomeowner:userData[i].is_homeowner,
                                         userType:userData[i].user_type.toString()
+                                    })
+                                }
+                                if(userData[i].is_homeowner){
+                                    this.setState({
+                                        homeownerId:userData[i].uid
                                     })
                                 }
                             }
@@ -177,7 +183,7 @@ class GameHome extends React.Component{
                     let amIReady;
                     let count = 0;
                     for(let i=0;i< userData.length;i++){
-                        if(!userData[i].is_ready){
+                        if(!userData[i].is_ready&&userData[i].uid !== this.state.homeownerId){
                             count++
                         }
                         if(userData[i].uid === this.state.userInfo.uid){
@@ -187,7 +193,7 @@ class GameHome extends React.Component{
                     this.setState({
                         areYouReady:userData,
                         amIReady,
-                        isAllReady:!(count-1)
+                        isAllReady:!count&&userData.length > 1
                     })
                     break;
                 case 'rank_result':
@@ -195,7 +201,7 @@ class GameHome extends React.Component{
                     for(let j=0;j<userData.length-1;j++){
                         //两两比较，如果前一个比后一个大，则交换位置。
                         for(let i=0;i<userData.length-1-j;i++){
-                            if(userData[i].this_integral<userData[i+1].this_integral){
+                            if(Math.abs(userData[i].result/1-1000) > Math.abs(userData[i+1].result/1-1000)){
                                 let temp = userData[i];
                                 userData[i] = userData[i+1];
                                 userData[i+1] = temp;
@@ -248,18 +254,6 @@ class GameHome extends React.Component{
 
     //断开websocket
     componentWillUnmount(){
-        if(this.state.isStartGame){
-            clearInterval(setI2);
-            let params = {
-                result:2000,
-                room_id:this.state.homeId,
-                uid:this.state.userInfo.uid,
-                room_order:this.state.room_order
-            };
-            Api.gameOver(params).then(res => {
-            }).catch(err => {
-            })
-        }
         clearInterval(this.setI);
         clearInterval(this.setI1);
         this.ws.close()
@@ -414,11 +408,18 @@ class GameHome extends React.Component{
         })
     };
 
+    inviteStranger(){
+        console.log(123123)
+        Api.stranger({room_id:this.state.homeId}).then(res => {
+            message.success(res.msg)
+        }).catch(err =>{})
+    }
+
     render(){
         if(!this.state.isStartTime&&this.state.isStartGame&&this.state.backTime <= 0&&this.state.millisecond === "0"&&this.state.tenSeconds === "0"){
             this.timeGoOn()
         }
-        const uid = this.props.userInfo.data.uid;
+        const uid = this.state.userInfo.uid;
         return(
             <div className="game-home-wrap">
                 <HeaderNav name={"["+this.state.homeId+"]"}/>
@@ -448,7 +449,7 @@ class GameHome extends React.Component{
                                 {
                                     this.state.userData.length&&this.state.userData[5].uid?null:
                                         this.state.userType === "1"&&this.state.isHomeowner?
-                                        <Button onClick={()=>this.inviteFriend()} className="start-game-yes">随机邀请</Button>:null
+                                        <Button onClick={()=>this.inviteStranger()} className="start-game-yes">随机邀请</Button>:null
                                 }
                             </div>
                             <div className="game-menber">
@@ -576,7 +577,7 @@ class GameHome extends React.Component{
                     />:null
                 }
                 {
-                    this.state.isInviteFriend?<InviteFriend isInviteFriend={this.state.isInviteFriend} inviteFriend={()=>this.inviteFriend()}/>:null
+                    this.state.isInviteFriend?<InviteFriend homeId={this.state.homeId} isInviteFriend={this.state.isInviteFriend} inviteFriend={()=>this.inviteFriend()}/>:null
                 }
                 <Modal entered={true} visible={this.state.isGameOver}
                        wrapClassName={"all-modal game-over"}
@@ -617,7 +618,7 @@ class GameHome extends React.Component{
                         </div>
                         {
                             this.state.userType === "1"?<div className="button-operation">
-                                <Button>炫耀一下</Button>
+                                <Button onClick={()=>{window.location.href = "#/Dashboard/index"}}>退出房间</Button>
                                 <Button onClick={()=>this.returnHome()}>再来一次</Button>
                             </div>:<div className="button-operation">
                                 <Button  onClick={()=>this.returnHome()}>继续观战</Button>

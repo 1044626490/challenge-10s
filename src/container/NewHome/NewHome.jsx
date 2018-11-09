@@ -38,12 +38,14 @@ class NewHome extends React.Component {
         });
     }
 
+    //是否创建房间
     createHome = () => {
         this.setState({
             isCreateHome:true
         })
     }
 
+    //打开创建房间弹框
     openModal = (isCreateHome) => {
         this.setState({
             isCreateHome
@@ -58,6 +60,7 @@ class NewHome extends React.Component {
         })
     };
 
+    //输入创建房间密码
     inputNumber = (button, indexs) => {
         let arr = this.state.intoHomePwd;
         let index = arr.indexOf("");
@@ -67,12 +70,14 @@ class NewHome extends React.Component {
         })
     };
 
+    //重置输入创建房间密码
     resetInput = () => {
         this.setState({
             intoHomePwd:["","","","","",""]
         })
     };
 
+    //随机进入房间
     radomeHome = (price) =>{
         if(isButton){
             isButton = false;
@@ -107,7 +112,7 @@ class NewHome extends React.Component {
         }
     };
 
-
+    //创建房间
     finHome = () =>{
         let intoHomePwd = this.state.intoHomePwd;
         if(intoHomePwd.indexOf("") === -1 || intoHomePwd.indexOf("") === 0){
@@ -124,6 +129,7 @@ class NewHome extends React.Component {
     render(){
         const button = [1,2,3,4,5,6,7,8,9,"重输",0,"确认"];
         const { userInfo } = this.state;
+        // console.log(this.state.homePrice)
         return (
             <div className="into-home-wrap">
                 <HeaderNav name={this.state.header}/>
@@ -167,7 +173,7 @@ class NewHome extends React.Component {
                                 this.checkBox.value.map((item, index) =>{
                                 return <i key={index} onClick={this.state.homePrice === item?
                                     ()=>this.radomeHome(this.state.homePrice):
-                                    ()=>{this.setState({homePrice:item})}
+                                    ()=>{console.log(item);this.setState({homePrice:item})}
                                     }
                                 className={this.state.homePrice === item?"check-active":""}>{this.state.homePrice === item?"确定":this.checkBox.txt[index]}</i>
                             })

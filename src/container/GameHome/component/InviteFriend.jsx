@@ -1,5 +1,5 @@
 import React from "react"
-import {Avatar, Button, Checkbox, Col, Icon, Row, Modal} from "antd";
+import {Avatar, Button, Checkbox, Col, Icon, Row, Modal, message} from "antd";
 import Api from '~/until/api';
 import "./InviteFriend.less"
 
@@ -14,10 +14,9 @@ class InviteFriend extends React.Component{
     }
 
     componentDidMount(){
-        Api.selfFriend().then((res) => {
+        Api.onlineFriend().then((res) => {
             this.setState({
-                friendInfo:res.data,
-                count:res.count
+                friendInfo:res.data||[]
             })
         }).catch((err) => {
 
@@ -55,7 +54,9 @@ class InviteFriend extends React.Component{
     };
 
     inviteFriend(){
-
+        Api.inviteFriend({uid:this.state.checkBox.join(","),room_id:this.props.homeId}).then(res =>{
+            message.success(res.msg)
+        }).catch(err =>{})
     }
 
     render(){
@@ -68,7 +69,7 @@ class InviteFriend extends React.Component{
                     <div className="player-info">
                         <div className="add-friend-container">
                             {
-                                this.state.friendInfo[0]&&this.state.friendInfo.map((item, index) =>{
+                                this.state.friendInfo&&this.state.friendInfo[0]&&this.state.friendInfo.map((item, index) =>{
                                     return <div className={this.state.checkBox.indexOf(item.uid) === -1?"add-friend-item no-checked":"add-friend-item"} key={index}>
                                         <Row type="flex" justify="start" align="top">
                                             <Col span={5}>
@@ -77,7 +78,6 @@ class InviteFriend extends React.Component{
                                             <Col span={15}>
                                                 <div>
                                                     <Row><Col span={6}><span className="level-card">第{item.level}级</span></Col><Col span={18}><span className="add-friend-name">{item.username}</span></Col></Row>
-                                                    <Row><Col span={24}><Icon type="star" theme="filled" /><span className="ranking">总积分全国前{(item.rownum/this.state.count*100).toFixed(2)}%</span></Col></Row>
                                                 </div>
                                             </Col>
                                             <Col span={4}><Checkbox key={Math.random()} defaultChecked={this.state.checkBox.indexOf(item.uid) !== -1} onChange={(e)=>this.checkBox(e,item)} value={item.uid}></Checkbox></Col>
@@ -86,11 +86,13 @@ class InviteFriend extends React.Component{
                                 })
                             }
                             <div className="operation-button">
-                                <div key={Math.random()}>
-                                    <Button onClick={()=>this.inviteFriend()}>邀请好友</Button>
-                                    <Checkbox defaultChecked={this.state.checkBox.length == this.state.friendInfo.length}
-                                              onChange={()=>this.checkAll()}></Checkbox>
-                                </div>
+                                {
+                                    this.state.friendInfo&&this.state.friendInfo.length?<div key={Math.random()}>
+                                        <Button onClick={()=>this.inviteFriend()}>邀请好友</Button>
+                                        <Checkbox defaultChecked={this.state.checkBox.length === this.state.friendInfo.length}
+                                                  onChange={()=>this.checkAll()}></Checkbox>
+                                    </div>:<p className="no-friend">暂无好友...</p>
+                                }
                             </div>
                         </div>
                     </div>

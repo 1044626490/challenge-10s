@@ -70,18 +70,17 @@ export const postModeCors = (url, params, headers) => request(url, params, heade
 const checkRespStatus = (respPromise) => {
     // console.log(respPromise);
     return new Promise((resolve, reject) => {
-        console.log(respPromise);
         if (respPromise && respPromise.status === 200) {
             // console.log(respPromise.method);
-            if (respPromise.url.indexOf(C.GET_LOGIN_CAPTCHA) >= 0) {
-                respPromise.blob().then((res) => {
-                    resolve(res)
-                })
-            } else {
+            // if (respPromise.url.indexOf(C.GET_LOGIN_CAPTCHA) >= 0) {
+            //     respPromise.blob().then((res) => {
+            //         resolve(res)
+            //     })
+            // } else {
                 respPromise.json().then((res) => {
                     if (res.code === "0000" || res.status === "1") {
-                        if(res.content===null){
-                            res.content=[]
+                        if(res.data===null){
+                            res.data=[]
                         }
                         resolve(res);
                     } else if(res.status ==="3"){
@@ -91,7 +90,7 @@ const checkRespStatus = (respPromise) => {
                         reject(res);
                     }
                 })
-            }
+            // }
         } else {
             // Message.error(respPromise.statusText);//公共catch处理
             reject(respPromise);//交给子组件catch处理

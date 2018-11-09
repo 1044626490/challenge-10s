@@ -115,7 +115,7 @@ class Sign extends React.Component{
                 }
                 $('.get-golds').css({
                     left: winWidth,
-                    top: winHeight
+                    top: winHeight-20
                 })
             // }
         })
@@ -143,7 +143,7 @@ class Sign extends React.Component{
             console.log(count,$(name));
             if(count === 17){
                 Api.userSign().then( res =>{
-                    message.info(res.msg);
+                    // message.info(res.msg);
                     // let signInfo = this.state.signInfo;
                     // signInfo.is_sign = 1;
                     // this.setState({

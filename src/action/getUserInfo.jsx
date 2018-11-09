@@ -3,7 +3,6 @@ import * as C from '~/constants/action'
 
 const fetchPosts = (params) => dispatch => {
     return new Promise(function (resolve, reject) {
-        console.log(resolve,reject)
         Api.getUserInfo(params).then((res) => {
             dispatch({
                 type: C.GET_USERINGO,

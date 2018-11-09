@@ -19,6 +19,7 @@ const FormItem = Form.Item;
 class Index extends React.Component {
     constructor(props) {
         super(props);
+        this.webSocket = new WebSocket("ws://api.times168.net:8282");
         this.state = {
             isOenModal:false,
             intoHomePwd:["","","","","",""],
@@ -104,40 +105,73 @@ class Index extends React.Component {
             isOpenMask:false,
             loginLocation:"2",
             isOpenSign:false,
-            isOpenMyTask:false
+            isOpenMyTask:false,
+            myInvite:[]
             // inputIndex:0,
         };
     }
 
     componentWillMount(){
+        console.log(123123123);
         this.getUserInfo();
-        // this.setState({
-        //     isLogin:this.props.userInfo.msg,
-        // })
     }
-    componentDidMount(){
-    }
-    //
-    // componentWillMount(){
-    //     // this.getUserInfo()
-    // }
 
-    // componentWillReceiveProps(nextProps){
-    //     this.props = nextProps;
-    //     this.setState({
-    //         isLogin:!this.props.userInfo.msg,
-    //         userInfo:this.props.userInfo.data
-    //     })
-    // }
+    getWebsocket = () =>{
+            let data = JSON.stringify({
+                "type": "bind",
+                "uid": this.state.userInfo.uid,
+            });
+            console.log(data);
+            this.webSocket.send(data);
+            this.webSocket.onmessage = (e)=> {
+                let data = JSON.parse(e.data);
+                let userData = data.data;
+                let type = data.type || "";
+                switch (type) {
+                    case "bind":
+                        // localStorage.setItem("inviteData",[]);
+                        break;
+                    case 'invite':
+                        let arr = localStorage.getItem("inviteData");
+                        console.log(arr,userData)
+                        if (arr === ""){
+                            arr = [];
+                            arr.push(userData);
+                        } else {
+                            if(arr.length === 5){
+                                arr.splice(1,5).push(userData)
+                            }else {
+                                arr.push(userData);
+                            }
+                        }
+                        localStorage.setItem("inviteData",arr);
+                        this.setState({
+                            myInvite:arr
+                        })
+                        break;
+                }
+            }
+    }
+
+
+    shouldComponentUpdate(nextProps,nextState){
+        if(this.props === nextProps&&this.state === nextState){
+            return false
+        }else {
+            return true
+        }
+    }
 
     getUserInfo = () => {
         this.props.dispatch(fetchPostsGetUser()).then((res) => {
             this.setState({
-                isLogin:!res.msg,
+                isLogin:false,
                 userInfo:res.data
-            })
+            });
+            this.getWebsocket()
+            console.log(res);
         }).catch((err) => {
-            this.setState({
+            this.props.userInfo.code === "0000"?null:this.setState({
                 isLogin:true,
             })
         })
@@ -157,6 +191,10 @@ class Index extends React.Component {
             intoHomePwd:["","","","","",""]
         })
     };
+
+    componentWillUnmount(){
+        // this.webSocket.close()
+    }
 
     inputNumber = (button, indexs) => {
         let arr = this.state.intoHomePwd;
@@ -302,12 +340,25 @@ class Index extends React.Component {
         }
     }
 
+    //打开个人信息
     openInfoModal = (isOpen) => {
         this.setState({
             isOpenInfoModel:isOpen
         })
     };
 
+    //接受邀请
+    inviteFriend(item){
+        Api.inviteFriendJoin({room_id:item.room_id}).then(res => {
+            message.success(res.msg);
+            this.webSocket.close();
+            window.location.href = "#/Dashboard/GameHome/"+res.data.room_id+"/1"
+        }).catch(err =>{
+            message.info(err.msg)
+        })
+    }
+
+    //观战
     watchGame(e,level){
         e.stopPropagation();
         e.cancelBubble = true;
@@ -319,7 +370,18 @@ class Index extends React.Component {
         })
     }
 
+    //拒绝邀请
+    refuseInvite = (index) => {
+        let arr = this.state.myInvite;
+        arr.splice(index);
+        localStorage.setItem("inviteData",arr)
+        this.setState({
+            myInvite:arr
+        })
+    };
+
     render(){
+        console.log(this.state.isLogin,this.state.myInvite)
         const button = ["S","M","H","1","2","3","4","5","6","7","8","9","重输","0","确认"];
         const userInfo = this.props.userInfo.data;
         const item = ["初级房间","中级房间","高级房间","输入房号"];
@@ -330,23 +392,28 @@ class Index extends React.Component {
                     this.state.isOpenMask?<div className="mask"></div>:null
                 }
                 {
-                    this.state.isOpenSign?<Sign hasSign={this.state.userInfo.is_sign} closeSign={()=>{this.setState({isOpenSign:false})}} getUserInfo={()=>this.getUserInfo()} isOpenSign={this.state.isOpenSign}/>:null
+                    this.state.isOpenSign?<Sign hasSign={this.state.userInfo.is_sign} closeSign={()=>{this.setState({isOpenSign:false})}}
+                                                getUserInfo={()=>this.getUserInfo()} isOpenSign={this.state.isOpenSign}/>:null
                 }
                 <div className="random-invite">
                     {
-                        !this.state.isOpenMask?<Badge dot={true}>
-                            <span onClick={()=>this.setState({isOpenMask:true})} className="invite-hide"></span>
+                        !this.state.isOpenMask?<Badge dot={this.state.myInvite&&this.state.myInvite.length?true:false}>
+                            <span onClick={localStorage.getItem("inviteData")&&localStorage.getItem("inviteData").length?
+                                ()=>this.setState({isOpenMask:true}):null} className="invite-hide"></span>
                         </Badge>:<span onClick={()=>this.setState({isOpenMask:false})} className="invite-close">
                         </span>
                     }
                 </div>
                 {
                     this.state.isOpenMask?<div className="random-invite-info">
-                        <p><span className="message">[M123456]</span>: 玩家“阿狸大大”邀请你入房    <span className="message">接受</span><span>拒绝</span></p>
-                        <p><span className="message">[M123456]</span>: 玩家“阿狸大大”邀请你入房    <span className="message">接受</span><span>拒绝</span></p>
-                        <p><span className="message">[M123456]</span>: 玩家“阿狸大大”邀请你入房    <span className="message">接受</span><span>拒绝</span></p>
-                        <p><span className="message">[M123456]</span>: 玩家“阿狸大大”邀请你入房    <span className="message">接受</span><span>拒绝</span></p>
-                        <p><span className="message">[M123456]</span>: 玩家“阿狸大大”邀请你入房    <span className="message">接受</span><span>拒绝</span></p>
+                        {
+                            this.state.myInvite.length&&this.state.myInvite.map((item, index) =>{
+                                return <p key={index}><span className="message friend-message">[{item.room_id}]</span>
+                                    : {item.is_friend?"好友":"玩家"}“{item.username}”邀请你入房
+                                    <span onClick={()=>this.inviteFriend(item)} className="message">接受</span>
+                                    <span onClick={()=>this.refuseInvite(index)}>拒绝</span></p>
+                            })
+                        }
                     </div>:null
                 }
                 <div className="head-wrap">

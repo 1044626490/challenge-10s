@@ -1,6 +1,7 @@
 import {Avatar, Col, Icon, Modal, Row, Tabs, Progress, Button} from "antd";
 import React from "react";
 import "./MyTask.less"
+import { message } from "antd"
 import Api from '~/until/api';
 import $ from "jquery"
 
@@ -49,10 +50,12 @@ class MyTask extends React.Component{
     }
 
     receiveDailyTask(id){
+        console.log(123123123)
         Api.receiveDailyTask({id}).then(res => {
+            message.success(res.msg)
             this.getTaskList()
         }).catch(err =>{
-
+            message.info(err.msg)
         })
     }
 
@@ -91,7 +94,8 @@ class MyTask extends React.Component{
                                                         "参加10局游戏"?taskData.today_win < item.reach?"disabled-button":""
                                                             :taskData.join_game_num < item.reach?"disabled-button":""}
                                                                 onClick={()=>this.receiveDailyTask(item.id)}
-                                                                disabled={item.is_recived?true:taskData.today_win < item.reach?true:false}>领取</Button>
+                                                                disabled={item.is_recived?true:item.name !==
+                                                                    "参加10局游戏"?taskData.today_win < item.reach?true:false:taskData.join_game_num < item.reach?true:false}>领取</Button>
                                                     </Col>
                                                 </Row>
                                             </div>
@@ -111,7 +115,7 @@ class MyTask extends React.Component{
                                                         </Row>
                                                         <Row>
                                                             <Progress successPercent={100}/><span className="progress-value">
-                                                        item.reach/item.reach</span>
+                                                            {item.reach}/{item.reach}</span>
                                                         </Row>
                                                     </Col>
                                                     <Col span={6}>

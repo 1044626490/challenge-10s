@@ -1,6 +1,6 @@
 import React from "react"
 import HeaderNav from "../../../components/headerNav/headerNav";
-import { Radio, Input } from "antd"
+import { Radio, InputNumber  } from "antd"
 import "./PayPage.less"
 
 const RadioGroup = Radio.Group;
@@ -9,7 +9,7 @@ class PayPage extends React.Component{
     constructor(props) {
         super(props);
         this.state = {
-
+            price:null
         }
     }
 
@@ -17,21 +17,21 @@ class PayPage extends React.Component{
         return(
             <div className="pay-wrap">
                 <HeaderNav name="挑战10秒"/>
-                <div>
-                    <div>
+                <div className="pay-container">
+                    <div className="pay-price">
                         <p>充值金额</p>
-                        <p>￥<input type="text"/></p>
-                        <p>充值方式</p>
+                        <span>￥<InputNumber value={this.state.price} onChange={(value)=>{this.setState({price:value})}}/></span>
                     </div>
                     <RadioGroup onChange={this.onChange} value={this.state.value}>
-                        <div>
-                            <Radio value={1}><span className="pay-name">快捷支付</span></Radio>
+                        <span>充值方式</span>
+                        <div className="pay">
+                            <Radio value={1}><span className="pay-name pay1">快捷支付</span></Radio>
                         </div>
-                        <div>
-                            <Radio value={2}><span className="pay-name border-pay">快捷支付</span></Radio>
+                        <div className="pay">
+                            <Radio value={2}><span className="pay-name border-pay pay2">支付宝</span></Radio>
                         </div>
-                        <div>
-                            <Radio value={3}><span className="pay-name">快捷支付</span></Radio>
+                        <div className="pay">
+                            <Radio value={3}><span className="pay-name pay3">微信支付</span></Radio>
                         </div>
                     </RadioGroup>
                 </div>

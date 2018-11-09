@@ -12,8 +12,6 @@ const userInfo = (state = userinfoState, action) => {
     switch (action.type) {
         case C.GET_USERINGO:
             sessionStorage.setItem(indexDB.userInfo, JSON.stringify(action.data));
-            console.log(action.data);
-            console.log(state)
             state = action.data;
             return Object.assign({},state,action.data);
         default:

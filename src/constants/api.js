@@ -37,6 +37,10 @@ export const DAILY_TASK_LIST = '/daily_task_list';//勋章单个信息
 export const ACHIEVEMENT_LIST = '/achievement_list';//勋章单个信息
 export const RECEIVE_ACHIEVEMENT_TASK = '/receive_achievement_task';//勋章单个信息
 export const RECEIVE_DAILY_TASK = '/receive_daily_task';//勋章单个信息
+export const ONLINE_FRIEND = '/online_friend';//勋章单个信息
+export const INVITE_FRIEND = '/invite_friend';//勋章单个信息
+export const STRANGER = '/stranger';//勋章单个信息
+export const INVITE_FRIEND_JOIN = '/invite_friend_join';//勋章单个信息
 
 
 

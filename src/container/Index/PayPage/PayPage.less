@@ -1,23 +1,86 @@
 .pay-wrap{
-  .ant-radio-group{
-    width: 100vw!important;
-    .ant-radio-wrapper{
+  background-color: #3e3571;
+  width: 100vw;
+  height: 100vh;
+  .pay-container{
+    .pay-price{
       width: 100vw;
-      height: 7vh;
-      line-height: 7vh;
-      padding-left: 10vw;
-      .ant-radio{
-        //float: left;
-        margin-right: 2vw;
+      padding: 4vw 6vw;
+      color: white;
+      background-color: rgba(0,0,0,0.2);
+      p{
+        font-size: 4vw;
       }
-      .pay-name{
-        display: inline-block;
-        width: 80%;
-        color: white;
+      span{
+        font-size: 5vw;
+        .ant-input-number{
+          font-size: 5vw;
+          color: white;
+          width: 90%;
+          border-width: 0;
+          //padding-left: 2vw;
+          background-color: transparent;
+        }
+        .ant-input-number-handler-wrap{
+          display: none;
+        }
+        .ant-input-number:focus{
+          border: none!important;
+        }
       }
-      .border-pay{
-        border-bottom: 1px dashed #7a7a7a;
-        border-top: 1px dashed #7a7a7a;
+
+    }
+    .ant-radio-group{
+      width: 100vw!important;
+      margin-top: 2vw;
+      padding: 2vw 6vw;
+      color: white;
+      background-color: rgba(0,0,0,0.2);
+      >span{
+        font-size: 4vw;
+      }
+      .ant-radio-wrapper{
+        width: 88vw;
+        height: 7vh;
+        line-height: 7vh;
+        //padding-left: 10vw;
+        .ant-radio{
+          //float: left;
+          margin-right: 2vw;
+        }
+        .pay-name{
+          padding-left: 8vw;
+          font-size: 4vw;
+          display: inline-block;
+          width: 90%;
+          color: white;
+          position: relative;
+        }
+        .pay-name:before{
+          content: "";
+          display: inline-block;
+          width: 6vw;
+          height: 6vw;
+          border-radius: 3vw;
+          background-size: 100% 100%;
+          position: absolute;
+          left: 0;
+          top: 50%;
+          transform: translateY(-50%);
+        }
+        .pay1:before{
+          background-image: url("../../../layouts/image/pay/yl.png");
+        }
+        .pay2:before{
+          background-image: url("../../../layouts/image/pay/zfb.png");
+        }
+        .pay3:before{
+          background-image: url("../../../layouts/image/pay/wx.png");
+        }
+        .border-pay{
+          border-bottom: 1px dashed #7a7a7a;
+          border-top: 1px dashed #7a7a7a;
+        }
       }
     }
   }
