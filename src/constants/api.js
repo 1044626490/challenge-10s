@@ -36,11 +36,15 @@ export const RECEIVE_GOLD = '/receive_gold';//勋章单个信息
 export const DAILY_TASK_LIST = '/daily_task_list';//勋章单个信息
 export const ACHIEVEMENT_LIST = '/achievement_list';//勋章单个信息
 export const RECEIVE_ACHIEVEMENT_TASK = '/receive_achievement_task';//勋章单个信息
-export const RECEIVE_DAILY_TASK = '/receive_daily_task';//勋章单个信息
-export const ONLINE_FRIEND = '/online_friend';//勋章单个信息
-export const INVITE_FRIEND = '/invite_friend';//勋章单个信息
-export const STRANGER = '/stranger';//勋章单个信息
-export const INVITE_FRIEND_JOIN = '/invite_friend_join';//勋章单个信息
+export const RECEIVE_DAILY_TASK = '/receive_daily_task';//日常任务
+export const ONLINE_FRIEND = '/online_friend';//在线好友
+export const INVITE_FRIEND = '/invite_friend';//邀请好友
+export const STRANGER = '/stranger';//邀请陌生人
+export const INVITE_FRIEND_JOIN = '/invite_friend_join';//接受好友邀请
+export const SET_MUSIC = '/set_music';//设置音乐
+export const SET_SOUND_EFFECT = '/set_sound_effect';//设置音乐
+export const SET_SHIELD = '/set_shield';//设置音乐
+export const SET_WATCH = '/set_watch';//设置音乐
 
 
 

@@ -143,7 +143,7 @@
 }
 .sign-in-wrap{
   width: 92.53vw!important;
-  height: 108vw;
+  height: 108vw!important;
   position: fixed;
   top: 50%;
   left: 50%;
@@ -151,6 +151,8 @@
   .ant-modal{
     .ant-modal-content{
       position: relative;
+      width: 100%;
+      height: 100%;
       .close-modal{
         z-index: 10000;
       }
@@ -215,6 +217,9 @@
             height: 100%;
             z-index: 99998;
             font-size: 0;
+          }
+          .top-num{
+            margin-top: -2.5vw;
           }
           .top-num,.bottom-num{
             white-space: nowrap;

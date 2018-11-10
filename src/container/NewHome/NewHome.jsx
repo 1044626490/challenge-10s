@@ -171,11 +171,13 @@ class NewHome extends React.Component {
                     this.state.isGoingHome?<div className="check-apply">
                         {
                                 this.checkBox.value.map((item, index) =>{
-                                return <i key={index} onClick={this.state.homePrice === item?
-                                    ()=>this.radomeHome(this.state.homePrice):
-                                    ()=>{console.log(item);this.setState({homePrice:item})}
-                                    }
-                                className={this.state.homePrice === item?"check-active":""}>{this.state.homePrice === item?"确定":this.checkBox.txt[index]}</i>
+                                return <i key={index}
+                                className={this.state.homePrice === item?"check-active":""}>
+                                    <span onClick={this.state.homePrice === item?
+                                        ()=>this.radomeHome(this.state.homePrice):
+                                        ()=>{console.log(item);this.setState({homePrice:item})}
+                                    }></span>
+                                    {this.state.homePrice === item?"确定":this.checkBox.txt[index]}</i>
                             })
                         }
                         {/*<Button onClick={()=>this.radomeHome(this.state.homePrice)}>确定</Button>*/}

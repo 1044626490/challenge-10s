@@ -19,7 +19,7 @@ const routes = [
             loader: () => import("~/container/Index/index"),
             loading: MyLoadingComponent
         }),
-        isExact: true
+        isExact: false
     },{
         path: "Activity",
         component: Loadable({
@@ -112,16 +112,17 @@ class Dashboard extends React.Component {
     }
 
     componentDidMount(){
-        if(!this.state.userInfo){
-            Api.getUserInfo().then((res) => {
-                this.setState({
-                    userInfo:res.data
-                });
-            }).catch((err) => {
-                this.progress();
-                window.location.hash !== "#/Dashboard/index"?window.location.href = "#/Dashboard/index":null
-            })
-        }
+        // if(!this.state.userInfo){
+        //     Api.getUserInfo().then((res) => {
+        //         this.setState({
+        //             userInfo:res.data
+        //         });
+        //     }).catch((err) => {
+        //         this.progress();
+        //         window.location.hash !== "#/Dashboard/index"?window.location.href = "#/Dashboard/index":null
+        //     })
+        // }
+        this.progress();
     }
 
     progress(){
@@ -134,7 +135,6 @@ class Dashboard extends React.Component {
                 t.find('.bar').animate({width:width}, 3000);
                 t.find('.label').append('<div class="perc"></div>');
             });
-
         })
         $('.splash-screen').delay(3000).animate({
             opacity: 0,
@@ -151,21 +151,22 @@ class Dashboard extends React.Component {
         const { match } = this.props;
         const RouteWithSubRoutes = route => (
             <Route
-                exact={route.isExact}
+                // exact={route.isExact}
                 path={`${match.url}/${route.path}`}
                 render={props => <route.component {...props} routes={route.routes} />}
             />
         );
         return (
             <div className="container">
-                {
-                    this.state.userInfo?null:<div className="splash-screen">
-                        <div className="progressbar" data-perc="100">
-                            <div className="bar"><span></span></div>
-                            <div className="label"><span></span></div>
-                        </div>
+                {/*{*/}
+                    {/*this.state.userInfo?null:null*/}
+                {/*}*/}
+                <div className="splash-screen">
+                    <div className="progressbar" data-perc="100">
+                        <div className="bar"><span></span></div>
+                        <div className="label"><span></span></div>
                     </div>
-                }
+                </div>
                 <div>
                     {routes.map((route, i) => (
                         <RouteWithSubRoutes isLogin={123} key={i} {...route} />
@@ -177,6 +178,3 @@ class Dashboard extends React.Component {
 }
 
 export default Dashboard
-// const mapStateToProps = state => {
-// };
-// export default connect(mapStateToProps)(Dashboard)

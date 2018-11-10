@@ -19,7 +19,7 @@ class Routes extends Component {
             <Router history={history}>
                 <Switch>
                     {/*<Route exact path="/Dashboard" component={Dashboard}/>*/}
-                    <Route  path="/Dashboard" component={Dashboard}/>
+                    <Route path="/Dashboard" component={Dashboard}/>
                     <Redirect to="/Dashboard/index"/>
                 </Switch>
             </Router>

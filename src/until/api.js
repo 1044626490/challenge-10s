@@ -45,6 +45,10 @@ export default {
     inviteFriend: (params) =>post(C.INVITE_FRIEND, params),
     stranger: (params) =>post(C.STRANGER, params),
     inviteFriendJoin: (params) =>post(C.INVITE_FRIEND_JOIN, params),
+    setMusic: (params) =>post(C.SET_MUSIC, params),
+    setSoundEffect: (params) =>post(C.SET_SOUND_EFFECT, params),
+    setShield: (params) =>post(C.SET_SHIELD, params),
+    setWatch: (params) =>post(C.SET_WATCH, params),
 
     // logout: (params) => post(C.LOGOUT, params),
     // register: (params) => post(C.REGISTER, params),

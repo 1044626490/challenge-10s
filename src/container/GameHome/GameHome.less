@@ -3,6 +3,45 @@
   height: 100vh;
   background-image: url("../../layouts/image/gamebg.png");
   background-size: 100%;
+  .my-money-item {
+    position: fixed;
+    text-align: right;
+    top: 9vh;
+    right: 5vw;
+    display: block;
+    margin-right: 2vw;
+    //width: 30vw;
+    padding: 0 6vw 0 7vw;
+    height: 5vw;
+    color: #fff;
+    //padding-right: 5vw;
+    background-color: rgb(37, 30, 74);
+    border: 1px solid rgb(104, 70, 159);
+    border-radius: 3vw;
+    span:not(.my-trophy) {
+      font-size: 3vw;
+      display: inline-block;
+      height: 4.5vw;
+      line-height: 4.5vw;
+      float: right;
+      margin-right: -0.5vw;
+    }
+    span:not(.my-trophy):before {
+      content: "";
+      display: inline-block;
+      background-size: 100%;
+      background-repeat: no-repeat;
+      background-position: center;
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 5.5vw;
+      height: 6.3vw;
+      margin-top: 0.3vw;
+      background-image: url("../../layouts/image/gold.png");
+      left: -0.5vw;
+    }
+  }
   .watch-game-menber{
     position: fixed;
     bottom: 0;
