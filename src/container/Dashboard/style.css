@@ -6,7 +6,7 @@
 	transform: translateX(-50%);
     position:fixed;
     display:block;
-    width:70vw;
+    width:70vw!important;
     height:2.5vw;
     border-bottom:1px solid rgba(255,255,255,0.25);
     border-radius:5vw;
@@ -18,7 +18,7 @@
     position:absolute;
     display:block;
     content:"";
-    width:70vw;
+    width:70vw!important;
     height:2.5vw;
     top:0;
     left:0;

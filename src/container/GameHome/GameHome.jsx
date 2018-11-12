@@ -14,7 +14,6 @@ let homeId = null;
 class GameHome extends React.Component{
     constructor(props) {
         super(props);
-        this.ws = new WebSocket("ws://api.times168.net:8282");
         this.setI = null;
         this.setI1 = null;
         this.state = {
@@ -47,11 +46,16 @@ class GameHome extends React.Component{
             isInviteFriend:false,
             userType:"1",
             homeownerId:0,
-            myGold:0
+            myGold:0,
+            music:false,
+            soundEffect:false,
+            watch:false,
+            shield:false
         }
     }
 
     componentDidMount(){
+        this.ws = new WebSocket("ws://api.times168.net:8282");
         let homeId = this.props.match.params.homeId;
         let userType = this.props.match.params.status;
         let level = homeId === "1"?"初级":homeId === "2"?"中级":"高级";
@@ -59,7 +63,7 @@ class GameHome extends React.Component{
             homeId,
             level,
             userType
-        })
+        });
         this.getWebSocket(homeId);
     }
 
@@ -83,7 +87,6 @@ class GameHome extends React.Component{
             let data = JSON.parse(e.data);
             let userData = data.data;
             let type = data.type || "";
-            console.log(userData)
             switch (type) {
                 case "ping":
                     break;
@@ -96,7 +99,11 @@ class GameHome extends React.Component{
                                     this.setState({
                                         myGold:userData[i].gold,
                                         isHomeowner:userData[i].is_homeowner,
-                                        userType:userData[i].user_type.toString()
+                                        userType:userData[i].user_type.toString(),
+                                        music:userData[i].music,
+                                        soundEffect:userData[i].sound_effect,
+                                        watch:userData[i].watch,
+                                        shield:userData[i].shield
                                     })
                                 }
                                 if(userData[i].is_homeowner){
@@ -226,6 +233,15 @@ class GameHome extends React.Component{
                             }
                         },1000)
                     };
+                    let id = this.state.userInfo.uid;
+                    for(let i=0;i<userData.length;i++){
+                        if(id === userData[i].uid){
+                            this.setState({
+                                myGold:userData[i].gold,
+                            })
+                        }
+                    }
+                    console.log(userData)
                     this.setState({
                         gameResult:userData,
                         isGameOver:true,
@@ -412,7 +428,6 @@ class GameHome extends React.Component{
     };
 
     inviteStranger(){
-        console.log(123123)
         Api.stranger({room_id:this.state.homeId}).then(res => {
             message.success(res.msg)
         }).catch(err =>{})
@@ -422,9 +437,6 @@ class GameHome extends React.Component{
         if(!this.state.isStartTime&&this.state.isStartGame&&this.state.backTime <= 0&&this.state.millisecond === "0"&&this.state.tenSeconds === "0"){
             this.timeGoOn()
         }
-        console.log(this.props.userInfo)
-        // console.log(this.props)
-        // const uid = this.props.userInfo.data.uid;
         return(
             <div className="game-home-wrap">
                 <HeaderNav name={"["+this.state.homeId+"]"}/>
@@ -435,8 +447,10 @@ class GameHome extends React.Component{
                 {/*/>*/}
                 {/*<video className="game-audio"  src={require("../../layouts/video/bg1.mp3")} */}
                        {/*autoPlay={true} loop={true} style={{width: 0}}></video>*/}
-                <audio className="game-audio"  src={require("../../layouts/video/bg1.mp3")}
-                       autoPlay={true} loop={true} style={{width: 0}}></audio>
+                {
+                    this.state.music?<audio className="game-audio"  src={require("../../layouts/video/bg1.mp3")}
+                                            autoPlay={true} loop={true} style={{width: 0}}></audio>:null
+                }
                 {
                     this.state.isStartGame?<div className="bg-cilcle"></div>:null
                 }
@@ -542,7 +556,7 @@ class GameHome extends React.Component{
                                                 {
                                                     this.state.userResult.map((item1, index1)=>{
                                                         return Number(item1.uid) === item.uid?
-                                                            <i className="user-mask">
+                                                            <i key={index1} className="user-mask">
                                                                 {item1.result.slice(0,-2)}:{item1.result.slice(-2,item1.result.length)}
                                                             </i>:null
                                                     })
@@ -616,9 +630,9 @@ class GameHome extends React.Component{
                             <table>
                                 <tbody>
                                 {this.state.gameResult.map((item ,index) =>{
-                                    return <tr className={item.is_win?"win-tr":""}>
+                                    return <tr key={index} className={item.is_win?"win-tr":""}>
                                         <td><span>No.{index+1}：</span></td>
-                                        <td><div>{item.username},{item.result.slice(0,-2)}.{item.result.slice(-2,item.result.length)}s,金币+{item.win_gold},积分+{item.this_integral}</div></td>
+                                        <td><div>{item.username},{item.result.slice(0,-2)}.{item.result.slice(-2,item.result.length)}s,金币{item.win_gold >= 0?"+"+item.win_gold:item.win_gold},积分+{item.this_integral}</div></td>
                                     </tr>
                                 })}
                                 </tbody>
@@ -635,9 +649,10 @@ class GameHome extends React.Component{
                         }
                     </div>
                 </Modal>
-                <div className="watch-game-menber">
-                    {
-                        this.state.watchUserData.length?<ul>
+                {
+                    this.state.watch?<div className="watch-game-menber">
+                        {
+                            this.state.watchUserData.length?<ul>
                                 {
                                     this.state.watchUserData.map((item, index) => {
                                         return<li key={index}>
@@ -645,9 +660,10 @@ class GameHome extends React.Component{
                                         </li>
                                     })
                                 }
-                        </ul>:<p>暂无人观战...</p>
-                    }
-                </div>
+                            </ul>:<p>暂无人观战...</p>
+                        }
+                    </div>:null
+                }
             </div>
         )
     }

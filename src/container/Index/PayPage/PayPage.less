@@ -2,7 +2,44 @@
   background-color: #3e3571;
   width: 100vw;
   height: 100vh;
+  .button-operation{
+    width: 100%;
+    text-align: center;
+    button{
+      margin-top: 5vw;
+      width: 30vw;
+      height: 8vw;
+      background-color: #4abd12;
+      color: white;
+      padding: 0;
+      border-radius: 1.5vw;
+      border-width: 0;
+      line-height: 8vw;
+    }
+    .disable{
+      background-color: #368a0d;
+      color: #a2a2a2;
+    }
+  }
   .pay-container{
+    .ant-radio-inner{
+      background-color: transparent;
+    }
+    .ant-radio-checked{
+      .ant-radio-inner{
+        border-width: 0;
+      }
+      .ant-radio-inner:after{
+        background-image: url("../../../layouts/image/ok.png");
+        background-size: 100% 100%;
+        position: absolute;
+        left: -10%;
+        top: -10%;
+        border-radius: 60%;
+        width: 120%;
+        height: 120%;
+      }
+    }
     .pay-price{
       width: 100vw;
       padding: 4vw 6vw;

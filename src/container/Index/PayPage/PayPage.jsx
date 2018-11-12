@@ -1,6 +1,6 @@
 import React from "react"
 import HeaderNav from "../../../components/headerNav/headerNav";
-import { Radio, InputNumber  } from "antd"
+import { Radio, InputNumber, Button  } from "antd"
 import "./PayPage.less"
 
 const RadioGroup = Radio.Group;
@@ -9,8 +9,13 @@ class PayPage extends React.Component{
     constructor(props) {
         super(props);
         this.state = {
-            price:null
+            price:null,
+            value:0,
         }
+    }
+
+    payPrice(){
+
     }
 
     render(){
@@ -22,7 +27,7 @@ class PayPage extends React.Component{
                         <p>充值金额</p>
                         <span>￥<InputNumber value={this.state.price} onChange={(value)=>{this.setState({price:value})}}/></span>
                     </div>
-                    <RadioGroup onChange={this.onChange} value={this.state.value}>
+                    <RadioGroup onChange={(value)=>{this.setState({value})}} defaultValue={this.state.value}>
                         <span>充值方式</span>
                         <div className="pay">
                             <Radio value={1}><span className="pay-name pay1">快捷支付</span></Radio>
@@ -34,6 +39,9 @@ class PayPage extends React.Component{
                             <Radio value={3}><span className="pay-name pay3">微信支付</span></Radio>
                         </div>
                     </RadioGroup>
+                </div>
+                <div className="button-operation">
+                    <Button onClick={()=>this.payPrice()} className={this.state.price&&this.state.value?"":"disable"} disabled={!this.state.price&&!this.state.value}>下一步</Button>
                 </div>
             </div>
         )

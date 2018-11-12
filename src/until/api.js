@@ -49,6 +49,9 @@ export default {
     setSoundEffect: (params) =>post(C.SET_SOUND_EFFECT, params),
     setShield: (params) =>post(C.SET_SHIELD, params),
     setWatch: (params) =>post(C.SET_WATCH, params),
+    // indexWxlogin: (params) =>post(C.INDEX_WXLOGIN_LOGIN, params),
+    onlineUser: (params) =>post(C.ONLINE_USER, params),
+    shareGetSign: (params) =>post(C.SHARE_GETSIGN, params),
 
     // logout: (params) => post(C.LOGOUT, params),
     // register: (params) => post(C.REGISTER, params),

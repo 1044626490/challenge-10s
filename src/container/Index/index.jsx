@@ -16,10 +16,29 @@ import $ from "jquery";
 
 const TabPane = Tabs.TabPane;
 const FormItem = Form.Item;
+// let browser = {
+//     versions: function () {
+//         let u = navigator.userAgent, app = navigator.appVersion;
+//         return {         //移动终端浏览器版本信息
+//             trident: u.indexOf('Trident') > -1, //IE内核
+//             presto: u.indexOf('Presto') > -1, //opera内核
+//             webKit: u.indexOf('AppleWebKit') > -1, //苹果、谷歌内核
+//             gecko: u.indexOf('Gecko') > -1 && u.indexOf('KHTML') == -1, //火狐内核
+//             mobile: !!u.match(/AppleWebKit.*Mobile.*/), //是否为移动终端
+//             ios: !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/), //ios终端
+//             android: u.indexOf('Android') > -1 || u.indexOf('Linux') > -1, //android终端或uc浏览器
+//             iPhone: u.indexOf('iPhone') > -1, //是否为iPhone或者QQHD浏览器
+//             iPad: u.indexOf('iPad') > -1, //是否iPad
+//             webApp: u.indexOf('Safari') == -1 //是否web应该程序，没有头部与底部
+//         };
+//     }(),
+//     language: (navigator.browserLanguage || navigator.language).toLowerCase()
+// }
 class Index extends React.Component {
     constructor(props) {
         super(props);
         this.webSocket = new WebSocket("ws://api.times168.net:8282");
+        this.setI = null;
         this.state = {
             isOenModal:false,
             intoHomePwd:["","","","","",""],
@@ -106,7 +125,8 @@ class Index extends React.Component {
             loginLocation:"2",
             isOpenSign:false,
             isOpenMyTask:false,
-            myInvite:[]
+            myInvite:localStorage.getItem("inviteData")?localStorage.getItem("inviteData").split(";"):[],
+            userNum:{high: 0,middle: 0,primary: 0}
             // inputIndex:0,
         };
     }
@@ -133,17 +153,45 @@ class Index extends React.Component {
                         break;
                     case 'invite':
                         let arr = localStorage.getItem("inviteData");
-                        if (arr){
-                            if(arr.length === 5){
-                                arr.splice(1,5).push(userData)
+                        if (arr&&arr.length > 0){
+                            if(arr.indexOf(JSON.stringify(userData)) >= 0){
+                                return false
+                            }
+                            if(arr.indexOf(";") > 0){
+                                if(arr.split(";").length === 5){
+                                    let arr1 = arr.concat(";"+JSON.stringify(userData));
+                                    let arr2 = arr1.split(";");
+                                    arr = arr2.slice(1,6);
+                                    arr1 = arr.join(";");
+                                    arr = arr1
+                                }else {
+                                    // let arr1 = arr.split(";")
+                                    // arr = arr1.push(JSON.stringify(userData))
+                                    // console.log(arr)
+                                    let arr1 = arr.concat(";"+JSON.stringify(userData))
+                                    arr = arr1
+                                }
                             }else {
-                                arr.push(userData);
+                                let arr1 = [arr];
+                                arr1.push(JSON.stringify(userData));
+                                console.log(arr1)
+                                arr = arr1.join(";")
                             }
                         } else {
-                            arr = [];
-                            arr.push(userData);
+                            console.log(123123123)
+                            arr = JSON.stringify(userData);
                         }
+                        console.log(arr,JSON.stringify(userData))
                         localStorage.setItem("inviteData",arr);
+                        if(arr.indexOf(";") < 0){
+                            console.log(123)
+                            let arr1 = [arr]
+                            arr = arr1
+                            console.log(arr1)
+                        }else {
+                            arr = arr.split(";")
+                        }
+                        console.log(arr)
                         this.setState({
                             myInvite:arr
                         })
@@ -152,27 +200,82 @@ class Index extends React.Component {
             }
     }
 
-    shouldComponentUpdate(nextProps,nextState){
-        if(this.props === nextProps&&this.state === nextState){
-            return false
-        }else {
-            return true
-        }
-    }
+    // shouldComponentUpdate(nextProps,nextState){
+    //     if(this.props === nextProps&&this.state === nextState){
+    //         return false
+    //     }else {
+    //         return true
+    //     }
+    // }
 
     getUserInfo = () => {
-        this.props.dispatch(fetchPostsGetUser()).then((res) => {
-            this.setState({
-                isLogin:false,
-                userInfo:res.data
-            });
-            this.getWebsocket(res);
-            console.log(res);
-        }).catch((err) => {
-            this.props.userInfo.code === "0000"?null:this.setState({
-                isLogin:true,
+        let ua = navigator.userAgent.toLowerCase();//获取判断用的对象
+        if (ua.match(/MicroMessenger/i) == "micromessenger") {
+            let hash = window.location.hash;
+            let reg2 = /([^=]+)$/;
+            let openid = hash.match(reg2);
+            if(hash.indexOf("?oid=") >= 0){
+                localStorage.setItem("oid", openid[0]);
+            }
+            if (hash.indexOf("#/Dashboard/index") >= 0) {
+                console.log({openid:localStorage.getItem("oid")})
+                this.props.dispatch(fetchPostsGetUser(!localStorage.getItem("oid")?null:
+                    {openid:localStorage.getItem("oid")})).then((res) => {
+                    this.setState({
+                        isLogin: false,
+                        userInfo: res.data
+                    });
+                    console.log(this.props.userInfo.code)
+                    Api.onlineUser().then(res => {
+                        console.log(res)
+                        this.setState({
+                            userNum:res.data
+                        })
+                    })
+                    this.setI = setInterval(()=>{
+                        console.log(123123)
+                        Api.onlineUser().then(res => {
+                            console.log(res)
+                            this.setState({
+                                userNum:res.data
+                            })
+                        })
+                    },60000);
+                    this.getWebsocket(res);
+                }).catch((err) => {
+                    console.log(err)
+                    window.location.href = 'http://api.times168.net/index/wxlogin/login'
+                })
+            }
+        } else {
+            this.props.dispatch(fetchPostsGetUser()).then((res) => {
+                this.setState({
+                    isLogin: false,
+                    userInfo: res.data
+                });
+                Api.onlineUser().then(res => {
+                    console.log(res)
+                    this.setState({
+                        userNum:res.data
+                    })
+                })
+                this.setI = setInterval(()=>{
+                    console.log(123123)
+                    Api.onlineUser().then(res => {
+                        console.log(res)
+                        this.setState({
+                            userNum:res.data
+                        })
+                    })
+                },60000);
+                this.getWebsocket(res);
+            }).catch((err) => {
+                this.props.userInfo.code === "0000" ? null :
+                    this.setState({
+                        isLogin: true,
+                    })
             })
-        })
+        }
     };
 
     inputPwd = (index) => {
@@ -191,7 +294,8 @@ class Index extends React.Component {
     };
 
     componentWillUnmount(){
-        // this.webSocket.close()
+        this.webSocket.close()
+        clearInterval(this.setI)
     }
 
     inputNumber = (button, indexs) => {
@@ -350,11 +454,12 @@ class Index extends React.Component {
         Api.inviteFriendJoin({room_id:item.room_id}).then(res => {
             let arr = this.state.myInvite;
             arr.splice(index);
-            localStorage.setItem("inviteData",arr)
+            localStorage.setItem("inviteData",arr.join(";"));
             message.success(res.msg);
-            this.webSocket.close();
+            // this.webSocket.close();
             window.location.href = "#/Dashboard/GameHome/"+res.data.room_id+"/1"
         }).catch(err =>{
+            console.log(err)
             message.info(err.msg)
         })
     }
@@ -409,9 +514,10 @@ class Index extends React.Component {
                     this.state.isOpenMask?<div className="random-invite-info">
                         {
                             this.state.myInvite.length&&this.state.myInvite.map((item, index) =>{
-                                return <p key={index}><span className="message friend-message">[{item.room_id}]</span>
-                                    : {item.is_friend?"好友":"玩家"}“{item.username}”邀请你入房
-                                    <span onClick={()=>this.inviteFriend(index,item)} className="message">接受</span>
+                                console.log(JSON.parse(item))
+                                return <p key={index}><span className={JSON.parse(item).is_friend?"message friend-message":"message"}>[{JSON.parse(item).room_id}]</span>
+                                    : {JSON.parse(item).is_friend?"好友":"玩家"}“{JSON.parse(item).username}”邀请你入房
+                                    <span onClick={()=>this.inviteFriend(index,JSON.parse(item))} className="message">接受</span>
                                     <span onClick={()=>this.refuseInvite(index)}>拒绝</span></p>
                             })
                         }
@@ -439,7 +545,7 @@ class Index extends React.Component {
                             return <div key={index} className="index-content-item"
                                         onClick={item === "输入房号"?()=>this.openModal(true):
                                             ()=>{window.location.href = "#/Dashboard/NewHome/"+index}}>
-                                    {item !== "输入房号"?<span>people-number</span>:null}
+                                    {item !== "输入房号"?<span>{index === 0?this.state.userNum.primary:index === 1?this.state.userNum.middle:this.state.userNum.high}</span>:null}
                                     {item !== "输入房号"?<i onClick={(e)=>this.watchGame(e,index)} className="eyes-game">
                                         <img src={require("../../layouts/image/eyes.png")} alt=""/>
                                     </i>:null}

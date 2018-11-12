@@ -11,6 +11,7 @@ import $ from "jquery"
 import "./style.css"
 import {message} from "antd";
 import {fetchPostsGetUser} from '~/action/getUserInfo';
+import { jsSdkConfig } from "../../constants/Share.js"
 
 const routes = [
     {
@@ -138,13 +139,13 @@ class Dashboard extends React.Component {
         })
         $('.splash-screen').delay(3000).animate({
             opacity: 0,
-        },1000)
+        },300)
         let setT = setTimeout(()=>{
             $('.splash-screen').css({
                 display: "none"
             });
             clearTimeout(setT)
-        },4100)
+        },3300)
     }
 
     render() {

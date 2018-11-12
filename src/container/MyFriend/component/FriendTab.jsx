@@ -4,6 +4,7 @@ import "./FriendTab.less"
 import MyFriendInfo from "./MyFriendInfo";
 import Api from '~/until/api';
 import $ from "jquery"
+import { jsSdkConfig } from "../../../constants/Share.js"
 
 class FriendTab extends React.Component{
     constructor(props) {
@@ -174,7 +175,7 @@ class FriendTab extends React.Component{
                                 </Col>
                                 <Col span={14}>微信</Col>
                                 <Col span={6}>
-                                    <Button>邀请好友</Button>
+                                    <Button onClick={()=>jsSdkConfig(window.location.host)}>邀请好友</Button>
                                 </Col>
                             </Row>
                         </div>
