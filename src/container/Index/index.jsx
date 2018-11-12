@@ -111,15 +111,15 @@ class Index extends React.Component {
         };
     }
 
-    componentWillMount(){
+    componentDidMount(){
         console.log(123123123);
         this.getUserInfo();
     }
 
-    getWebsocket = () =>{
+    getWebsocket = (res) =>{
             let data = JSON.stringify({
                 "type": "bind",
-                "uid": this.state.userInfo.uid,
+                "uid": res.data.uid,
             });
             console.log(data);
             this.webSocket.send(data);
@@ -129,20 +129,19 @@ class Index extends React.Component {
                 let type = data.type || "";
                 switch (type) {
                     case "bind":
-                        // localStorage.setItem("inviteData",[]);
+                        // localStorage.setItem("inviteData",this.state.myInvite);
                         break;
                     case 'invite':
                         let arr = localStorage.getItem("inviteData");
-                        console.log(arr,userData)
-                        if (arr === ""){
-                            arr = [];
-                            arr.push(userData);
-                        } else {
+                        if (arr){
                             if(arr.length === 5){
                                 arr.splice(1,5).push(userData)
                             }else {
                                 arr.push(userData);
                             }
+                        } else {
+                            arr = [];
+                            arr.push(userData);
                         }
                         localStorage.setItem("inviteData",arr);
                         this.setState({
@@ -152,7 +151,6 @@ class Index extends React.Component {
                 }
             }
     }
-
 
     shouldComponentUpdate(nextProps,nextState){
         if(this.props === nextProps&&this.state === nextState){
@@ -168,7 +166,7 @@ class Index extends React.Component {
                 isLogin:false,
                 userInfo:res.data
             });
-            this.getWebsocket()
+            this.getWebsocket(res);
             console.log(res);
         }).catch((err) => {
             this.props.userInfo.code === "0000"?null:this.setState({
@@ -348,8 +346,11 @@ class Index extends React.Component {
     };
 
     //接受邀请
-    inviteFriend(item){
+    inviteFriend(index,item){
         Api.inviteFriendJoin({room_id:item.room_id}).then(res => {
+            let arr = this.state.myInvite;
+            arr.splice(index);
+            localStorage.setItem("inviteData",arr)
             message.success(res.msg);
             this.webSocket.close();
             window.location.href = "#/Dashboard/GameHome/"+res.data.room_id+"/1"
@@ -410,7 +411,7 @@ class Index extends React.Component {
                             this.state.myInvite.length&&this.state.myInvite.map((item, index) =>{
                                 return <p key={index}><span className="message friend-message">[{item.room_id}]</span>
                                     : {item.is_friend?"好友":"玩家"}“{item.username}”邀请你入房
-                                    <span onClick={()=>this.inviteFriend(item)} className="message">接受</span>
+                                    <span onClick={()=>this.inviteFriend(index,item)} className="message">接受</span>
                                     <span onClick={()=>this.refuseInvite(index)}>拒绝</span></p>
                             })
                         }

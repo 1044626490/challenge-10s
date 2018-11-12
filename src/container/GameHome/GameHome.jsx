@@ -46,7 +46,8 @@ class GameHome extends React.Component{
             isAllReady:false,
             isInviteFriend:false,
             userType:"1",
-            homeownerId:0
+            homeownerId:0,
+            myGold:0
         }
     }
 
@@ -93,6 +94,7 @@ class GameHome extends React.Component{
                             for(let i=0;i<userData.length;i++){
                                 if(id === userData[i].uid){
                                     this.setState({
+                                        myGold:userData[i].gold,
                                         isHomeowner:userData[i].is_homeowner,
                                         userType:userData[i].user_type.toString()
                                     })
@@ -143,6 +145,7 @@ class GameHome extends React.Component{
                             for(let i=0;i<userData.length;i++){
                                 if(id === userData[i].uid){
                                     this.setState({
+                                        myGold:userData[i].gold,
                                         isHomeowner:userData[i].is_homeowner,
                                         userType:userData[i].user_type.toString()
                                     })
@@ -419,7 +422,9 @@ class GameHome extends React.Component{
         if(!this.state.isStartTime&&this.state.isStartGame&&this.state.backTime <= 0&&this.state.millisecond === "0"&&this.state.tenSeconds === "0"){
             this.timeGoOn()
         }
-        const uid = this.state.userInfo.uid;
+        console.log(this.props.userInfo)
+        // console.log(this.props)
+        // const uid = this.props.userInfo.data.uid;
         return(
             <div className="game-home-wrap">
                 <HeaderNav name={"["+this.state.homeId+"]"}/>
@@ -435,6 +440,9 @@ class GameHome extends React.Component{
                 {
                     this.state.isStartGame?<div className="bg-cilcle"></div>:null
                 }
+                <div className="my-money-item">
+                    <span>{this.state.myGold?this.state.myGold:0}</span>
+                </div>
                 {
                     !this.state.isReadyGame?
                         <div>

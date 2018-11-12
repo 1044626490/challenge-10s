@@ -2,6 +2,7 @@
  * @module  api
  * api请求的地址常量
  * */
+<<<<<<< HEAD
 
 export const GET_LOGIN_CAPTCHA = '/api/login/captcha';
 export const LOGIN = '/api/login';//登录
@@ -42,6 +43,51 @@ export const ONLINE_FRIEND = '/api/online_friend';//勋章单个信息
 export const INVITE_FRIEND = '/api/invite_friend';//勋章单个信息
 export const STRANGER = '/api/stranger';//勋章单个信息
 export const INVITE_FRIEND_JOIN = '/api/invite_friend_join';//勋章单个信息
+=======
+export const GET_LOGIN_CAPTCHA = '/login/captcha';
+export const LOGIN = '/login';//登录
+export const REGISTER = '/register';//注册
+export const SEND_VERIFI_CODE = '/send_verifi_code';//获取验证码
+export const GET_LEADER_BOARD = '/leaderboard';//查看排行榜
+export const GET_USER_MEDAL = '/user_medal';//个人勋章列表
+export const GET_USER_INFO = '/user_info';//个人勋章列表
+export const EDIT_USERNAME = '/edit_username';//个人勋章列表
+export const COUPON = '/coupon';//活动页优惠券
+export const JOIN_ROOM_ID = '/join_room_id';//加入房间
+export const CREATE_ROOM = '/create_room';//创建房间
+export const CONFIRM_ROOM_PASS = '/confirm_room_pass';//验证房间密码
+export const RADOME_JOIN_ROOM = '/join_room';//加入房间
+export const UPLOAD_MY_HEAD = '/upload';//上传头像
+export const UPDATE_USERINFO = '/update_userinfo';//更新用户信息
+export const ADD_USER_LIST = '/add_user_list';//添加好友列表
+export const BATCH_AGREE_APPLY = '/batch_agree_apply';//同意添加好友
+export const OTHER_USER_INFO = '/other_user_info';//好友信息
+export const BATCH_REFUSE_APPLY = '/batch_refuse_apply';//拒绝添加好友
+export const BATCH_ADD_USER = '/batch_add_user';//申请添加好友
+export const SELF_FRIEND = '/self_friend';//好友列表
+export const BEGIN_GAME = '/begin_game';//开始游戏
+export const CHALL_RES = '/chall_res';//游戏结果
+export const LOGIN_OUT = '/logout';//登出
+export const LEADER_BOARD = '/leaderboard';//总排行榜
+export const USER_READY = '/user_ready';//总排行榜
+export const SIGN_LIST = '/sign_list';//签到
+export const USER_SIGN = '/user_sign';//签到
+export const MEDAL_INFO = '/medal_info';//勋章单个信息
+export const WATCH_GAME = '/watch_game';//勋章单个信息
+export const RECEIVE_GOLD = '/receive_gold';//勋章单个信息
+export const DAILY_TASK_LIST = '/daily_task_list';//勋章单个信息
+export const ACHIEVEMENT_LIST = '/achievement_list';//勋章单个信息
+export const RECEIVE_ACHIEVEMENT_TASK = '/receive_achievement_task';//勋章单个信息
+export const RECEIVE_DAILY_TASK = '/receive_daily_task';//日常任务
+export const ONLINE_FRIEND = '/online_friend';//在线好友
+export const INVITE_FRIEND = '/invite_friend';//邀请好友
+export const STRANGER = '/stranger';//邀请陌生人
+export const INVITE_FRIEND_JOIN = '/invite_friend_join';//接受好友邀请
+export const SET_MUSIC = '/set_music';//设置音乐
+export const SET_SOUND_EFFECT = '/set_sound_effect';//设置音乐
+export const SET_SHIELD = '/set_shield';//设置音乐
+export const SET_WATCH = '/set_watch';//设置音乐
+>>>>>>> 28cfb4e7f7020f9c2277c023326c841eba4dd38e
 
 
 
