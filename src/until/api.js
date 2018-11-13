@@ -52,6 +52,7 @@ export default {
     // indexWxlogin: (params) =>post(C.INDEX_WXLOGIN_LOGIN, params),
     onlineUser: (params) =>post(C.ONLINE_USER, params),
     shareGetSign: (params) =>post(C.SHARE_GETSIGN, params),
+    setInfo: (params) =>post(C.SET_INFO, params),
 
     // logout: (params) => post(C.LOGOUT, params),
     // register: (params) => post(C.REGISTER, params),

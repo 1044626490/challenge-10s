@@ -1,10 +1,11 @@
 import React from "react"
-import { Avatar, Row, Col, Checkbox, Icon, Button, message} from "antd"
+import {Avatar, Row, Col, Checkbox, Icon, Button, message, Progress, Modal} from "antd"
 import "./FriendTab.less"
 import MyFriendInfo from "./MyFriendInfo";
 import Api from '~/until/api';
 import $ from "jquery"
 import { jsSdkConfig } from "../../../constants/Share.js"
+import connect from "react-redux/es/connect/connect";
 
 class FriendTab extends React.Component{
     constructor(props) {
@@ -16,6 +17,7 @@ class FriendTab extends React.Component{
             checkBox:[],
             type:1,
             count:0,
+            isOpenTwoPic:false
         }
     }
 
@@ -26,7 +28,6 @@ class FriendTab extends React.Component{
     addUserList = () => {
         Api.addUserList().then((res) => {
             let arr = res.data;
-            console.log(res);
             for(let j=0;j<arr.length-1;j++){
                 //两两比较，如果前一个比后一个大，则交换位置。
                 for(let i=0;i<arr.length-1-j;i++){
@@ -43,7 +44,6 @@ class FriendTab extends React.Component{
                 count:res.count
             })
         }).catch((err) => {
-            console.log(err)
         })
         Api.selfFriend().then((res) => {
             this.setState({
@@ -56,7 +56,6 @@ class FriendTab extends React.Component{
     };
 
     checkBox = (e,item) => {
-        console.log(e.target.checked);
         let checkBox = this.state.checkBox;
         if(e.target.checked){
             checkBox.push(item.uid);
@@ -99,7 +98,6 @@ class FriendTab extends React.Component{
     };
     checkAddFriend(isCheckAdd){
         let checkBox = this.state.checkBox.join(",");
-        console.log(checkBox)
         if(isCheckAdd){
             Api.batchAgreeApply({uid:checkBox}).then((res) => {
                 message.success(res.msg)
@@ -118,19 +116,18 @@ class FriendTab extends React.Component{
         Api.batchAddUser({uid:checkBox}).then((res) => {
             message.info(res.msg)
         }).catch((err) => {
-            console.log(err)
         })
     }
 
     render(){
-        console.log(this.state.checkBox.length === this.state.addFriendInfo.length);
         const key = this.props.item.key;
         return(
             <div className="tab-friend-wrap">
                 {
                     key === "1"?<div className="my-friend-info-container">
                         <div>
-                            <MyFriendInfo isFriendRank={true} friendForm={this.state.friendForm} count={this.state.count}/>
+                            <MyFriendInfo myId={this.props.userInfo.data.uid} isFriendRank={true}
+                                          friendForm={this.state.friendForm} count={this.state.count}/>
                         </div>
                     </div>:key === "2"?<div className="add-friend-container">
                         {
@@ -186,7 +183,7 @@ class FriendTab extends React.Component{
                                 </Col>
                                 <Col span={14}>QQ</Col>
                                 <Col span={6}>
-                                    <Button>邀请好友</Button>
+                                    <Button onClick={()=>{window.location.href = `http://connect.qq.com/widget/shareqq/index.html?url=${window.location.host}&title=十秒等你来战&source=${window.location.host}&desc=${window.location.host}`}}>邀请好友</Button>
                                 </Col>
                             </Row>
                         </div>
@@ -197,15 +194,33 @@ class FriendTab extends React.Component{
                                 </Col>
                                 <Col span={14}>二维码</Col>
                                 <Col span={6}>
-                                    <Button>邀请好友</Button>
+                                    <Button onClick={()=>{this.setState({isOpenTwoPic:true})}}>邀请好友</Button>
                                 </Col>
                             </Row>
                         </div>
                     </div>
                 }
+                <Modal entered={true} visible={this.state.isOpenTwoPic} wrapClassName={"all-modal two-pic"}
+                       closable={false} destroyOnClose={true}
+                >
+                    <div className="into-home-header">
+                        <p>
+                            扫描邀请好友
+                            <span onClick={()=>{this.setState({isOpenTwoPic:false})}}>
+                            </span>
+                        </p>
+                    </div>
+                    <div>
+                        <img src={this.props.userInfo.data.promote} alt=""/>
+                    </div>
+                </Modal>
             </div>
         )
     }
 }
 
-export default FriendTab
+const mapStateToProps = state => {
+    const {userInfo} = state;
+    return {userInfo}
+};
+export default connect(mapStateToProps)(FriendTab)

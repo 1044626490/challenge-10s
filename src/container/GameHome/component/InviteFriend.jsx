@@ -24,7 +24,6 @@ class InviteFriend extends React.Component{
     }
 
     checkBox = (e,item) => {
-        console.log(e.target.checked);
         let checkBox = this.state.checkBox;
         if(e.target.checked){
             checkBox.push(item.uid);

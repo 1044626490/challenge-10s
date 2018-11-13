@@ -20,24 +20,20 @@ class MyMedal extends React.Component{
 
     componentDidMount(){
         Api.getUserMedal().then((res) => {
-            console.log(res);
             this.setState({
                 myMedalInfo:res.data
             })
         }).catch((err => {
-            console.log(err)
         }))
     }
 
     openMedal(item){
         Api.medalInfo({num_id:item.num_id}).then(res =>{
-            console.log(res)
             this.setState({
                 isOpenMedal:true,
                 item:res.data
             })
         }).catch(err => {
-            console.log(err)
         })
     }
 
@@ -50,12 +46,10 @@ class MyMedal extends React.Component{
                 opacity: 0
             },300).delay(100)
             Api.medalInfo({num_id:this.state.item.num_id}).then(res =>{
-                console.log(res)
                 this.setState({
                     item:res.data
                 })
             }).catch(err => {
-                console.log(err)
             })
         }).catch(err => {
             message.info(err.msg)

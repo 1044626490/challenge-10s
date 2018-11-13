@@ -22,7 +22,6 @@ class MyTask extends React.Component{
 
     getTaskList = () => {
         Api.dailyTaskList().then(res => {
-            console.log(res)
             this.setState({
                 taskData:res.data
             })
@@ -30,7 +29,6 @@ class MyTask extends React.Component{
 
         })
         Api.achievementList().then(res =>{
-            console.log(res)
             this.setState({
                 achievementList:res.data
             })
@@ -50,7 +48,6 @@ class MyTask extends React.Component{
     }
 
     receiveDailyTask(id){
-        console.log(123123123)
         Api.receiveDailyTask({id}).then(res => {
             message.success(res.msg)
             this.getTaskList()

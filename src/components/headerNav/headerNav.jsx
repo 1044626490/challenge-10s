@@ -5,6 +5,7 @@ import { Carousel, Button } from "antd"
 import "./headerNav.less"
 import $ from "jquery"
 import connect from "react-redux/es/connect/connect";
+import {fetchPostsGetUser} from '~/action/getUserInfo';
 
 // let num = [1];
 // let num1 = 1;
@@ -24,7 +25,14 @@ class HeaderNav extends React.Component {
     }
 
     componentDidMount(){
-
+        if(this.props.userInfo.code !== "0000") {
+            this.props.dispatch(fetchPostsGetUser()).then((res) => {
+                console.log(1231235555)
+                window.location.reload()
+            }).catch((err) => {
+                window.location.href = "#/Dashboard/index"
+            })
+        }
     }
 
     Carousel(){
@@ -131,7 +139,7 @@ class HeaderNav extends React.Component {
 }
 
 const mapStateToProps = state => {
-    const {loginReducer,userInfo} = state;
-    return {loginReducer,userInfo}
+    const {userInfo} = state;
+    return {userInfo}
 };
 export default connect(mapStateToProps)(HeaderNav)

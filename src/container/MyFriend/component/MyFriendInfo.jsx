@@ -18,7 +18,6 @@ class MyFriendInfo extends React.Component{
     openFriendModal(isOpen,uid){
         if(isOpen){
             Api.otherUserInfo({uid}).then((res) => {
-                console.log(res.data)
                 this.setState({
                     friendInfo:res.data,
                     isOpenFriendModal:true,
@@ -32,9 +31,7 @@ class MyFriendInfo extends React.Component{
     }
 
     render(){
-        console.log(this.props.friendForm,this.props.count);
         let arr = this.props.friendForm;
-        console.log(arr)
         for(let j=0;j<arr.length-1;j++){
             //两两比较，如果前一个比后一个大，则交换位置。
             for(let i=0;i<arr.length-1-j;i++){
@@ -49,7 +46,7 @@ class MyFriendInfo extends React.Component{
             <div className="my-friend-info">
                 {
                     this.props.friendForm.map((item, index) => {
-                        return <div key={index} className="my-friend-info-item">
+                        return <div key={index} className={item.uid === this.props.myId?"myRank my-friend-info-item":"my-friend-info-item"}>
                             <Row type="flex" justify="start" align="top">
                                 <Col span={3}><span className={index === 0?"rank-first":index === 1?"rank-second":index === 2?"rank-third":"rank"}>{index>2?index+1:null}</span></Col>
                                 <Col span={5}>
@@ -67,7 +64,7 @@ class MyFriendInfo extends React.Component{
                 }
                 {
                     this.state.isOpenFriendModal?
-                        <FriednInfoModal info={this.state.friendInfo} openModal={()=>this.openFriendModal()}
+                        <FriednInfoModal myId={this.props.myId} info={this.state.friendInfo} openModal={()=>this.openFriendModal()}
                                          isOpenModel={this.state.isOpenFriendModal}
                                          count={this.props.count}/>:null
                 }

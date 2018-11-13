@@ -50,7 +50,9 @@ class GameHome extends React.Component{
             music:false,
             soundEffect:false,
             watch:false,
-            shield:false
+            shield:false,
+            isInviteStranger:true,
+            isOverGame:false
         }
     }
 
@@ -207,6 +209,7 @@ class GameHome extends React.Component{
                     })
                     break;
                 case 'rank_result':
+                    console.log(userData)
                     let NOme = this.state.NOme;
                     for(let j=0;j<userData.length-1;j++){
                         //两两比较，如果前一个比后一个大，则交换位置。
@@ -237,11 +240,10 @@ class GameHome extends React.Component{
                     for(let i=0;i<userData.length;i++){
                         if(id === userData[i].uid){
                             this.setState({
-                                myGold:userData[i].gold,
+                                myGold:this.state.myGold*1+userData[i].win_gold*1,
                             })
                         }
                     }
-                    console.log(userData)
                     this.setState({
                         gameResult:userData,
                         isGameOver:true,
@@ -254,6 +256,7 @@ class GameHome extends React.Component{
                             isReadyGame:true,
                             isStartGame:true,
                             isOpenMask:false,
+                            isOverGame:false,
                             backTime:3,
                             room_order:data.room_order
                         });
@@ -386,7 +389,8 @@ class GameHome extends React.Component{
             NOme:0,
             areYouReady:[],
             amIReady:false,
-            isAllReady:false
+            isAllReady:false,
+            isOverGame:true
         });
         // window.location.reload()
         // this.areYouReady()
@@ -405,8 +409,11 @@ class GameHome extends React.Component{
             result,
             room_id:this.state.homeId,
             uid:this.state.userInfo.uid,
-            room_order:this.state.room_order
+            room_order:this.state.room_order,
         };
+        this.setState({
+            isOverGame:true
+        })
         Api.gameOver(params).then(res => {
         }).catch(err => {
         })
@@ -427,9 +434,26 @@ class GameHome extends React.Component{
         })
     };
 
-    inviteStranger(){
+    inviteStranger = () => {
         Api.stranger({room_id:this.state.homeId}).then(res => {
             message.success(res.msg)
+            localStorage.setItem("backTime","0");
+            this.setState({
+                isInviteStranger:false
+            })
+            let setI = setInterval(()=>{
+                let count = localStorage.getItem("backTime")/1
+                count++;
+                if(count === 30){
+                    localStorage.removeItem("backTime")
+                    this.setState({
+                        isInviteStranger:true
+                    })
+                    clearInterval(setI)
+                }else {
+                    localStorage.setItem("backTime",count.toString())
+                }
+            },1000)
         }).catch(err =>{})
     }
 
@@ -448,8 +472,25 @@ class GameHome extends React.Component{
                 {/*<video className="game-audio"  src={require("../../layouts/video/bg1.mp3")} */}
                        {/*autoPlay={true} loop={true} style={{width: 0}}></video>*/}
                 {
-                    this.state.music?<audio className="game-audio"  src={require("../../layouts/video/bg1.mp3")}
-                                            autoPlay={true} loop={true} style={{width: 0}}></audio>:null
+                    this.state.music&&!this.state.isStartGame?
+                        <audio className="game-audio"
+                               src={require("../../layouts/video/bg1.mp3")}
+                               autoPlay={true} loop={true} style={{width: 0}}>
+                    </audio>:null
+                }
+                {
+                    this.state.soundEffect&&this.state.isStartGame&&this.state.backTime <= 0&&!this.state.isOverGame?
+                        <audio className="game-audio"
+                               src={require("../../layouts/video/20s.mp3")}
+                               autoPlay={true} loop={false} style={{width: 0}}>
+                    </audio>:null
+                }
+                {
+                    this.state.soundEffect&&this.state.isStartGame&&this.state.backTime > 0?
+                        <audio className="game-audio"
+                               src={require("../../layouts/video/3s.mp3")}
+                               autoPlay={true} loop={true} style={{width: 0}}>
+                        </audio>:null
                 }
                 {
                     this.state.isStartGame?<div className="bg-cilcle"></div>:null
@@ -471,7 +512,8 @@ class GameHome extends React.Component{
                                 {
                                     this.state.userData.length&&this.state.userData[5].uid?null:
                                         this.state.userType === "1"&&this.state.isHomeowner?
-                                        <Button onClick={()=>this.inviteStranger()} className="start-game-yes">随机邀请</Button>:null
+                                        <Button onClick={this.state.isInviteStranger?()=>this.inviteStranger():null}
+                                                className={this.state.isInviteStranger?"start-game-yes":"start-game-no"}>随机邀请</Button>:null
                                 }
                             </div>
                             <div className="game-menber">
@@ -500,9 +542,11 @@ class GameHome extends React.Component{
                                     <div className="start-game-pop">
                                         {
                                             this.state.userType === "0"?null:this.state.isHomeowner?
-                                                <Popconfirm overlayClassName={"start-game-pop"}
+                                                <Popconfirm overlayClassName={this.state.userData.length&&!
+                                                    this.state.userData[1].uid?"dis-none-pop start-game-pop":this.state.isAllReady?"start-game-pop":"dis-none-pop start-game-pop"}
                                                             placement="top" title={"确认开始"}
-                                                            onCancel={()=>this.startGame()}
+                                                            onCancel={this.state.userData.length&&!
+                                                                this.state.userData[1].uid?true:this.state.isAllReady?()=>this.startGame():true}
                                                             onVisibleChange={()=>this.gameStart()}
                                                             onConfirm={()=>this.gameStart()}
                                                             okText="取消"
@@ -510,7 +554,8 @@ class GameHome extends React.Component{
                                                     <Button className={this.state.userData.length&&!
                                                         this.state.userData[1].uid?"start-game-no":this.state.isAllReady?"start-game-yes":"start-game-no"}
                                                             disabled={this.state.userData.length&&!
-                                                                this.state.userData[1].uid||!this.state.isAllReady}>开始游戏</Button>
+                                                                this.state.userData[1].uid?true:this.state.isAllReady?false:true}
+                                                                >开始游戏</Button>
                                                 </Popconfirm>:
                                                 <Button key={Math.random()} onClick={()=>this.areYouReady()} className="start-game-yes">
                                                     {this.state.amIReady?"取消准备":"准备"}
@@ -650,7 +695,7 @@ class GameHome extends React.Component{
                     </div>
                 </Modal>
                 {
-                    this.state.watch?<div className="watch-game-menber">
+                    this.state.watch?null:<div className="watch-game-menber">
                         {
                             this.state.watchUserData.length?<ul>
                                 {
@@ -662,7 +707,7 @@ class GameHome extends React.Component{
                                 }
                             </ul>:<p>暂无人观战...</p>
                         }
-                    </div>:null
+                    </div>
                 }
             </div>
         )

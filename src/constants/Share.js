@@ -2,7 +2,7 @@ import Api from '~/until/api';
 import wx from 'weixin-js-sdk'
 
 export function jsSdkConfig() {
-    Api.shareGetSign({host:window.location.host}).then((response) => {
+    Api.shareGetSign({host:"http://10s.times168.net"}).then((response) => {
         alert(window.location.href.split("#")[0].slice(7,0))
             // if (response.data.code === 0) {
                 /*配置微信jssdk*/
@@ -19,9 +19,9 @@ export function jsSdkConfig() {
         })
         wx.ready(() => { //分享给朋友
             wx.onMenuShareAppMessage({
-                title: '123', // 分享标题
-                desc: '123', // 分享描述
-                link: window.location.host, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+                title: '快来和我一起挑战把', // 分享标题
+                desc: '快来和我一起挑战把', // 分享描述
+                link: 'http://10s.times168.net', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
                 imgUrl: '', // 分享图标
                 type: 'link', // 分享类型,music、video或link，不填默认为link
                 dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
@@ -34,8 +34,8 @@ export function jsSdkConfig() {
             }) //分享到朋友圈
 
             wx.onMenuShareTimeline({
-                title: '123', // 分享标题
-                link: window.location.host, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+                title: '快来和我一起挑战把', // 分享标题
+                link: 'http://10s.times168.net', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
                 imgUrl: '', // 分享图标
                 success: function () {
                     // 用户确认分享后执行的回调函数

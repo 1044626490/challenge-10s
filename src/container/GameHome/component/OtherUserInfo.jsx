@@ -13,18 +13,14 @@ class OtherUserInfo extends React.Component{
 
     addFriend(uid){
         let params = {uid:uid.toString()};
-        console.log(params);
         Api.batchAddUser(params).then((res) => {
             message.info(res.msg)
         }).catch((err) => {
-            console.log(err)
         })
     }
 
     render(){
-        console.log(this.props.info);
         const info = this.props.info;
-        console.log(info.victory/info.total_office);
         const winRate =  info.total_office === 0?0:Math.round((info.victory/info.total_office)*100);
         return(
             <div className="other-userinfo-wrap">

@@ -94,7 +94,6 @@ class Sign extends React.Component{
             let signDay = res.data.sign_data.map((item) => {
                 return item.date
             });
-            console.log(signDay,res.data.sign_data);
             this.setState({
                 signInfo:res.data,
                 signDay
@@ -140,7 +139,6 @@ class Sign extends React.Component{
                 });
                 clearTimeout(setT)
             },700);
-            console.log(count,$(name));
             if(count === 17){
                 Api.userSign().then( res =>{
                     // message.info(res.msg);
@@ -149,7 +147,6 @@ class Sign extends React.Component{
                     // this.setState({
                     //     signInfo
                     // })
-                    console.log(res.data.gold)
                     $('.get-golds').text("+"+res.data.gold)
                         .delay(100).animate({
                         marginTop:"-8vw",
@@ -161,7 +158,6 @@ class Sign extends React.Component{
                         let signDay = res.data.sign_data.map((item) => {
                             return item.date
                         });
-                        console.log(signDay,res.data.sign_data);
                         this.setState({
                             signInfo:res.data,
                             signDay

@@ -67,7 +67,6 @@ class MyFriend extends React.Component{
     }
 
     render(){
-        console.log(this.state.defaultActiveKey)
         const tabs = [
             {
                 key:"1",
@@ -89,7 +88,6 @@ class MyFriend extends React.Component{
                     <Tabs activeKey={this.state.defaultActiveKey} onChange={this.callback.bind(this)}>
                         {
                             tabs.map((item, index) => {
-                                console.log(item.key)
                                 return <TabPane tab={item.name} key={item.key}>
                                     <FriendTab item={item} key={item.key} index={index}/>
                                         {/*{*/}

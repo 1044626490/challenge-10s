@@ -132,72 +132,66 @@ class Index extends React.Component {
     }
 
     componentDidMount(){
-        console.log(123123123);
-        this.getUserInfo();
+        console.log(123123)
+        if(window.location.hash.indexOf("#/Dashboard/index") >= 0){
+            this.getUserInfo();
+        }
     }
 
     getWebsocket = (res) =>{
-            let data = JSON.stringify({
-                "type": "bind",
-                "uid": res.data.uid,
-            });
-            console.log(data);
-            this.webSocket.send(data);
-            this.webSocket.onmessage = (e)=> {
-                let data = JSON.parse(e.data);
-                let userData = data.data;
-                let type = data.type || "";
-                switch (type) {
-                    case "bind":
-                        // localStorage.setItem("inviteData",this.state.myInvite);
-                        break;
-                    case 'invite':
-                        let arr = localStorage.getItem("inviteData");
-                        if (arr&&arr.length > 0){
-                            if(arr.indexOf(JSON.stringify(userData)) >= 0){
-                                return false
-                            }
-                            if(arr.indexOf(";") > 0){
-                                if(arr.split(";").length === 5){
-                                    let arr1 = arr.concat(";"+JSON.stringify(userData));
-                                    let arr2 = arr1.split(";");
-                                    arr = arr2.slice(1,6);
-                                    arr1 = arr.join(";");
-                                    arr = arr1
-                                }else {
-                                    // let arr1 = arr.split(";")
-                                    // arr = arr1.push(JSON.stringify(userData))
-                                    // console.log(arr)
-                                    let arr1 = arr.concat(";"+JSON.stringify(userData))
-                                    arr = arr1
-                                }
+        let data = JSON.stringify({
+            "type": "bind",
+            "uid": res.data.uid,
+        });
+        this.webSocket.send(data);
+        this.webSocket.onmessage = (e)=> {
+            let data = JSON.parse(e.data);
+            let userData = data.data;
+            let type = data.type || "";
+            switch (type) {
+                case "bind":
+                    // localStorage.setItem("inviteData",this.state.myInvite);
+                    break;
+                case 'invite':
+                    let arr = localStorage.getItem("inviteData");
+                    if (arr&&arr.length > 0){
+                        if(arr.indexOf(JSON.stringify(userData)) >= 0){
+                            return false
+                        }
+                        if(arr.indexOf(";") > 0){
+                            if(arr.split(";").length === 5){
+                                let arr1 = arr.concat(";"+JSON.stringify(userData));
+                                let arr2 = arr1.split(";");
+                                arr = arr2.slice(1,6);
+                                arr1 = arr.join(";");
+                                arr = arr1
                             }else {
-                                let arr1 = [arr];
-                                arr1.push(JSON.stringify(userData));
-                                console.log(arr1)
-                                arr = arr1.join(";")
+                                // let arr1 = arr.split(";")
+                                // arr = arr1.push(JSON.stringify(userData))
+                                let arr1 = arr.concat(";"+JSON.stringify(userData))
+                                arr = arr1
                             }
-                        } else {
-                            console.log(123123123)
-                            arr = JSON.stringify(userData);
-                        }
-                        console.log(arr,JSON.stringify(userData))
-                        localStorage.setItem("inviteData",arr);
-                        if(arr.indexOf(";") < 0){
-                            console.log(123)
-                            let arr1 = [arr]
-                            arr = arr1
-                            console.log(arr1)
                         }else {
-                            arr = arr.split(";")
+                            let arr1 = [arr];
+                            arr1.push(JSON.stringify(userData));
+                            arr = arr1.join(";")
                         }
-                        console.log(arr)
-                        this.setState({
-                            myInvite:arr
-                        })
-                        break;
-                }
+                    } else {
+                        arr = JSON.stringify(userData);
+                    }
+                    localStorage.setItem("inviteData",arr);
+                    if(arr.indexOf(";") < 0){
+                        let arr1 = [arr]
+                        arr = arr1
+                    }else {
+                        arr = arr.split(";")
+                    }
+                    this.setState({
+                        myInvite:arr
+                    })
+                    break;
             }
+        }
     }
 
     // shouldComponentUpdate(nextProps,nextState){
@@ -209,74 +203,81 @@ class Index extends React.Component {
     // }
 
     getUserInfo = () => {
+        console.log(123123)
         let ua = navigator.userAgent.toLowerCase();//获取判断用的对象
         if (ua.match(/MicroMessenger/i) == "micromessenger") {
             let hash = window.location.hash;
             let reg2 = /([^=]+)$/;
             let openid = hash.match(reg2);
-            if(hash.indexOf("?oid=") >= 0){
-                localStorage.setItem("oid", openid[0]);
+            let params = null;
+            let code = this.props.userInfo.code
+            if (hash.indexOf("?oid=") >= 0) {
+                params = {openid: openid[0]}
+                localStorage.setItem("oid",openid[0])
+                // window.location.href = "#/Dashboard/index"
+                // if(code === "0000"){
+                //
+                // }
+            }else {
+                if (localStorage.getItem("oid")) {
+                    params = {openid: localStorage.getItem("oid")}
+                }
             }
+            console.log(params)
             if (hash.indexOf("#/Dashboard/index") >= 0) {
-                console.log({openid:localStorage.getItem("oid")})
-                this.props.dispatch(fetchPostsGetUser(!localStorage.getItem("oid")?null:
-                    {openid:localStorage.getItem("oid")})).then((res) => {
+                this.props.dispatch(fetchPostsGetUser(params)).then((res) => {
                     this.setState({
                         isLogin: false,
                         userInfo: res.data
                     });
-                    console.log(this.props.userInfo.code)
                     Api.onlineUser().then(res => {
-                        console.log(res)
                         this.setState({
-                            userNum:res.data
+                            userNum: res.data
                         })
-                    })
-                    this.setI = setInterval(()=>{
-                        console.log(123123)
+                    });
+                    this.setI = setInterval(() => {
                         Api.onlineUser().then(res => {
-                            console.log(res)
                             this.setState({
-                                userNum:res.data
+                                userNum: res.data
                             })
                         })
-                    },60000);
+                    }, 60000);
+                    console.log(res)
+                    // hash.indexOf("?uid=") >= 0 ?window.location.href = "#/Dashboard/index":null;
                     this.getWebsocket(res);
                 }).catch((err) => {
-                    console.log(err)
-                    window.location.href = 'http://api.times168.net/index/wxlogin/login'
+                    code === "0000"&&localStorage.getItem("oid")?null:hash.indexOf("?uid=") >= 0 ?
+                        window.location.href = 'http://api.times168.net/index/wxlogin/login?refer_id=' + openid[0] :
+                        window.location.href = 'http://api.times168.net/index/wxlogin/login'
                 })
             }
-        } else {
-            this.props.dispatch(fetchPostsGetUser()).then((res) => {
+        }else {}
+        this.props.dispatch(fetchPostsGetUser()).then((res) => {
+            this.setState({
+                isLogin: false,
+                userInfo: res.data
+            });
+            Api.onlineUser().then(res => {
                 this.setState({
-                    isLogin: false,
-                    userInfo: res.data
-                });
+                    userNum: res.data
+                })
+            })
+            this.setI = setInterval(() => {
                 Api.onlineUser().then(res => {
-                    console.log(res)
                     this.setState({
-                        userNum:res.data
+                        userNum: res.data
                     })
                 })
-                this.setI = setInterval(()=>{
-                    console.log(123123)
-                    Api.onlineUser().then(res => {
-                        console.log(res)
-                        this.setState({
-                            userNum:res.data
-                        })
-                    })
-                },60000);
-                this.getWebsocket(res);
-            }).catch((err) => {
-                this.props.userInfo.code === "0000" ? null :
-                    this.setState({
-                        isLogin: true,
-                    })
-            })
-        }
-    };
+            }, 60000);
+            this.getWebsocket(res);
+        }).catch((err) => {
+            this.props.userInfo.code === "0000" ? null :
+                this.setState({
+                    isLogin: true,
+                })
+        })
+
+    }
 
     inputPwd = (index) => {
         let arr = this.state.intoHomePwd;
@@ -411,6 +412,14 @@ class Index extends React.Component {
             return false
         }
         let params = name === "loginForm"?this.state.login:this.state.register;
+        if(name !== "loginForm"){
+            let hash = window.location.hash;
+            if(hash.indexOf("?uid=")){
+                let reg2 = /([^=]+)$/;
+                let openid = hash.match(reg2);
+                params.refer_id = openid[0]
+            }
+        }
         name === "loginForm"?this.props.dispatch(fetchPostsIfNeeded(params)).then((res) => {
             if(res.code ==="0000"){
                 message.success(res.msg);
@@ -459,7 +468,12 @@ class Index extends React.Component {
             // this.webSocket.close();
             window.location.href = "#/Dashboard/GameHome/"+res.data.room_id+"/1"
         }).catch(err =>{
-            console.log(err)
+            let arr = this.state.myInvite;
+            arr.splice(index);
+            this.setState({
+                myInvite:arr
+            });
+            localStorage.setItem("inviteData",arr.join(";"));
             message.info(err.msg)
         })
     }
@@ -480,14 +494,13 @@ class Index extends React.Component {
     refuseInvite = (index) => {
         let arr = this.state.myInvite;
         arr.splice(index);
-        localStorage.setItem("inviteData",arr)
         this.setState({
             myInvite:arr
-        })
+        });
+        localStorage.setItem("inviteData",arr.join(";"));
     };
 
     render(){
-        console.log(this.state.isLogin,this.state.myInvite)
         const button = ["S","M","H","1","2","3","4","5","6","7","8","9","重输","0","确认"];
         const userInfo = this.props.userInfo.data;
         const item = ["初级房间","中级房间","高级房间","输入房号"];
@@ -504,8 +517,8 @@ class Index extends React.Component {
                 <div className="random-invite">
                     {
                         !this.state.isOpenMask?<Badge dot={this.state.myInvite&&this.state.myInvite.length?true:false}>
-                            <span onClick={localStorage.getItem("inviteData")&&localStorage.getItem("inviteData").length?
-                                ()=>this.setState({isOpenMask:true}):null} className="invite-hide"></span>
+                            <span onClick={()=>this.setState({isOpenMask:true})} className="invite-hide">
+                            </span>
                         </Badge>:<span onClick={()=>this.setState({isOpenMask:false})} className="invite-close">
                         </span>
                     }
@@ -513,13 +526,14 @@ class Index extends React.Component {
                 {
                     this.state.isOpenMask?<div className="random-invite-info">
                         {
-                            this.state.myInvite.length&&this.state.myInvite.map((item, index) =>{
-                                console.log(JSON.parse(item))
+                            this.state.myInvite.length?this.state.myInvite.map((item, index) =>{
                                 return <p key={index}><span className={JSON.parse(item).is_friend?"message friend-message":"message"}>[{JSON.parse(item).room_id}]</span>
                                     : {JSON.parse(item).is_friend?"好友":"玩家"}“{JSON.parse(item).username}”邀请你入房
                                     <span onClick={()=>this.inviteFriend(index,JSON.parse(item))} className="message">接受</span>
                                     <span onClick={()=>this.refuseInvite(index)}>拒绝</span></p>
-                            })
+                            }):<p>
+                                <span>暂无消息...</span>
+                            </p>
                         }
                     </div>:null
                 }
@@ -545,10 +559,10 @@ class Index extends React.Component {
                             return <div key={index} className="index-content-item"
                                         onClick={item === "输入房号"?()=>this.openModal(true):
                                             ()=>{window.location.href = "#/Dashboard/NewHome/"+index}}>
-                                    {item !== "输入房号"?<span>{index === 0?this.state.userNum.primary:index === 1?this.state.userNum.middle:this.state.userNum.high}</span>:null}
-                                    {item !== "输入房号"?<i onClick={(e)=>this.watchGame(e,index)} className="eyes-game">
-                                        <img src={require("../../layouts/image/eyes.png")} alt=""/>
-                                    </i>:null}
+                                {item !== "输入房号"?<span>{index === 0?this.state.userNum.primary:index === 1?this.state.userNum.middle:this.state.userNum.high}</span>:null}
+                                {item !== "输入房号"?<i onClick={(e)=>this.watchGame(e,index)} className="eyes-game">
+                                    <img src={require("../../layouts/image/eyes.png")} alt=""/>
+                                </i>:null}
                                 <p>{item}</p>
                             </div>
                         })
@@ -559,91 +573,93 @@ class Index extends React.Component {
 
                     </div>
                     <ul className="game-rule-item">
-                        <li>1.金币可通过新手任务、每日签到、对战、充值获得，破产后也可领取救济金</li>
+                        <li>1.金币可通过每日任务、每日签到、对战、充值获得，破产后也可领取救济金</li>
                         <li>2.游戏3人以下对战，最接近10秒的玩家获胜；3人以上，前三获胜
                             （金币分配：第一名50%，第二名30%，第三名20%，平局则并列平分该名次、金币）。</li>
                         <li>3.游戏结束后可选择直接退出，或者再来一局。</li>
-                        <li>4. 房间设有观战模式。玩家可进入房间旁观高手对战，对战玩家退出时也可抢座参与游戏。</li>
+                        <li>4. 房间设有观战模式。玩家可进入房间旁观高手对战
+                            {/*，对战玩家退出时也可抢座参与游戏*/}
+                            。</li>
                     </ul>
                 </div>
                 <BottomMenu />
-                    <Modal entered={true} visible={this.state.isOenModal||this.state.isLogin} wrapClassName={"into-home-modal"}
-                           closable={false} destroyOnClose={true}
-                    >
-                        <div className="into-home">
-                            <div className="into-home-header">
-                                <p>{
-                                    this.state.isLogin?"用户登录":"加入房间"
-                                }
-                                    {
-                                        this.state.isLogin?null:
-                                            <span onClick={()=>this.openModal(false)}>
+                <Modal entered={true} visible={this.state.isOenModal||this.state.isLogin} wrapClassName={"into-home-modal"}
+                       closable={false} destroyOnClose={true}
+                >
+                    <div className="into-home">
+                        <div className="into-home-header">
+                            <p>{
+                                this.state.isLogin?"用户登录":"加入房间"
+                            }
+                                {
+                                    this.state.isLogin?null:
+                                        <span onClick={()=>this.openModal(false)}>
                                             </span>
-                                    }
-                                </p>
-                            </div>
-                            {
-                                this.state.isLogin?
-                                    <div className="login-register">
-                                        <Tabs activeKey={this.state.loginLocation} animated={false} onChange={(value)=>{this.setState({loginLocation:value})}}>
-                                            <TabPane tab="新用户注册" key="1">
-                                                <div>
-                                                    <Form>
-                                                        {
-                                                            this.state.Register.map((item, index)=>{
-                                                                return <FormItem
-                                                                    required
-                                                                    hasFeedback
-                                                                    validateStatus={item.key !== "code"?item.isOk:""}
-                                                                    help={item.isOk === "error"?item.message:null}
-                                                                    key={index}
-                                                                >
-                                                                        {item.before}<Input type={item.key === "password"||item.key === "newpassword"?"password":"text"} className={item.key === "code"?"kaptchald":null}
-                                                                                            onChange={(e)=>this.changeInput(e,item,index,"register")}
-                                                                                            placeholder={item.placeholder}
-                                                                                            id={item.isOk}/>
-                                                                        {
-                                                                            item.key === "code"?
-                                                                            <Button onClick={()=>this.getKaptchald()} className="get-kaptchald" type="primary">获取验证码</Button>
-                                                                            :null
-                                                                        }
-                                                                </FormItem>
-                                                            })
-                                                        }
-                                                        <FormItem>
-                                                            <Button onClick={()=>this.handleSubmit("Register")} className="check-button" type="primary">注册</Button>
-                                                        </FormItem>
-                                                    </Form>
-                                                </div>
-                                            </TabPane>
-                                            <TabPane tab="老用户登录" key="2">
-                                                <div>
-                                                    <Form>
-                                                        {
-                                                            this.state.loginForm.map((item, index)=>{
-                                                                return <FormItem
-                                                                    required
-                                                                    hasFeedback
-                                                                    validateStatus={item.key !== "code"?item.isOk:""}
-                                                                    help={item.isOk === "error"?item.message:null}
-                                                                    key={index}
-                                                                >
-                                                                    {item.before}<Input type={item.key === "password"?"password":"text"}
-                                                                                        onChange={(e)=>this.changeInput(e,item,index,"login")}
-                                                                                        placeholder={item.placeholder}
-                                                                                        id={item.isOk}/>
-                                                                </FormItem>
-                                                            })
-                                                        }
-                                                        <FormItem>
-                                                            <Button onClick={()=>this.handleSubmit("loginForm")} onClick={()=>this.handleSubmit("loginForm")} className="check-button" type="primary">登录</Button>
-                                                        </FormItem>
-                                                    </Form>
-                                                </div>
-                                            </TabPane>
-                                        </Tabs>
-                                    </div>
-                                    :<div className="modal-content">
+                                }
+                            </p>
+                        </div>
+                        {
+                            this.state.isLogin?
+                                <div className="login-register">
+                                    <Tabs activeKey={this.state.loginLocation} animated={false} onChange={(value)=>{this.setState({loginLocation:value})}}>
+                                        <TabPane tab="新用户注册" key="1">
+                                            <div>
+                                                <Form>
+                                                    {
+                                                        this.state.Register.map((item, index)=>{
+                                                            return <FormItem
+                                                                required
+                                                                hasFeedback
+                                                                validateStatus={item.key !== "code"?item.isOk:""}
+                                                                help={item.isOk === "error"?item.message:null}
+                                                                key={index}
+                                                            >
+                                                                {item.before}<Input type={item.key === "password"||item.key === "newpassword"?"password":"text"} className={item.key === "code"?"kaptchald":null}
+                                                                                    onChange={(e)=>this.changeInput(e,item,index,"register")}
+                                                                                    placeholder={item.placeholder}
+                                                                                    id={item.isOk}/>
+                                                                {
+                                                                    item.key === "code"?
+                                                                        <Button onClick={()=>this.getKaptchald()} className="get-kaptchald" type="primary">获取验证码</Button>
+                                                                        :null
+                                                                }
+                                                            </FormItem>
+                                                        })
+                                                    }
+                                                    <FormItem>
+                                                        <Button onClick={()=>this.handleSubmit("Register")} className="check-button" type="primary">注册</Button>
+                                                    </FormItem>
+                                                </Form>
+                                            </div>
+                                        </TabPane>
+                                        <TabPane tab="老用户登录" key="2">
+                                            <div>
+                                                <Form>
+                                                    {
+                                                        this.state.loginForm.map((item, index)=>{
+                                                            return <FormItem
+                                                                required
+                                                                hasFeedback
+                                                                validateStatus={item.key !== "code"?item.isOk:""}
+                                                                help={item.isOk === "error"?item.message:null}
+                                                                key={index}
+                                                            >
+                                                                {item.before}<Input type={item.key === "password"?"password":"text"}
+                                                                                    onChange={(e)=>this.changeInput(e,item,index,"login")}
+                                                                                    placeholder={item.placeholder}
+                                                                                    id={item.isOk}/>
+                                                            </FormItem>
+                                                        })
+                                                    }
+                                                    <FormItem>
+                                                        <Button onClick={()=>this.handleSubmit("loginForm")} onClick={()=>this.handleSubmit("loginForm")} className="check-button" type="primary">登录</Button>
+                                                    </FormItem>
+                                                </Form>
+                                            </div>
+                                        </TabPane>
+                                    </Tabs>
+                                </div>
+                                :<div className="modal-content">
                                     <div className={this.state.isHomeNeedPwd?"into-home-password input-commad":"into-home-password"}>
                                         <span>{this.state.isHomeNeedPwd?"请输入口令":"请输入房间号"}</span>
                                         {
@@ -677,18 +693,18 @@ class Index extends React.Component {
                                         }
                                     </div>
                                 </div>
-                            }
-                        </div>
-                    </Modal>
+                        }
+                    </div>
+                </Modal>
                 {
                     this.props.userInfo.code === "0000"?<MyInfoModal info={this.props.userInfo.data} isResetMyInfo={this.state.isResetMyInfo} openModal={()=>this.openInfoModal()}
-                                 isOpenModel={this.state.isOpenInfoModel}
-                                 getUserInfo={()=>{
-                                     this.getUserInfo();
-                                     this.setState({
-                                         isResetMyInfo:false
-                                     })
-                                 }}
+                                                                     isOpenModel={this.state.isOpenInfoModel}
+                                                                     getUserInfo={()=>{
+                                                                         this.getUserInfo();
+                                                                         this.setState({
+                                                                             isResetMyInfo:false
+                                                                         })
+                                                                     }}
                     />:null
                 }
                 {

@@ -129,7 +129,6 @@ class NewHome extends React.Component {
     render(){
         const button = [1,2,3,4,5,6,7,8,9,"重输",0,"确认"];
         const { userInfo } = this.state;
-        // console.log(this.state.homePrice)
         return (
             <div className="into-home-wrap">
                 <HeaderNav name={this.state.header}/>
@@ -175,7 +174,7 @@ class NewHome extends React.Component {
                                 className={this.state.homePrice === item?"check-active":""}>
                                     <span onClick={this.state.homePrice === item?
                                         ()=>this.radomeHome(this.state.homePrice):
-                                        ()=>{console.log(item);this.setState({homePrice:item})}
+                                        ()=>{this.setState({homePrice:item})}
                                     }></span>
                                     {this.state.homePrice === item?"确定":this.checkBox.txt[index]}</i>
                             })
@@ -184,43 +183,45 @@ class NewHome extends React.Component {
                     </div>:null
                 }
                 <BottomMenu />
-                <Modal entered={true} visible={this.state.isCreateHome} wrapClassName={"into-home-modals"}
-                       closable={false} destroyOnClose={true}>
+                {
+                    this.state.isCreateHome?<Modal entered={true} visible={this.state.isCreateHome} wrapClassName={"into-home-modals"}
+                    closable={false} destroyOnClose={true}>
                     <div className="into-home">
-                            <div className="into-home-header">
-                                <p>创建房间
-                                    <span onClick={()=>this.openModal(false)}>
-                                    </span>
-                                </p>
-                            </div>
-                        <div className="modal-content">
-                            <div className="into-home-password">
-                                <span>请设置口令</span>
-                                {
-                                    this.state.intoHomePwd.map((item, index)=>{
-                                        return <span key={index} className="input-item" onClick={()=>this.inputPwd(index)}>{item}</span>
-                                    })
-                                }
-                            </div>
-                            <div className="button-group">
-                                {
-                                    button.map((item, index) => {
-                                        if(item === "重输"){
-                                            return <button key={index} onClick={()=>this.resetInput()}><img src={require("../../layouts/image/reset.png")} alt=""/></button>
-                                        }else if (item === "确认"){
-                                            return <button key={index} disabled={this.state.intoHomePwd.indexOf("") !== -1&&this.state.intoHomePwd.indexOf("") !== 0} onClick={()=>this.finHome()}>
-                                                <img src={require("../../layouts/image/check.png")} alt=""/>
-                                            </button>
-                                        }
-                                        return <button key={index} onClick={()=>this.inputNumber(button, index)}>
-                                            <img src={require("../../layouts/image/"+item+".png")} alt=""/>
-                                        </button>
-                                    })
-                                }
-                            </div>
-                        </div>
+                    <div className="into-home-header">
+                    <p>创建房间
+                    <span onClick={()=>this.openModal(false)}>
+                    </span>
+                    </p>
                     </div>
-                </Modal>
+                    <div className="modal-content">
+                    <div className="into-home-password">
+                    <span>请设置口令</span>
+                    {
+                        this.state.intoHomePwd.map((item, index)=>{
+                            return <span key={index} className="input-item" onClick={()=>this.inputPwd(index)}>{item}</span>
+                        })
+                    }
+                    </div>
+                    <div className="button-group">
+                    {
+                        button.map((item, index) => {
+                            if(item === "重输"){
+                                return <button key={index} onClick={()=>this.resetInput()}><img src={require("../../layouts/image/reset.png")} alt=""/></button>
+                            }else if (item === "确认"){
+                                return <button key={index} disabled={this.state.intoHomePwd.indexOf("") !== -1&&this.state.intoHomePwd.indexOf("") !== 0} onClick={()=>this.finHome()}>
+                                    <img src={require("../../layouts/image/check.png")} alt=""/>
+                                </button>
+                            }
+                            return <button key={index} onClick={()=>this.inputNumber(button, index)}>
+                                <img src={require("../../layouts/image/"+item+".png")} alt=""/>
+                            </button>
+                        })
+                    }
+                    </div>
+                    </div>
+                    </div>
+                    </Modal>:null
+                }
             </div>
         )
     }

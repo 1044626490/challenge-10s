@@ -15,7 +15,7 @@ class PayPage extends React.Component{
     }
 
     payPrice(){
-
+        window.location.href = "#/Dashboard/PayPriceOver/"+this.state.value
     }
 
     render(){

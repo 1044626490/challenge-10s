@@ -8,9 +8,9 @@ class MyInfoModal extends React.Component{
         super(props);
         this.state = {
             isResetMyInfo:false,
-            myName: this.props.info.username,
-            header:this.props.info.avatar,
-            signature:this.props.info.signature,
+            myName: this.props.info.username||"",
+            header:this.props.info.avatar||"",
+            signature:this.props.info.signature||"",
             victoryRate:0
         }
     }
@@ -35,17 +35,18 @@ class MyInfoModal extends React.Component{
     };
 
     saveInfo = () => {
-        if(this.state.myName.length > 8){
+        if(this.state.myName !== null&&this.state.myName.length > 8){
+            alert.log(this.state.myName)
             message.warning("昵称的长度不能大于八位");
             return false
-        }else if(this.state.signature.length > 8){
+        }else if(this.state.signature !== null&&this.state.signature.length > 8){
             message.warning("个性签名的长度不能大于八位");
             return false
         }else {
             let params = {
-                username:this.state.myName,
-                signature:this.state.signature,
-                avatar:this.state.header
+                username:this.state.myName||"",
+                signature:this.state.signature||"",
+                avatar:this.state.header||""
             };
             Api.updateUserinfo(params).then((res) => {
                 message.success(res.msg);
@@ -60,7 +61,6 @@ class MyInfoModal extends React.Component{
     }
 
     changeHeader(file){
-        console.log(file.file)
         Api.uploadMyHead({file:file.file}).then((res) => {
             message.success(res.msg)
             this.setState({

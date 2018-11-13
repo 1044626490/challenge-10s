@@ -3,15 +3,11 @@ import { Route } from "react-router-dom";
 import MyLoadingComponent from "~/components/common/loadComponents";
 import Loadable from "react-loadable";
 import { connect } from "react-redux";
-import { Progress } from "antd"
 import "./Dashboard.less";
 import Api from '~/until/api';
 import $ from "jquery"
-// import Websocket from 'react-websocket';
 import "./style.css"
-import {message} from "antd";
 import {fetchPostsGetUser} from '~/action/getUserInfo';
-import { jsSdkConfig } from "../../constants/Share.js"
 
 const routes = [
     {
@@ -20,14 +16,14 @@ const routes = [
             loader: () => import("~/container/Index/index"),
             loading: MyLoadingComponent
         }),
-        isExact: false
+        isExact: true
     },{
         path: "Activity",
         component: Loadable({
             loader: () => import("~/container/Activity/Activity"),
             loading: MyLoadingComponent
         }),
-        isExact: false
+        isExact: true
     },
     {
         path: "PersonalInformation",
@@ -35,7 +31,7 @@ const routes = [
             loader: () => import("~/container/PersonalInformation/PersonalInformation"),
             loading: MyLoadingComponent
         }),
-        isExact: false
+        isExact: true
     },
     {
         path: "Setting",
@@ -43,7 +39,7 @@ const routes = [
             loader: () => import("~/container/PersonalInformation/component/Setting"),
             loading: MyLoadingComponent
         }),
-        isExact: false
+        isExact: true
     },
     {
         path: "NewHome/:id",
@@ -51,7 +47,7 @@ const routes = [
             loader: () => import("~/container/NewHome/NewHome"),
             loading: MyLoadingComponent
         }),
-        isExact: false
+        isExact: true
     },
     {
         path: "GameHome/:homeId/:status",
@@ -59,7 +55,7 @@ const routes = [
             loader: () => import("~/container/GameHome/GameHome"),
             loading: MyLoadingComponent
         }),
-        isExact: false
+        isExact: true
     },
     {
         path: "MyFriend/:pageId",
@@ -67,7 +63,7 @@ const routes = [
             loader: () => import("~/container/MyFriend/MyFriend"),
             loading: MyLoadingComponent
         }),
-        isExact: false
+        isExact: true
     },
     {
         path: "PayPage",
@@ -75,7 +71,15 @@ const routes = [
             loader: () => import("~/container/Index/PayPage/PayPage"),
             loading: MyLoadingComponent
         }),
-        isExact: false
+        isExact: true
+    },
+    {
+        path: "PayPriceOver/:id/:price",
+        component: Loadable({
+            loader: () => import("~/container/Index/PayPage/PayPriceOver"),
+            loading: MyLoadingComponent
+        }),
+        isExact: true
     },
     {
         path: "MyMedal",
@@ -83,7 +87,7 @@ const routes = [
             loader: () => import("~/container/MyMedal/MyMedal"),
             loading: MyLoadingComponent
         }),
-        isExact: false
+        isExact: true
     },
     {
         path: "RankList",
@@ -91,38 +95,21 @@ const routes = [
             loader: () => import("~/container/RankList/RankList"),
             loading: MyLoadingComponent
         }),
-        isExact: false
-    },
-    {
-        path: "MyTask",
-        component: Loadable({
-            loader: () => import("~/container/MyTask/MyTask"),
-            loading: MyLoadingComponent
-        }),
-        isExact: false
+        isExact: true
     }
 ];
 
 class Dashboard extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {
-            isLogin:false,
-            userInfo:null,
-        };
+        this.state = {};
     }
 
     componentDidMount(){
-        // if(!this.state.userInfo){
-        //     Api.getUserInfo().then((res) => {
-        //         this.setState({
-        //             userInfo:res.data
-        //         });
-        //     }).catch((err) => {
-        //         this.progress();
-        //         window.location.hash !== "#/Dashboard/index"?window.location.href = "#/Dashboard/index":null
-        //     })
-        // }
+        // this.props.dispatch(fetchPostsGetUser()).then((res) => {
+        // }).catch((err) => {
+        //     window.location.href = "#/Dashboard/index"
+        // })
         this.progress();
     }
 
@@ -148,20 +135,25 @@ class Dashboard extends React.Component {
         },3300)
     }
 
+    // componentWillReceiveProps(nextProps){
+    //     console.log(this.props === nextProps,nextProps,this.props)
+    //     if(this.props === nextProps){
+    //         return false
+    //     }else {
+    //         return true
+    //     }
+    // }
+
     render() {
         const { match } = this.props;
         const RouteWithSubRoutes = route => (
             <Route
-                // exact={route.isExact}
                 path={`${match.url}/${route.path}`}
                 render={props => <route.component {...props} routes={route.routes} />}
             />
         );
         return (
             <div className="container">
-                {/*{*/}
-                    {/*this.state.userInfo?null:null*/}
-                {/*}*/}
                 <div className="splash-screen">
                     <div className="progressbar" data-perc="100">
                         <div className="bar"><span></span></div>
@@ -170,7 +162,7 @@ class Dashboard extends React.Component {
                 </div>
                 <div>
                     {routes.map((route, i) => (
-                        <RouteWithSubRoutes isLogin={123} key={i} {...route} />
+                        <RouteWithSubRoutes key={i} {...route} />
                     ))}
                 </div>
             </div>
@@ -178,4 +170,9 @@ class Dashboard extends React.Component {
     }
 }
 
+// const mapStateToProps = state => {
+//     const {userInfo} = state;
+//     return {userInfo}
+// };
+// export default connect(mapStateToProps)(Dashboard)
 export default Dashboard

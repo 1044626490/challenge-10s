@@ -17,11 +17,9 @@ class FriednInfoModal extends React.Component{
 
     addFriend(uid){
         let params = {uid:uid.toString()};
-        console.log(params);
         Api.batchAddUser(params).then((res) => {
             message.info(res.msg)
         }).catch((err) => {
-            console.log(err)
         })
     }
 
@@ -37,7 +35,7 @@ class FriednInfoModal extends React.Component{
                         <div className="header-wrap">
                             <Avatar size={64} shape="square" icon="user" src={info?info.avatar:require("../../../layouts/image/head.png")} />
                             {
-                                info&&info.is_friend?null:<Icon type="plus-circle" onClick={()=>this.addFriend(info.uid)} theme="filled" />
+                                info&&info.uid === this.props.myId?null:info.is_friend?null:<Icon type="plus-circle" onClick={()=>this.addFriend(info.uid)} theme="filled" />
                             }
                             <div className="my-info">
                                 <p className="name-class"><span>昵称：</span>

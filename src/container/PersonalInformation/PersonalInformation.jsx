@@ -25,8 +25,8 @@ class PersonalInformation extends React.Component {
     }
 
     getUserInfo = () =>{
+        console.log(123123+"sadasdasd")
         this.props.dispatch(fetchPostsGetUser()).then((res) => {
-            console.log(res.data);
             let rate = 0;
             if(res.data.total_office !== 0){
                 rate = Math.round(res.data.victory/res.data.total_office);
@@ -123,7 +123,7 @@ class PersonalInformation extends React.Component {
                                     <p>邀请好友</p><Icon type="right" theme="outlined" />
                                 </li>
                                 <li>
-                                    <p>意见或建议</p><Icon type="right" theme="outlined" />
+                                    <p>意见或建议（敬请期待）</p><Icon type="right" theme="outlined" />
                                 </li>
                             </ul>
                         </div>
@@ -133,15 +133,18 @@ class PersonalInformation extends React.Component {
                     </div>
                 </div>
                 <BottomMenu />
-                <MyInfoModal info={info} isResetMyInfo={this.state.isResetMyInfo} openModal={()=>this.openModal()}
-                             changeHeader={()=>this.changeHeader()} isOpenModel={this.state.isOpenModel}
-                             getUserInfo={()=>{
-                                this.getUserInfo();
-                                this.setState({
-                                    isResetMyInfo:false
-                                })
-                             }}
-                />
+                {
+                    this.state.isOpenModel?<MyInfoModal info={info} isResetMyInfo={this.state.isResetMyInfo} openModal={()=>this.openModal()}
+                    changeHeader={()=>this.changeHeader()} isOpenModel={this.state.isOpenModel}
+                    getUserInfo={()=>{
+                    this.getUserInfo();
+                    this.setState({
+                    isResetMyInfo:false
+                })
+                }
+                    }
+                    />:null
+                }
             </div>
         )
     }

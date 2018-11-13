@@ -29,7 +29,6 @@ class RankList extends React.Component{
     // openFriendModal(isOpen,uid){
     //     if(isOpen){
     //         Api.otherUserInfo({uid}).then((res) => {
-    //             console.log(res.data)
     //             this.setState({
     //                 friendInfo:res.data,
     //                 isOpenFriendModal:true,
@@ -92,7 +91,6 @@ class RankList extends React.Component{
                 name:"好友排行"
             }
         ];
-        console.log(this.state)
         return(
             <div className="rank-list-wrap">
                 <HeaderNav name="挑战10秒"/>
@@ -101,7 +99,7 @@ class RankList extends React.Component{
                         {
                             tabs.map((item, index) => {
                                 return <TabPane tab={item.name} key={item.key}>
-                                    <MyFriendInfo friendForm={item.key === "1"?this.state.allForm:this.state.friendForm} count={this.state.count}/>
+                                    <MyFriendInfo myId={this.props.userInfo.data.uid} friendForm={item.key === "1"?this.state.allForm:this.state.friendForm} count={this.state.count}/>
                                         {
                                             index === 0?<div className="rank-info">
                                                 <div className="rank-my-info">

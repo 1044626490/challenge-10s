@@ -13,8 +13,23 @@ class PayPage extends React.Component{
         }
     }
 
-    payPrice(){
+    componentDidMount(){
+        let id = this.prop.match.params.id;
+        this.setState({
+            price:this.props.match.params.price
+        });
+        this.payPrice(id)
 
+    }
+
+    payPrice(id){
+        if(id === "1"){
+
+        }else if(id === "2"){
+
+        }else {
+
+        }
     }
 
     render(){

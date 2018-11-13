@@ -18,9 +18,11 @@ class Routes extends Component {
         return (
             <Router history={history}>
                 <Switch>
-                    {/*<Route exact path="/Dashboard" component={Dashboard}/>*/}
-                    <Route path="/Dashboard" component={Dashboard}/>
-                    <Redirect to="/Dashboard/index"/>
+                    <Route exact path="/" component={Dashboard}/>
+                    <Route  path="/Dashboard" component={Dashboard}/>
+                    {/*<Route exact path="/" component={Dashboard}/>*/}
+                    {/*<Route path="/Dashboard" component={Dashboard}/>*/}
+                    {/*<Redirect to="/Dashboard/index"/>*/}
                 </Switch>
             </Router>
         )
