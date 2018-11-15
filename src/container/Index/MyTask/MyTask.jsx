@@ -131,7 +131,7 @@ class MyTask extends React.Component{
                                             return <div key={index} className="my-task-info-item">
                                                 <Row type="flex" justify="start" align="top">
                                                     <Col span={6}>
-                                                        <Avatar shape="square" src={item.img} size="large" icon="user" />
+                                                        <Avatar className="special-pic" shape="square" src={item.img} size="large" icon="user" />
                                                     </Col>
                                                     <Col span={12}>
                                                         <Row>
@@ -156,7 +156,7 @@ class MyTask extends React.Component{
                                         return <div key={index} className="my-task-info-item">
                                             <Row type="flex" justify="start" align="top">
                                                 <Col span={6}>
-                                                    <Avatar shape="square" src={item.img} size="large" icon="user" />
+                                                    <Avatar className="special-pic" shape="square" src={item.img} size="large" icon="user" />
                                                 </Col>
                                                 <Col span={12}>
                                                     <Row>

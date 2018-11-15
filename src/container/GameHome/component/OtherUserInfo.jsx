@@ -32,7 +32,7 @@ class OtherUserInfo extends React.Component{
                             <Col span={8}>
                                 <Avatar icon="user" src={info.avatar||""}/>
                                 {
-                                    info.is_friend?null:<Icon type="plus-circle" onClick={()=>this.addFriend(info.uid)} theme="filled" />
+                                    info.uid === this.props.myId||info.is_friend?null:<Icon type="plus-circle" onClick={()=>this.addFriend(info.uid)} theme="filled" />
                                 }
                             </Col>
                             <Col span={16}>

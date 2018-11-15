@@ -53,6 +53,7 @@ export default {
     onlineUser: (params) =>post(C.ONLINE_USER, params),
     shareGetSign: (params) =>post(C.SHARE_GETSIGN, params),
     setInfo: (params) =>post(C.SET_INFO, params),
+    userReadyHome: (params) =>post(C.USER_READY_HOME, params),
 
     // logout: (params) => post(C.LOGOUT, params),
     // register: (params) => post(C.REGISTER, params),

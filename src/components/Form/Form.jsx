@@ -34,7 +34,6 @@ class MyForm extends React.Component {
     });
   }
   componentWillReceiveProps(nextProps) {
-    console.log(nextProps, "nextProps");
     if (nextProps.questionsList) {
       const { questionsList = [] } = nextProps;
       this.setState({
@@ -48,7 +47,6 @@ class MyForm extends React.Component {
     }
   }
   getFormItem = () => {
-    console.log(this.state, ":1");
     const { questionsList } = this.state;
     const { getFieldDecorator } = this.props.form;
     let questionMultipleArr = [];
@@ -120,7 +118,6 @@ class MyForm extends React.Component {
     }
   };
   handleSubmit = e => {
-    console.log(e);
     e && e.preventDefault();
     this.props.form.validateFieldsAndScroll((err, values) => {
       // 若验证通过
@@ -130,11 +127,9 @@ class MyForm extends React.Component {
     });
   };
   lastCount(val) {
-    console.log(val, "val");
     this.props.lastMint(val);
   }
   render() {
-    console.log(this.getFormItem(), "getFormItem");
     return (
       <div>
         <Form

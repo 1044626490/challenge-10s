@@ -130,25 +130,27 @@
     background-repeat: no-repeat;
     background-position: center;
   }
-  .relief-payment{
-    display: block;
-    width: 9vw;
-    height: 9vw;
-    position: absolute;
-    bottom: -13vw;
-    right: 20vw;
-    background-image: url("../../layouts/image/1 (5).png");
-    background-size: 100% 100%;
-    background-repeat: no-repeat;
-    background-position: center;
-  }
+  //.relief-payment{
+  //  display: block;
+  //  width: 9vw;
+  //  height: 9vw;
+  //  position: absolute;
+  //  bottom: -13vw;
+  //  right: 20vw;
+  //  background-image: url("../../layouts/image/1 (5).png");
+  //  background-size: 100% 100%;
+  //  background-repeat: no-repeat;
+  //  background-position: center;
+  //}
   .sign-in{
     display: block;
     width: 9vw;
     height: 9vw;
     position: absolute;
     bottom: -13vw;
-    right: 31vw;
+    right: 20vw;
+    //bottom: -13vw;
+    //right: 31vw;
     background-image: url("../../layouts/image/sign.png");
     background-size: 100% 100%;
     background-repeat: no-repeat;
@@ -176,7 +178,7 @@
   .random-invite{
     position: fixed;
     left: 0;
-    top: 70%;
+    top: 62%;
     z-index: 999;
     width: 12vw;
     .invite-hide{
@@ -246,6 +248,21 @@
     padding: 2.5vw;
     margin-top: 2vh;
     height: 40vh;
+    .index-content-item:first-child{
+      .eyes-game{
+        background-image: url("../../layouts/image/checkHome/eyesbg1.png");
+      }
+    }
+    .index-content-item:nth-child(2){
+      .eyes-game{
+        background-image: url("../../layouts/image/checkHome/eyesbg2.png");
+      }
+    }
+    .index-content-item:nth-child(3){
+      .eyes-game{
+        background-image: url("../../layouts/image/checkHome/eyesbg3.png");
+      }
+    }
     .index-content-item{
       position: relative;
       float: left;
@@ -259,11 +276,19 @@
         position: absolute;
         right: 0;
         top: 0;
+        padding-top: 0.5vw;
+        padding-left: 10vw;
         display: inline-block;
-        width: 10vw;
-        height: 5vw;
-        background-image: url("../../layouts/image/eyesgame.png");
+        width: 18vw;
+        height: 6vw;
         background-size: 100% 100%;
+        span{
+          font-size: 2.2vw;
+          font-style: normal;
+        }
+        span:before{
+          display: none;
+        }
         img{
           width: 6vw;
           height: 3vw;
@@ -379,7 +404,7 @@
             .ant-tabs{
               margin-top: -1px;
               background-color: #3c3768;
-              width: 100.2%;
+              width: 100%;
               background-image: url("../../layouts/image/border-img.png");
               background-size: 100%;
               position: absolute;
@@ -492,9 +517,9 @@
               background-image: url("../../layouts/image/bor_bottow.png");
               background-size: 100% 100%;
               position: absolute;
-              bottom: -2vw;
+              bottom: -1.5vw;
               left: 0;
-              width: 80vw;
+              width: 100%;
               height: 2vw;
             }
           }

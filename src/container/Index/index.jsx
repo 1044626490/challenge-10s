@@ -12,6 +12,7 @@ import MyInfoModal from "../PersonalInformation/component/MyInfoModal";
 import Sign from "./Sign/Sign"
 import MyTask from "./MyTask/MyTask";
 import $ from "jquery";
+import enableInlineVideo from "iphone-inline-video";
 //
 
 const TabPane = Tabs.TabPane;
@@ -45,8 +46,8 @@ class Index extends React.Component {
             // isNeedLogin:false,
             progress:0,
             login:{
-                tel:null,
-                password:null
+                tel:localStorage.getItem("phoneNum")||null,
+                password:localStorage.getItem("pwd")||null
             },
             register:{
                 tel:null,
@@ -70,8 +71,9 @@ class Index extends React.Component {
                     name:"password",
                     required:true,
                     message:"请输入用户密码",
-                    placeholder:"用户密码",
+                    placeholder:"用户密码(长度不能低于6位)",
                     isOk:"",
+                    re:/^.{6,}$/,
                     before:<Icon className="before-icon" type="lock" theme="outlined" />
                 }
             ],
@@ -91,8 +93,9 @@ class Index extends React.Component {
                     name:"password",
                     required:true,
                     message:"请输入用户密码",
-                    placeholder:"用户密码",
+                    placeholder:"用户密码(长度不能低于6位)",
                     isOk:"",
+                    re:/^.{6,}$/,
                     before:<Icon className="before-icon" type="lock" theme="outlined" />
                 },
                 {
@@ -132,7 +135,6 @@ class Index extends React.Component {
     }
 
     componentDidMount(){
-        console.log(123123)
         if(window.location.hash.indexOf("#/Dashboard/index") >= 0){
             this.getUserInfo();
         }
@@ -203,7 +205,6 @@ class Index extends React.Component {
     // }
 
     getUserInfo = () => {
-        console.log(123123)
         let ua = navigator.userAgent.toLowerCase();//获取判断用的对象
         if (ua.match(/MicroMessenger/i) == "micromessenger") {
             let hash = window.location.hash;
@@ -212,18 +213,19 @@ class Index extends React.Component {
             let params = null;
             let code = this.props.userInfo.code
             if (hash.indexOf("?oid=") >= 0) {
-                params = {openid: openid[0]}
+                params = {openid: openid[0]};
                 localStorage.setItem("oid",openid[0])
-                // window.location.href = "#/Dashboard/index"
-                // if(code === "0000"){
-                //
-                // }
             }else {
                 if (localStorage.getItem("oid")) {
                     params = {openid: localStorage.getItem("oid")}
                 }
             }
-            console.log(params)
+            if(localStorage.getItem("uid")){
+                params = {
+                    openid: openid[0],
+                    refer_id: localStorage.getItem("uid")
+                }
+            }
             if (hash.indexOf("#/Dashboard/index") >= 0) {
                 this.props.dispatch(fetchPostsGetUser(params)).then((res) => {
                     this.setState({
@@ -242,41 +244,45 @@ class Index extends React.Component {
                             })
                         })
                     }, 60000);
-                    console.log(res)
-                    // hash.indexOf("?uid=") >= 0 ?window.location.href = "#/Dashboard/index":null;
+                    if(localStorage.getItem("uid")){
+                        localStorage.removeItem("uid");
+                        // window.location.href = "#"
+                    }
                     this.getWebsocket(res);
                 }).catch((err) => {
-                    code === "0000"&&localStorage.getItem("oid")?null:hash.indexOf("?uid=") >= 0 ?
-                        window.location.href = 'http://api.times168.net/index/wxlogin/login?refer_id=' + openid[0] :
-                        window.location.href = 'http://api.times168.net/index/wxlogin/login'
+                        if (code === "0000"&&localStorage.getItem("oid")){
+
+                        }else {
+                            window.location.href = 'http://api.times168.net/index/wxlogin/login'
+                        }
                 })
             }
-        }else {}
-        this.props.dispatch(fetchPostsGetUser()).then((res) => {
-            this.setState({
-                isLogin: false,
-                userInfo: res.data
-            });
-            Api.onlineUser().then(res => {
+        }else {
+            this.props.dispatch(fetchPostsGetUser()).then((res) => {
                 this.setState({
-                    userNum: res.data
-                })
-            })
-            this.setI = setInterval(() => {
+                    isLogin: false,
+                    userInfo: res.data
+                });
                 Api.onlineUser().then(res => {
                     this.setState({
                         userNum: res.data
                     })
-                })
-            }, 60000);
-            this.getWebsocket(res);
-        }).catch((err) => {
-            this.props.userInfo.code === "0000" ? null :
-                this.setState({
-                    isLogin: true,
-                })
-        })
-
+                });
+                this.setI = setInterval(() => {
+                    Api.onlineUser().then(res => {
+                        this.setState({
+                            userNum: res.data
+                        })
+                    })
+                }, 60000);
+                this.getWebsocket(res);
+            }).catch((err) => {
+                this.props.userInfo.code === "0000" ? null :
+                    this.setState({
+                        isLogin: true,
+                    })
+            })
+        }
     }
 
     inputPwd = (index) => {
@@ -413,27 +419,25 @@ class Index extends React.Component {
         }
         let params = name === "loginForm"?this.state.login:this.state.register;
         if(name !== "loginForm"){
-            let hash = window.location.hash;
-            if(hash.indexOf("?uid=")){
-                let reg2 = /([^=]+)$/;
-                let openid = hash.match(reg2);
-                params.refer_id = openid[0]
-            }
+            params.refer_id = localStorage.getItem("uid")
         }
         name === "loginForm"?this.props.dispatch(fetchPostsIfNeeded(params)).then((res) => {
             if(res.code ==="0000"){
+                localStorage.setItem("phoneNum",this.state.login.tel)
+                localStorage.setItem("pwd",this.state.login.password)
                 message.success(res.msg);
                 sessionStorage.setItem("key",'2');
                 this.getUserInfo()
             }
+            localStorage.removeItem("uid")
         }).catch((err) => {
             message.error(err.msg);
         }):Api.register(params).then((res)=>{
-            message.success(123123132);
-            // message.success(res.msg);
+            message.success(res.msg);
             this.setState({
                 loginLocation:"2"
             })
+            localStorage.removeItem("uid")
         }).catch((err)=>{
             message.error(err.msg)
         })
@@ -462,14 +466,14 @@ class Index extends React.Component {
     inviteFriend(index,item){
         Api.inviteFriendJoin({room_id:item.room_id}).then(res => {
             let arr = this.state.myInvite;
-            arr.splice(index);
+            arr.splice(index,1);
             localStorage.setItem("inviteData",arr.join(";"));
             message.success(res.msg);
             // this.webSocket.close();
             window.location.href = "#/Dashboard/GameHome/"+res.data.room_id+"/1"
         }).catch(err =>{
             let arr = this.state.myInvite;
-            arr.splice(index);
+            arr.splice(index,1);
             this.setState({
                 myInvite:arr
             });
@@ -493,7 +497,7 @@ class Index extends React.Component {
     //拒绝邀请
     refuseInvite = (index) => {
         let arr = this.state.myInvite;
-        arr.splice(index);
+        arr.splice(index,1);
         this.setState({
             myInvite:arr
         });
@@ -504,6 +508,7 @@ class Index extends React.Component {
         const button = ["S","M","H","1","2","3","4","5","6","7","8","9","重输","0","确认"];
         const userInfo = this.props.userInfo.data;
         const item = ["初级房间","中级房间","高级房间","输入房号"];
+        // let ua = navigator.userAgent.toLowerCase();//获取判断用的对象
         return(
             <div className="index-container">
                 <HeaderNav name="挑战10秒"/>
@@ -549,7 +554,7 @@ class Index extends React.Component {
                         <span className="my-money-item-pay" onClick={()=>{window.location.href = "#/Dashboard/PayPage"}}>{null}</span>
                         <span onClick={()=>{window.location.href = "#/Dashboard/RankList"}} className="my-trophy">{null}</span>
                         <span onClick={()=>{this.setState({isOpenMyTask:true})}} className="my-trophy my-task">{null}</span>
-                        <span className="my-trophy relief-payment">{null}</span>
+                        {/*<span className="my-trophy relief-payment">{null}</span>*/}
                         <span onClick={()=>{this.setState({isOpenSign:true})}} className={this.state.userInfo.is_sign?"my-trophy sign-in has-sign":"my-trophy sign-in"}>{null}</span>
                     </div>
                 </div>
@@ -561,7 +566,7 @@ class Index extends React.Component {
                                             ()=>{window.location.href = "#/Dashboard/NewHome/"+index}}>
                                 {item !== "输入房号"?<span>{index === 0?this.state.userNum.primary:index === 1?this.state.userNum.middle:this.state.userNum.high}</span>:null}
                                 {item !== "输入房号"?<i onClick={(e)=>this.watchGame(e,index)} className="eyes-game">
-                                    <img src={require("../../layouts/image/eyes.png")} alt=""/>
+                                    <span>观战</span>
                                 </i>:null}
                                 <p>{item}</p>
                             </div>
@@ -573,7 +578,9 @@ class Index extends React.Component {
 
                     </div>
                     <ul className="game-rule-item">
-                        <li>1.金币可通过每日任务、每日签到、对战、充值获得，破产后也可领取救济金</li>
+                        <li>1.金币可通过每日任务、每日签到、对战、充值获得
+                            {/*，破产后也可领取救济金*/}
+                        </li>
                         <li>2.游戏3人以下对战，最接近10秒的玩家获胜；3人以上，前三获胜
                             （金币分配：第一名50%，第二名30%，第三名20%，平局则并列平分该名次、金币）。</li>
                         <li>3.游戏结束后可选择直接退出，或者再来一局。</li>
@@ -646,6 +653,7 @@ class Index extends React.Component {
                                                             >
                                                                 {item.before}<Input type={item.key === "password"?"password":"text"}
                                                                                     onChange={(e)=>this.changeInput(e,item,index,"login")}
+                                                                                    defaultValue={item.key === "password"?localStorage.getItem("pwd")||"":localStorage.getItem("phoneNum")||""}
                                                                                     placeholder={item.placeholder}
                                                                                     id={item.isOk}/>
                                                             </FormItem>

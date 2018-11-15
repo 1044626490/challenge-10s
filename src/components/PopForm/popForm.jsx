@@ -53,7 +53,6 @@ class PopForm extends React.Component {
                     ],
                     placeholder:"Please select a country",
                     onChange:function (e,form) {//除了联动，一般用不上
-                        console.log(e.target,e.target.value,form)
                     }
                 },
                 {

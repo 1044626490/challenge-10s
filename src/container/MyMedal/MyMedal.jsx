@@ -124,12 +124,10 @@ class MyMedal extends React.Component{
                             </TabPane>
                             <TabPane tab="任务" key="2">
                                 <div className="task">
-                                    sadasdasd
                                 </div>
                             </TabPane>
                             <TabPane tab="隐藏" key="3">
                                 <div className="conceal">
-                                    2s2s2s2s22s
                                 </div>
                             </TabPane>
                         </Tabs>

@@ -46,6 +46,6 @@ export function jsSdkConfig() {
             })
         })
     }).catch(function (errors) {
-        console.log('errors', errors);
+
     });
 }

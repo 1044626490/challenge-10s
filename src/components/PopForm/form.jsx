@@ -54,7 +54,6 @@ class ChoosePerson extends React.Component {
       has_choose_person: has_tmp,
       no_choose_person: no_tmp
     });
-    // console.log("单选人：",has_tmp)
   }
   // 定制：通知类型————取消选中一个人
   cancelOnePerson(person) {
@@ -85,7 +84,6 @@ class ChoosePerson extends React.Component {
       has_choose_person: [],
       no_choose_person: no_tmp
     });
-    // console.log(this.addRolesId,"全选")
   }
 
   render() {

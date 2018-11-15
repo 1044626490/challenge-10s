@@ -23,7 +23,7 @@ const routes = [
             loader: () => import("~/container/Activity/Activity"),
             loading: MyLoadingComponent
         }),
-        isExact: true
+        isExact: false
     },
     {
         path: "PersonalInformation",
@@ -31,7 +31,7 @@ const routes = [
             loader: () => import("~/container/PersonalInformation/PersonalInformation"),
             loading: MyLoadingComponent
         }),
-        isExact: true
+        isExact: false
     },
     {
         path: "Setting",
@@ -39,7 +39,7 @@ const routes = [
             loader: () => import("~/container/PersonalInformation/component/Setting"),
             loading: MyLoadingComponent
         }),
-        isExact: true
+        isExact: false
     },
     {
         path: "NewHome/:id",
@@ -47,7 +47,7 @@ const routes = [
             loader: () => import("~/container/NewHome/NewHome"),
             loading: MyLoadingComponent
         }),
-        isExact: true
+        isExact: false
     },
     {
         path: "GameHome/:homeId/:status",
@@ -55,7 +55,7 @@ const routes = [
             loader: () => import("~/container/GameHome/GameHome"),
             loading: MyLoadingComponent
         }),
-        isExact: true
+        isExact: false
     },
     {
         path: "MyFriend/:pageId",
@@ -63,7 +63,7 @@ const routes = [
             loader: () => import("~/container/MyFriend/MyFriend"),
             loading: MyLoadingComponent
         }),
-        isExact: true
+        isExact: false
     },
     {
         path: "PayPage",
@@ -71,15 +71,7 @@ const routes = [
             loader: () => import("~/container/Index/PayPage/PayPage"),
             loading: MyLoadingComponent
         }),
-        isExact: true
-    },
-    {
-        path: "PayPriceOver/:id/:price",
-        component: Loadable({
-            loader: () => import("~/container/Index/PayPage/PayPriceOver"),
-            loading: MyLoadingComponent
-        }),
-        isExact: true
+        isExact: false
     },
     {
         path: "MyMedal",
@@ -87,7 +79,7 @@ const routes = [
             loader: () => import("~/container/MyMedal/MyMedal"),
             loading: MyLoadingComponent
         }),
-        isExact: true
+        isExact: false
     },
     {
         path: "RankList",
@@ -95,17 +87,47 @@ const routes = [
             loader: () => import("~/container/RankList/RankList"),
             loading: MyLoadingComponent
         }),
-        isExact: true
+        isExact: false
     }
+    // {
+    //     path: "PayPriceOver/:price/:id",
+    //     component: Loadable({
+    //         loader: () => import("~/container/Index/PayPage/PayPriceOver"),
+    //         loading: MyLoadingComponent
+    //     }),
+    //     isExact: false
+    // }
 ];
-
+let ua = navigator.userAgent.toLowerCase();//获取判断用的对象
+if (ua.match(/MicroMessenger/i) == "micromessenger") {
+    routes.push({
+        path: "PayPriceOver/:price/:id",
+        component: Loadable({
+            loader: () => import("~/container/Index/PayPage/PayPriceOver"),
+            loading: MyLoadingComponent
+        }),
+        isExact: false
+    })
+}
 class Dashboard extends React.Component {
     constructor(props) {
         super(props);
         this.state = {};
     }
 
-    componentDidMount(){
+    componentWillMount(){
+        let href = window.location.href;
+        Api.getUserInfo().then().catch(err => {
+            if(window.location.href.indexOf("#/Dashboard/index") >= 0){
+                if(window.location.hash.indexOf("?uid=") >= 0){
+                    let reg2 = /([^=]+)$/;
+                    let openid = window.location.hash.match(reg2);
+                    localStorage.setItem("uid",openid[0])
+                }
+            }else {
+                window.location.href = "#/Dashboard/index"
+            }
+        });
         // this.props.dispatch(fetchPostsGetUser()).then((res) => {
         // }).catch((err) => {
         //     window.location.href = "#/Dashboard/index"
@@ -114,13 +136,20 @@ class Dashboard extends React.Component {
     }
 
     progress(){
+        let winWidth = window.innerWidth?window.innerWidth:document.body.clientWidth;
+        // if (window.innerWidth){
+        //     winWidth = window.innerWidth;
+        // } else if ((document.body) && (document.body.clientWidth)){
+        //     winWidth = document.body.clientWidth;
+        // }
         $(function() {
             $('.progressbar').each(function(){
                 let t = $(this),
                     dataperc = t.attr('data-perc'),
-                    width = $(".progressbar").width(),
+                    // width = $(".progressbar").width(),
+                    width = winWidth*0.7,
                     barperc = Math.round(dataperc*1.6);
-                t.find('.bar').animate({width:width}, 3000);
+                t.find('.bar').css({width:0}).animate({width:width}, 3000);
                 t.find('.label').append('<div class="perc"></div>');
             });
         })
@@ -135,19 +164,11 @@ class Dashboard extends React.Component {
         },3300)
     }
 
-    // componentWillReceiveProps(nextProps){
-    //     console.log(this.props === nextProps,nextProps,this.props)
-    //     if(this.props === nextProps){
-    //         return false
-    //     }else {
-    //         return true
-    //     }
-    // }
-
     render() {
         const { match } = this.props;
         const RouteWithSubRoutes = route => (
             <Route
+                exact={route.isExact}
                 path={`${match.url}/${route.path}`}
                 render={props => <route.component {...props} routes={route.routes} />}
             />

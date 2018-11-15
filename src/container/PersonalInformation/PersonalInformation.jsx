@@ -122,8 +122,9 @@ class PersonalInformation extends React.Component {
                                 <li onClick={()=>{window.location.href = "#/Dashboard/MyFriend/3"}}>
                                     <p>邀请好友</p><Icon type="right" theme="outlined" />
                                 </li>
-                                <li>
-                                    <p>意见或建议（敬请期待）</p><Icon type="right" theme="outlined" />
+                                <li onClick={()=>{window.location.href = "#/Dashboard/PayPage"}}>
+                                    {/*<p>意见或建议（敬请期待）</p><Icon type="right" theme="outlined" />*/}
+                                    <p>我要充值</p><Icon type="right" theme="outlined" />
                                 </li>
                             </ul>
                         </div>
@@ -134,7 +135,7 @@ class PersonalInformation extends React.Component {
                 </div>
                 <BottomMenu />
                 {
-                    this.state.isOpenModel?<MyInfoModal info={info} isResetMyInfo={this.state.isResetMyInfo} openModal={()=>this.openModal()}
+                    this.state.isResetMyInfo||this.state.isOpenModel?<MyInfoModal info={info} isResetMyInfo={this.state.isResetMyInfo} openModal={()=>this.openModal()}
                     changeHeader={()=>this.changeHeader()} isOpenModel={this.state.isOpenModel}
                     getUserInfo={()=>{
                     this.getUserInfo();

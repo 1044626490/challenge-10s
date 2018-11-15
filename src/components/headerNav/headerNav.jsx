@@ -19,7 +19,6 @@ class HeaderNav extends React.Component {
     }
 
     goBackHistory(e){
-        console.log(e,window.location.hash);
         let hash = window.location.hash;
         hash === "#/Dashboard/index"?window.location.href = "#/Dashboard/index":hash.indexOf("NewHome") !== -1?window.location.href = "#/Dashboard/index":window.history.back();
     }
@@ -27,7 +26,6 @@ class HeaderNav extends React.Component {
     componentDidMount(){
         if(this.props.userInfo.code !== "0000") {
             this.props.dispatch(fetchPostsGetUser()).then((res) => {
-                console.log(1231235555)
                 window.location.reload()
             }).catch((err) => {
                 window.location.href = "#/Dashboard/index"
@@ -35,78 +33,75 @@ class HeaderNav extends React.Component {
         }
     }
 
-    Carousel(){
-        let num = this.state.num;
-        let num1 = this.state.num1;
-        console.log($(".carousel-item").is(":animated"))
-        if(!$(".carousel-item").is(":animated")){
-            let a = Math.random()
-            num1.concat(a);
-            num.push(num1);
-            this.setState({
-                num,
-                num1
-            });
-            $(".carousel-item").animate(
-                {
-                    marginTop:-20
-                },200);
-            let setT = setTimeout(()=>{
-                this.refresh();
-                clearTimeout(setT)
-            },220);
-            console.log(num1,num)
-        }else {
-            let setT = setTimeout(()=>{
-                num1++;
-                num.push(num1);
-                this.setState({
-                    num,
-                    num1
-                });
-                $(".carousel-item").animate(
-                    {
-                        marginTop:-20
-                    },300);
-                let setT = setTimeout(()=>{
-                    this.refresh();
-                    clearTimeout(setT)
-                },320);
-                clearTimeout(setT)
-            },300)
-        }
-    }
+    // Carousel(){
+    //     let num = this.state.num;
+    //     let num1 = this.state.num1;
+    //     if(!$(".carousel-item").is(":animated")){
+    //         let a = Math.random()
+    //         num1.concat(a);
+    //         num.push(num1);
+    //         this.setState({
+    //             num,
+    //             num1
+    //         });
+    //         $(".carousel-item").animate(
+    //             {
+    //                 marginTop:-20
+    //             },200);
+    //         let setT = setTimeout(()=>{
+    //             this.refresh();
+    //             clearTimeout(setT)
+    //         },220);
+    //     }else {
+    //         let setT = setTimeout(()=>{
+    //             num1++;
+    //             num.push(num1);
+    //             this.setState({
+    //                 num,
+    //                 num1
+    //             });
+    //             $(".carousel-item").animate(
+    //                 {
+    //                     marginTop:-20
+    //                 },300);
+    //             let setT = setTimeout(()=>{
+    //                 this.refresh();
+    //                 clearTimeout(setT)
+    //             },320);
+    //             clearTimeout(setT)
+    //         },300)
+    //     }
+    // }
 
-    refresh(){
-        let num = this.state.num;
-        if(num.length > 1){
-            console.log(12313);
-            num.splice(0,1);
-            this.setState({
-                num
-            })
-        }
-        if(num.length === 1){
-            let setT = setTimeout(()=>{
-                $('.carousel-item').animate(
-                    {
-                        marginTop:-20
-                    },300);
-                num.splice(0,1);
-                clearTimeout(setT)
-            },3000);
-            let setTT = setTimeout(()=>{
-                this.setState({
-                    num
-                });
-                clearTimeout(setTT)
-            },3320);
-        }
-        $('.carousel-item').animate(
-            {
-                marginTop:0
-            },0)
-    }
+    // refresh(){
+    //     let num = this.state.num;
+    //     if(num.length > 1){
+    //         num.splice(0,1);
+    //         this.setState({
+    //             num
+    //         })
+    //     }
+    //     if(num.length === 1){
+    //         let setT = setTimeout(()=>{
+    //             $('.carousel-item').animate(
+    //                 {
+    //                     marginTop:-20
+    //                 },300);
+    //             num.splice(0,1);
+    //             clearTimeout(setT)
+    //         },3000);
+    //         let setTT = setTimeout(()=>{
+    //             this.setState({
+    //                 num
+    //             });
+    //             clearTimeout(setTT)
+    //         },3320);
+    //     }
+    //     $('.carousel-item').animate(
+    //         {
+    //             marginTop:0
+    //         },0)
+    // }
 
     render() {
         return (
@@ -120,18 +115,18 @@ class HeaderNav extends React.Component {
                     </p>
                     <Icon type="ellipsis" theme="outlined" />
                 </div>
-                <div className="carousel-info-wrap">
-                    {
-                        this.state.num.map((item, index) => {
-                            return <p className={index === 0?"carousel-item":""} key={index}>
-                                <span className="trumpet"></span>
-                                <span>{item.slice(0,2)}</span>
-                                <span style={{color:"rgba(222,204,53,0.7)"}}>{item.slice(2,6)}</span>
-                                <span>{item.slice(6,item.length)}</span>
-                            </p>
-                        })
-                    }
-                </div>
+                {/*<div className="carousel-info-wrap">*/}
+                    {/*{*/}
+                        {/*this.state.num.map((item, index) => {*/}
+                            {/*return <p className={index === 0?"carousel-item":""} key={index}>*/}
+                                {/*<span className="trumpet"></span>*/}
+                                {/*<span>{item.slice(0,2)}</span>*/}
+                                {/*<span style={{color:"rgba(222,204,53,0.7)"}}>{item.slice(2,6)}</span>*/}
+                                {/*<span>{item.slice(6,item.length)}</span>*/}
+                            {/*</p>*/}
+                        {/*})*/}
+                    {/*}*/}
+                {/*</div>*/}
                 {/*<button style={{marginTop:30}} onClick={()=>this.Carousel()}>123</button>*/}
             </div>
         )
